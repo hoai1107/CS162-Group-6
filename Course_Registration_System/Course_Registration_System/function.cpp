@@ -15,6 +15,7 @@ void displayClass(const	classUni& _class);
 void viewEnrolledCourses(const student& _student, const semester& _semester);
 bool removeCourseFromList(student& _student, string removeCourseID); //return false in case there's no such course with that ID in list
 void viewListOfClass(const schoolYear& _schoolYear);
+void viewStudentsInCourse(course crs);
 
 
 
