@@ -21,8 +21,8 @@ template <typename T>
 struct vector {
     // support function
     // access by index
-    bool pushBack(T sth) // return false if sth is wrong when pushBack
-    bool erase(int index) // return false if sth is wrong when erase
+    bool pushBack(T sth); // return false if sth is wrong when pushBack
+    bool erase(int index); // return false if sth is wrong when erase
 };
  
 // STRUCT
