@@ -111,7 +111,7 @@ void viewStudentsInCourse(course crs) {
 		string gnd;
 		if (crs.listStudent[i].gender == 0)
 			gnd = "male";
-		else gnd = "female"
+		else gnd = "female";
 		cout << left << setw(5) << crs.listStudent[i].no << setw(10) << crs.listStudent[i].ID << setw(20) << crs.listStudent[i].lastName
 			<< setw(15) << crs.listStudent[i].firstName << setw(15) << crs.listStudent[i].className << setw(10) << gnd
 			<< setw(20) << crs.listStudent[i].DOB.day << '/' << crs.listStudent[i].DOB.month << '/' << crs.listStudent[i].DOB.year 
