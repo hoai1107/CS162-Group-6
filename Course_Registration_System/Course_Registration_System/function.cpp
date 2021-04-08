@@ -4,7 +4,8 @@
 using namespace std;
 
 // FUNCTION PROTOTYPE
-
+// staff function
+void viewCourses(semester sem); //(task 9)
 //Class function
 void addStudentToClass(const classUni& className);
 void displayStudent(const student& _student);
@@ -91,5 +92,13 @@ bool removeCourseFromList(student& _student, string removeCourseID) {
 void viewListOfClass(const schoolYear& _schoolYear) {
 	for (int i = 0; i < size; ++i) {
 		cout << _schoolYear.newClass[i] << endl;
+	}
+}
+
+void viewCourses(semester sem) {
+	cout << left << setw(10) << "ID" << setw(50) << "Name" << setw(30) << "Teacher" << setw(10) << "Credits" << endl;
+	for (int i = 0; i < sem.listCourse.size; i++) {
+		cout << left << setw(10) << sem.listCourse[i].ID << setw(50) << sem.listCourse[i].name << setw(30) << sem.listCourse[i].teacher
+			 << setw(10) << sem.listCourse[i].numCredits << endl;
 	}
 }
