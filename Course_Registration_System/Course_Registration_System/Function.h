@@ -8,6 +8,12 @@
 
 using namespace std;
 
+//
+//  FUNCTION PROTOTYPE
+//
+
+
+
 // DATA STRUCTURE
  
 // in "vector".h"
