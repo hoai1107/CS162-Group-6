@@ -42,7 +42,8 @@ void addStudentToClass(classUni& className) {
 		fin.ignore(1, '/');
 
 		fin >> st.socialID;
-
+        fin.ignore();
+        ++i;
 	}
 	fin.close();
 }
