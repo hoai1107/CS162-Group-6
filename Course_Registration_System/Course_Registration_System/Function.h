@@ -5,7 +5,6 @@
 #include <fstream>
 #include <iomanip>
 #include <string>
-#include <list>
 
 using namespace std;
 
