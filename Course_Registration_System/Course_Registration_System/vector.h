@@ -9,7 +9,7 @@ struct vector {
 
 	int size();
 	void push_back(T _x);
-	void erase(int _index);
-
+	void erase(int _index);s
+	T operator[](int _index);
 };
 #endif
