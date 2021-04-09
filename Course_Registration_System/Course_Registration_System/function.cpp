@@ -57,7 +57,7 @@ void addStudentToClass(classUni& className) {
 		fin >> st.socialID;
         fin.ignore();
         ++i;
-		className.listStudent.pushBack(st);
+		className.listStudent.push_back(st);
 	}
 	fin.close();
 }
@@ -159,7 +159,7 @@ void createNewClasses(schoolYear& _schoolYear){
 		cout<<"Enter name of the class: ";
 		cin>>newClass.name;
 		addStudentToClass(newClass);
-		_schoolYear.newClass.pushBack(newClass);
+		_schoolYear.newClass.push_back(newClass);
 
 		cout<<"Enter 1 to add another class or 0 to stop.";
 		cin>>choice;
@@ -189,7 +189,7 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 			cin >> sess.day;
 			cout << "	At what time ? : ";
 			cin >> sess.time;
-			crs.listLesson.pushBack(sess);
+			crs.listLesson.push_back(sess);
 		}
 		cout << "Done!" << endl << "Enter 1 to add another course or 0 to stop.";
 		cin>>choice;
@@ -214,7 +214,7 @@ void enrollCourses(student& _student, semester& _semester){
 		temp.ID=ID;
 
 		if(_student.enrolled.size()==0){
-			_student.enrolled.pushBack(temp);
+			_student.enrolled.push_back(temp);
 		}else{
 			for(int i=0;i<_student.enrolled.size();++i){
 				lesson time1=getLesson(ID);
@@ -232,7 +232,7 @@ void enrollCourses(student& _student, semester& _semester){
 
 			if(canEnroll){
 				cout<<"Enroll succesfully!";
-				_student.enrolled.pushBack(temp);
+				_student.enrolled.push_back(temp);
 				addStudentToCourse(_student,ID,_semester);
 			}
 		}
@@ -246,3 +246,4 @@ void enrollCourses(student& _student, semester& _semester){
 		cin>>choice;
 	}
 }
+
