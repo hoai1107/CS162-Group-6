@@ -6,7 +6,7 @@ using namespace std;
 // FUNCTION PROTOTYPE
 
 //Staff function
-void viewCourses(semester sem); //(task 9/19)
+void viewCourses(const semester& sem); //(task 9/19)
 void viewStudentsInCourse(course crs);//(task 20)
 void viewListOfClass(const schoolYear& _schoolYear);//(task 17)
 bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 11) return false in case there's no such course with that ID in list
@@ -21,8 +21,11 @@ void displayClass(const	classUni& _class);//(task 18)
 //Student function
 void viewEnrolledCourses(const student& _student, const semester& _semester);//(task 14)
 bool removeCourseFromList(student& _student, string removeCourseID); //(task 15) return false in case there's no such course with that ID in list
+void enrollCourses(student& _student, const semester& _semester);
 
-
+//Additional function
+lesson getLesson(string ID);//get the time of the course with ID
+bool checkFullSlot(string ID);//check if the course is full yet
 
 
 
@@ -109,7 +112,7 @@ void viewListOfClass(const schoolYear& _schoolYear) {
 	}
 }
 
-void viewCourses(semester sem) {
+void viewCourses(const semester& sem) {
 	cout << left << setw(10) << "ID" << setw(50) << "Name" << setw(30) << "Teacher" << setw(10) << "Credits" << endl;
 	for (int i = 0; i < sem.listCourse.size; i++) {
 		cout << left << setw(10) << sem.listCourse[i].ID << setw(50) << sem.listCourse[i].name << setw(30) << sem.listCourse[i].teacher
@@ -192,3 +195,52 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 	}
 }
 
+void enrollCourses(student& _student, semester& _semester){
+	cout<<"This is the detail of all the courses available in this semester. Choose the course(s) you want to enroll."<<endl;
+	viewCourses(_semester);
+
+	cout<<"Please enter 1 to start enroll.";
+	int choice;
+	cin>>choice;
+
+	while(choice && _student.enrolled.size()<=5){
+		module temp;
+		string ID;
+		bool canEnroll=true;
+
+		cout<<"Enter the ID of the course you want to enroll: ";
+		cin>>ID;
+		temp.ID=ID;
+
+		if(_student.enrolled.size()==0){
+			_student.enrolled.pushBack(temp);
+		}else{
+			for(int i=0;i<_student.enrolled.size();++i){
+				lesson time1=getLesson(ID);
+				lesson time2=getLesson(_student.enrolled[i].ID);
+				if(time1==time2){
+					cout<<"This course is conflicted with existing courses. Please choose another course.";
+					canEnroll=false;
+				}
+			}
+
+			if(canEnroll && checkFullSlot(ID)){
+				cout<<"This course if full. Please choose another course";
+				canEnroll=false;
+			}
+
+			if(canEnroll){
+				cout<<"Enroll succesfully!";
+				_student.enrolled.pushBack(temp);
+			}
+		}
+
+		if(_student.enrolled.size()==5){
+			cout<<"You have reach the maximum numbers of courses that you can enroll.";
+			break;
+		}
+
+		cout<<"If you want to enroll in another course, enter 1. If you want to stop, enter 0.";
+		cin>>choice;
+	}
+}
