@@ -12,6 +12,8 @@ void viewListOfClass(const schoolYear& _schoolYear);//(task 17)
 bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 11) return false in case there's no such course with that ID in list
 void createNewClasses(schoolYear& _schoolYear);//(task 2)
 void addCourseToSemester(semester& sem); //(task 8)
+void createCourseRegistration(semester& sem);//(task 7)
+
 
 //Class function
 void addStudentToClass(const classUni& className);//(task 4)
@@ -245,5 +247,13 @@ void enrollCourses(student& _student, semester& _semester){
 		cout<<"If you want to enroll in another course, enter 1. If you want to stop, enter 0.";
 		cin>>choice;
 	}
+}
+
+void createCourseRegistration(semester& sem){
+	cout << "Please set the start date and end date for registration:" << endl;
+	cout << "	Start date: ";
+	cin >> sem.regOpen.day >> sem.regOpen.month >> sem.regOpen.year;
+	cout << "	End date: ";
+	cin >> sem.regClose.day >> sem.regClose.month >> sem.regClose.year;
 }
 
