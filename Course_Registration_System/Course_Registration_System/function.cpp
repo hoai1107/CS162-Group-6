@@ -26,6 +26,7 @@ void enrollCourses(student& _student, const semester& _semester);
 //Additional function
 lesson getLesson(string ID);//get the time of the course with ID
 bool checkFullSlot(string ID);//check if the course is full yet
+void addStudentToCourse(stundent _student,string _courseID, semester& _semester);
 
 
 
@@ -232,6 +233,7 @@ void enrollCourses(student& _student, semester& _semester){
 			if(canEnroll){
 				cout<<"Enroll succesfully!";
 				_student.enrolled.pushBack(temp);
+				addStudentToCourse(_student,ID,_semester);
 			}
 		}
 
