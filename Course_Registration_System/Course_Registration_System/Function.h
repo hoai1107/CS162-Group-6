@@ -39,6 +39,10 @@ struct date {
 struct lesson {
     string day; // MON/TUE/...
     string time; // '7:30', '9:30', ...
+
+    const bool operator == (const lesson& other) const {
+		return day == other.day && time == other.time;
+	}
 };
  
 struct mark {
