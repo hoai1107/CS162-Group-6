@@ -4,18 +4,23 @@
 using namespace std;
 
 // FUNCTION PROTOTYPE
-// staff function
-void viewCourses(semester sem); //(task 9)
+
+//Staff function
+void viewCourses(semester sem); //(task 9/19)
+void viewStudentsInCourse(course crs);//(task 20)
+void viewListOfClass(const schoolYear& _schoolYear);//(task 17)
+bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 11) return false in case there's no such course with that ID in list
+
 //Class function
-void addStudentToClass(const classUni& className);
-void displayStudent(const student& _student);
-void displayClass(const	classUni& _class);
+void addStudentToClass(const classUni& className);//(task 4)
+void displayStudent(const student& _student);//(task 18)
+void displayClass(const	classUni& _class);//(task 18)
 
 //Student function
-void viewEnrolledCourses(const student& _student, const semester& _semester);
-bool removeCourseFromList(student& _student, string removeCourseID); //return false in case there's no such course with that ID in list
-void viewListOfClass(const schoolYear& _schoolYear);
-void viewStudentsInCourse(course crs);
+void viewEnrolledCourses(const student& _student, const semester& _semester);//(task 14)
+bool removeCourseFromList(student& _student, string removeCourseID); //(task 15) return false in case there's no such course with that ID in list
+
+
 
 
 
@@ -54,7 +59,7 @@ void displayStudent(const student& _student) {
 	const string sep = string(2, ' ');
 	cout << _student.no << sep;
 	cout << _student.ID << sep;
-	cout << _student.firstName << ' ' << _student.lastName << sep;
+	cout << _student.lastName << ' ' << _student.firstName << sep;
 	cout << _student.DOB.day << '/' << _student.DOB.month << '/' << _student.DOB.year << sep;
 	cout << _student.socialID;
 
@@ -118,4 +123,15 @@ void viewStudentsInCourse(course crs) {
 			<< setw(20) << crs.listStudent[i].DOB.day << '/' << crs.listStudent[i].DOB.month << '/' << crs.listStudent[i].DOB.year 
 			<< setw(15) << "Social ID" << endl;
 	}
+}
+
+
+bool deleteCourseInSemester(semester& _semester, string removeCourseID){
+	for(int i=0;i<size;++i){
+		if(removeCourseID==_semester.listCourse[i].name){
+			_semester.listCourse.erase(i);
+			return true;
+		}
+	}
+	return false;
 }
