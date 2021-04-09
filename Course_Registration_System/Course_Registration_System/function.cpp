@@ -10,6 +10,8 @@ void viewCourses(semester sem); //(task 9/19)
 void viewStudentsInCourse(course crs);//(task 20)
 void viewListOfClass(const schoolYear& _schoolYear);//(task 17)
 bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 11) return false in case there's no such course with that ID in list
+void createNewClasses(schoolYear& _schoolYear);//(task 2)
+void addCourseToSemester(semester& sem); //(task 8)
 
 //Class function
 void addStudentToClass(const classUni& className);//(task 4)
@@ -29,7 +31,7 @@ void addStudentToClass(classUni& className) {
 	const string name = className.name + ".csv";
 	fin.open(name);
 	int i = 1;
-	while (fin.is_open()) {
+	while(fin.good()) {
 		student st;
 		st.no = i;
 		fin >> st.ID;
@@ -51,16 +53,16 @@ void addStudentToClass(classUni& className) {
 		fin >> st.socialID;
         fin.ignore();
         ++i;
+		className.listStudent.pushBack(st);
 	}
 	fin.close();
 }
 
 void displayStudent(const student& _student) {
-	const string sep = string(2, ' ');
-	cout << _student.no << sep;
-	cout << _student.ID << sep;
-	cout << _student.lastName << ' ' << _student.firstName << sep;
-	cout << _student.DOB.day << '/' << _student.DOB.month << '/' << _student.DOB.year << sep;
+	cout <<setw(5)<<left<< _student.no;
+	cout <<setw(15)<<left<< _student.ID;
+	cout <<setw(20)<<left<< (_student.lastName + ' ' + _student.firstName);
+	cout <<setw(20)<<left<< (to_string(_student.DOB.day) + '/' +to_string( _student.DOB.month) + to_string('/' + _student.DOB.year));
 	cout << _student.socialID;
 
 	cout << endl;
@@ -68,7 +70,13 @@ void displayStudent(const student& _student) {
 
 void displayClass(const classUni& _class) {
 	cout << "Class " << _class.name << endl;
-	for (int i = 0; i < size; ++i) {
+	cout << setw(5) << left << "No";
+	cout << setw(15) << left << "Student ID";
+	cout << setw(20) << left << "Full Name";
+	cout << setw(20) << left << "Date of Birth";
+	cout << "Social ID"<<endl;
+
+	for (int i = 0; i < _class.listStudent.size(); ++i) {
 		displayStudent(_class.listStudent[i]);
 	}
 }
@@ -135,3 +143,52 @@ bool deleteCourseInSemester(semester& _semester, string removeCourseID){
 	}
 	return false;
 }
+
+void createNewClasses(schoolYear& _schoolYear){
+	cout<<"Enter 1 to add a new class or 0 to stop.";
+	
+	int choice;
+	cin>>choice;
+
+	while(choice){
+		classUni newClass;
+		cout<<"Enter name of the class: ";
+		cin>>newClass.name;
+		addStudentToClass(newClass);
+		_schoolYear.newClass.pushBack(newClass);
+
+		cout<<"Enter 1 to add another class or 0 to stop.";
+		cin>>choice;
+	}
+}
+
+void addCourseToSemester(semester& sem){ // chi add info, chua add student
+	cout<<"Enter 1 to add a new course or 0 to stop.";
+	
+	int choice;
+	cin>>choice;
+
+	while(choice){
+		course crs;
+		cout << "Enter ID of the course: ";
+		cin >> crs.ID;
+		cout << "Enter name of the course: ";
+		cin >> crs.name;
+		cout << "Enter name of the teacher: ";
+		cin >> crs.teacher;
+		cout << "Enter the number of credits: ";
+		cin >> crs.numCredits;
+		for(int i=0; i<2; i++){
+			cout << "Enter session " + i + " of the course:" << endl; 
+			lesson sess;
+			cout << "	Enter the day for the session: ";
+			cin >> sess.day;
+			cout << "	At what time ? : ";
+			cin >> sess.time;
+			crs.listLesson.pushBack(sess);
+		}
+		cout << "Done!" << endl << "Enter 1 to add another course or 0 to stop.";
+		cin>>choice;
+	}
+}
+
