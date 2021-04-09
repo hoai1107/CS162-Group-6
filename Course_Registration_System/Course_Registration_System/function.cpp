@@ -11,6 +11,7 @@ void viewStudentsInCourse(course crs);//(task 20)
 void viewListOfClass(const schoolYear& _schoolYear);//(task 17)
 bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 11) return false in case there's no such course with that ID in list
 void createNewClasses(schoolYear& _schoolYear);//(task 2)
+void addCourseToSemester(semester& sem); //(task 8)
 
 //Class function
 void addStudentToClass(const classUni& className);//(task 4)
@@ -160,3 +161,34 @@ void createNewClasses(schoolYear& _schoolYear){
 		cin>>choice;
 	}
 }
+
+void addCourseToSemester(semester& sem){ // chi add info, chua add student
+	cout<<"Enter 1 to add a new course or 0 to stop.";
+	
+	int choice;
+	cin>>choice;
+
+	while(choice){
+		course crs;
+		cout << "Enter ID of the course: ";
+		cin >> crs.ID;
+		cout << "Enter name of the course: ";
+		cin >> crs.name;
+		cout << "Enter name of the teacher: ";
+		cin >> crs.teacher;
+		cout << "Enter the number of credits: ";
+		cin >> crs.numCredits;
+		for(int i=0; i<2; i++){
+			cout << "Enter session " + i + " of the course:" << endl; 
+			lesson sess;
+			cout << "	Enter the day for the session: ";
+			cin >> sess.day;
+			cout << "	At what time ? : ";
+			cin >> sess.time;
+			crs.listLesson.pushBack(sess);
+		}
+		cout << "Done!" << endl << "Enter 1 to add another course or 0 to stop.";
+		cin>>choice;
+	}
+}
+
