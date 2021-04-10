@@ -3,35 +3,6 @@
 
 using namespace std;
 
-// FUNCTION PROTOTYPE
-
-//Staff function
-void viewCourses(const semester& sem); //(task 9/19)
-void viewStudentsInCourse(course crs);//(task 20)
-void viewListOfClass(const schoolYear& _schoolYear);//(task 17)
-bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 11) return false in case there's no such course with that ID in list
-void createNewClasses(schoolYear& _schoolYear);//(task 2)
-void addCourseToSemester(semester& sem); //(task 8)
-void createCourseRegistration(semester& sem);//(task 7)
-
-
-//Class function
-void addStudentToClass(const classUni& className);//(task 4)
-void displayStudent(const student& _student);//(task 18)
-void displayClass(const	classUni& _class);//(task 18)
-
-//Student function
-void viewEnrolledCourses(const student& _student, const semester& _semester);//(task 14)
-bool removeCourseFromList(student& _student, string removeCourseID); //(task 15) return false in case there's no such course with that ID in list
-void enrollCourses(student& _student, const semester& _semester);
-
-//Additional function
-lesson getLesson(string ID);//get the time of the course with ID
-bool checkFullSlot(string ID);//check if the course is full yet
-void addStudentToCourse(stundent _student,string _courseID, semester& _semester);
-
-
-
 void addStudentToClass(classUni& className) {
 	ifstream fin;
 	const string name = className.name + ".csv";
@@ -257,3 +228,29 @@ void createCourseRegistration(semester& sem){
 	cin >> sem.regClose.day >> sem.regClose.month >> sem.regClose.year;
 }
 
+int login(vector<staff> _staff, vector<student> _student) {
+
+	int attempID;
+	string attempPass;
+
+	gotoxy(45, 3);
+	cout << "ID      : "; cin >> attempID;
+
+	gotoxy(45, 4);
+	cout << "Password: "; getline(cin, attempPass);
+
+	for (int i = 0; i < _staff.size(); i++)
+		if (attempID == _staff[i].ID && attempPass == _staff[i].password) return 1;
+	for (int i = 0; i < _staff.size(); i++)
+		if (attempID == _student[i].ID && attempPass == _student[i].password) return 2;
+	return 0;
+}
+
+void gotoxy(int x, int y)
+{
+	static HANDLE h = NULL;
+	if (!h)
+		h = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD c = { x, y };
+	SetConsoleCursorPosition(h, c);
+}
