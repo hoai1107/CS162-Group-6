@@ -169,7 +169,7 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 	}
 }
 
-void enrollCourses(student& _student, semester _semester){
+void enrollCourses(student& _student, semester& _semester){
 	cout<<"This is the detail of all the courses available in this semester. Choose the course(s) you want to enroll."<<endl;
 	viewCourses(_semester);
 
@@ -191,6 +191,7 @@ void enrollCourses(student& _student, semester _semester){
 		}else{
 			for(int i=0;i<_student.enrolled.size();++i){
 				for(int j=0;j<=1;++j){
+					//0 for first session and 1 for the other session
 					lesson time1=getLesson(_semester, ID, j);
 					lesson time2=getLesson(_semester, _student.enrolled[i].ID, j);
 					if(time1==time2){
@@ -200,15 +201,15 @@ void enrollCourses(student& _student, semester _semester){
 				}
 			}
 
-			if(canEnroll && checkFullSlot(ID)){
+			if(canEnroll && checkFullSlot(_semester,ID)){
 				cout<<"This course if full. Please choose another course";
 				canEnroll=false;
 			}
 
 			if(canEnroll){
-				cout<<"Enroll succesfully!";
+				cout<<"Enroll successfully!";
 				_student.enrolled.push_back(temp);
-				addStudentToCourse(_student,ID,_semester);
+				addStudentToCourse(_student, ID, _semester);
 			}
 		}
 
@@ -407,6 +408,23 @@ lesson getLesson(semester& _semester,string ID,int index){
 	for(int i=0;i<_semester.listCourse.size();++i){
 		if(ID == _semester.listCourse[i].ID){
 			return _semester.listCourse[i].listLesson[index];
+		}
+	}
+}
+
+bool checkFullSlot(semester _semester,string ID){
+	for(int i=0;i<_semester.listCourse.size();++i){
+		if(ID == _semester.listCourse[i].ID){
+			return _semester.listCourse[i].listStudent.size() < _semester.listCourse[i].maxStudents;
+		}
+	}
+}
+
+void addStudentToCourse(student _student, string _courseID, semester& _semester){
+	for(int i=0;i<_semester.listCourse.size();++i){
+		if(_courseID == _semester.listCourse[i].ID){
+			_semester.listCourse[i].listStudent.push_back(_student);
+			return;
 		}
 	}
 }

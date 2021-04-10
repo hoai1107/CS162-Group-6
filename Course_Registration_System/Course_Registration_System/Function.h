@@ -33,13 +33,13 @@ void displayClass(classUni _class);//(task 18)
 //Student function
 void viewEnrolledCourses(student _student, semester _semester);//(task 14)
 bool removeCourseFromList(student& _student, string removeCourseID); //(task 15) return false in case there's no such course with that ID in list
-void enrollCourses(student& _student, semester _semester);
+void enrollCourses(student& _student, semester& _semester);
 void viewStudentScoreboard(student stu);
 
 //Additional function
 course& getCourse(semester& _semester,string courseID);
 lesson getLesson(semester& _semester,string ID,int index);//get the time of the course with ID
-bool checkFullSlot(string ID);//check if the course is full yet
+bool checkFullSlot(semester _semester,string ID);//check if the course is full yet
 void addStudentToCourse(student _student, string _courseID, semester& _semester);
 int login(vector<staff> _staff, vector<student> _student, int& index); // Return 0 if it doesn't match any IDs and pass
                                                                        // 1 if it is staff, 2 if it is student
