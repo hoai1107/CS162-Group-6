@@ -254,3 +254,85 @@ void gotoxy(int x, int y)
 	COORD c = { x, y };
 	SetConsoleCursorPosition(h, c);
 }
+
+
+void updateCourseInfo(semester& _semester){
+	cout<<"Enter the ID of the course you want to update information: ";
+	string courseID;
+	getline(cin,courseID);
+
+	course& _course=getCourse(_semester,courseID);
+
+	cout<<"Please choose the section you want to update for the course:"<<endl
+		<<"1: Course ID"<<endl
+		<<"2: Course Name"<<endl
+		<<"3: Teacher Name"<<endl
+		<<"4: Number of Credits"<<endl
+		<<"5: Sessions"<<endl
+		<<"0: Stop update"<<endl
+		<<"Enter the number of the part you want to change: ";
+
+	int choice;
+	cin>>choice;
+
+	while(choice){
+		switch(choice){
+			case 1: 
+			{
+				cout<<"Enter the new ID: ";
+				cin.ignore();
+				cin>>_course.ID;
+				break;
+			}
+			case 2:	
+			{
+				cout<<"Enter the new course name: ";
+				cin.ignore();
+				getline(cin,_course.name);
+				break;
+			}
+			case 3: 
+			{
+				cout<<"Enter the new teacher name: ";
+				cin.ignore();
+				getline(cin,_course.teacher);
+				break;
+			}
+			case 4: 
+			{
+				cout<<"Enter the new number of credits: ";
+				cin>>_course.numCredits;
+				break;
+			}
+			case 5: 
+			{	
+				cout<<"Choose the session you want to update: ";
+				cout<<"1: "<<_course.listLesson[0].day<<' '<<_course.listLesson[0].time<<endl;
+				cout<<"2: "<<_course.listLesson[1].day<<' '<<_course.listLesson[1].time<<endl;
+				int temp;
+				cin>>temp;
+
+				cin.ignore();
+				cout<<"Enter the new day: ";
+				getline(cin,_course.listLesson[temp].day);
+				cout<<"Enter the new time: ";
+				getline(cin,_course.listLesson[temp].time);
+				
+				cout<<"Do you want to change the other session?(y/n)";
+				char check;
+				cin>>check;
+
+				if(tolower(check)=='y'){
+					temp^=1;
+					cin.ignore();
+					cout<<"Enter the new day: ";
+					getline(cin,_course.listLesson[temp].day);
+					cout<<"Enter the new time: ";
+					getline(cin,_course.listLesson[temp].time);
+				}
+			}
+		}
+		cout<<"Do you want to update anything else?";
+		cin>>choice;
+	}
+}
