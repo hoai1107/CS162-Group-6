@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void addStudentToClass(classUni& className) {
+void addStudentToClass(classUni className) {
 	ifstream fin;
 	const string name = className.name + ".csv";
 	fin.open(name);
@@ -45,7 +45,7 @@ void displayStudent(const student& _student) {
 	cout << endl;
 }
 
-void displayClass(const classUni& _class) {
+void displayClass(classUni _class) {
 	cout << "Class " << _class.name << endl;
 	cout << setw(5) << left << "No";
 	cout << setw(15) << left << "Student ID";
@@ -58,10 +58,10 @@ void displayClass(const classUni& _class) {
 	}
 }
 
-void viewEnrolledCourses(const student& _student,const semester& _semester) {
-	for (int i = 0; i < size1; ++i) {
+void viewEnrolledCourses(student _student, semester _semester) {
+	for (int i = 0; i < _student.enrolled.size(); ++i) {
 		string courseID = _student.enrolled[i].ID;
-		for (int j = 0; j < size2; ++j) {
+		for (int j = 0; j < _semester.listCourse.size(); ++j) {
 			if (courseID == _semester.listCourse[i].ID) {
 				cout << _semester.listCourse[i].name;
 				break;
@@ -71,7 +71,7 @@ void viewEnrolledCourses(const student& _student,const semester& _semester) {
 }
 
 bool removeCourseFromList(student& _student, string removeCourseID) {
-	for (int i = 0; i < size; ++i) {
+	for (int i = 0; i <	_student.enrolled.size(); ++i) {
 		if (removeCourseID == _student.enrolled[i].ID) {
 			_student.enrolled.erase(i);
 			return true;
@@ -80,15 +80,15 @@ bool removeCourseFromList(student& _student, string removeCourseID) {
 	return false;
 }
 
-void viewListOfClass(const schoolYear& _schoolYear) {
-	for (int i = 0; i < size; ++i) {
-		cout << _schoolYear.newClass[i] << endl;
+void viewListOfClass(schoolYear _schoolYear) {
+	for (int i = 0; i < _schoolYear.newClass.size(); ++i) {
+		cout << _schoolYear.newClass[i].name << endl;
 	}
 }
 
-void viewCourses(const semester& sem) {
+void viewCourses(semester sem) {
 	cout << left << setw(10) << "ID" << setw(50) << "Name" << setw(30) << "Teacher" << setw(10) << "Credits" << endl;
-	for (int i = 0; i < sem.listCourse.size; i++) {
+	for (int i = 0; i < sem.listCourse.size(); i++) {
 		cout << left << setw(10) << sem.listCourse[i].ID << setw(50) << sem.listCourse[i].name << setw(30) << sem.listCourse[i].teacher
 			 << setw(10) << sem.listCourse[i].numCredits << endl;
 	}
@@ -98,7 +98,7 @@ void viewStudentsInCourse(course crs) {
 	cout << left << setw(5) << "No" << setw(10) << "ID" << setw(20) << "Last name"
 		<< setw(15) << "First name" << setw(15) << "Class name" << setw(10) << "Gender"
 		<< setw(20) << "Date of birth" << setw(15) << "Social ID" << endl;
-	for (int i = 0; i < crs.listStudent.size; i++) {
+	for (int i = 0; i < crs.listStudent.size(); i++) {
 		string gnd;
 		if (crs.listStudent[i].gender == 0)
 			gnd = "male";
@@ -112,7 +112,7 @@ void viewStudentsInCourse(course crs) {
 
 
 bool deleteCourseInSemester(semester& _semester, string removeCourseID){
-	for(int i=0;i<size;++i){
+	for(int i=0;i< _semester.listCourse.size();++i){
 		if(removeCourseID==_semester.listCourse[i].name){
 			_semester.listCourse.erase(i);
 			return true;
@@ -156,7 +156,7 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 		cout << "Enter the number of credits: ";
 		cin >> crs.numCredits;
 		for(int i=0; i<2; i++){
-			cout << "Enter session " + (i+1) + " of the course:" << endl; 
+			cout << "Enter session " << (i+1) << " of the course:" << endl; 
 			lesson sess;
 			cout << "	Enter the day for the session: ";
 			cin >> sess.day;
@@ -169,7 +169,7 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 	}
 }
 
-void enrollCourses(student& _student, semester& _semester){
+void enrollCourses(student& _student, semester _semester){
 	cout<<"This is the detail of all the courses available in this semester. Choose the course(s) you want to enroll."<<endl;
 	viewCourses(_semester);
 
@@ -190,8 +190,8 @@ void enrollCourses(student& _student, semester& _semester){
 			_student.enrolled.push_back(temp);
 		}else{
 			for(int i=0;i<_student.enrolled.size();++i){
-				lesson time1=getLesson(ID);
-				lesson time2=getLesson(_student.enrolled[i].ID);
+				lesson time1=getLesson(_semester, ID);
+				lesson time2=getLesson(_semester, _student.enrolled[i].ID);
 				if(time1==time2){
 					cout<<"This course is conflicted with existing courses. Please choose another course.";
 					canEnroll=false;
@@ -228,7 +228,7 @@ void createCourseRegistration(semester& sem){
 	cin >> sem.regClose.day >> sem.regClose.month >> sem.regClose.year;
 }
 
-int login(vector<staff> _staff, vector<student> _student) {
+int login(vector<staff> _staff, vector<student> _student, int& index) {
 
 	int attempID;
 	string attempPass;
@@ -240,9 +240,15 @@ int login(vector<staff> _staff, vector<student> _student) {
 	cout << "Password: "; getline(cin, attempPass);
 
 	for (int i = 0; i < _staff.size(); i++)
-		if (attempID == _staff[i].ID && attempPass == _staff[i].password) return 1;
+		if (attempID == _staff[i].ID && attempPass == _staff[i].password) {
+			index = i;
+			return 1;
+		}
 	for (int i = 0; i < _staff.size(); i++)
-		if (attempID == _student[i].ID && attempPass == _student[i].password) return 2;
+		if (attempID == _student[i].ID && attempPass == _student[i].password) {
+			index = i;
+			return 2;
+		}
 	return 0;
 }
 
@@ -254,7 +260,6 @@ void gotoxy(int x, int y)
 	COORD c = { x, y };
 	SetConsoleCursorPosition(h, c);
 }
-
 
 void updateCourseInfo(semester& _semester){
 	cout<<"Enter the ID of the course you want to update information: ";
@@ -343,4 +348,32 @@ void viewStudentScoreboard(student stu){
 		cout << left << setw(10) << stu.enrolled[i].ID << setw(10) << stu.enrolled[i].grade.midterm 
 		<< setw(10) << stu.enrolled[i].grade.final << setw(10) << stu.enrolled[i].grade.other << setw(10) << stu.enrolled[i].grade.total;
 	}
+}
+
+int changePassword_Staff(vector<staff>& _staff, int index) {
+	string oPass, nPass, cNPass;
+	gotoxy(5, 5); // Change later
+	cout << "Old password: "; getline(cin, oPass);
+	if (oPass != _staff[index].password) return 1;
+	gotoxy(5, 6); // Change later
+	cout << "New password: "; getline(cin, nPass);
+	gotoxy(5, 7); // Change later
+	cout << "Confirm new password: "; getline(cin, cNPass);
+	if (nPass != cNPass) return 2;
+	_staff[index].password = cNPass;
+	return 0;
+}
+
+int changePassword_Student(vector<student>& _student, int index) {
+	string oPass, nPass, cNPass;
+	gotoxy(5, 5); // Change later
+	cout << "Old password: "; getline(cin, oPass);
+	if (oPass != _student[index].password) return 1;
+	gotoxy(5, 6); // Change later
+	cout << "New password: "; getline(cin, nPass);
+	gotoxy(5, 7); // Change later
+	cout << "Confirm new password: "; getline(cin, cNPass);
+	if (nPass != cNPass) return 2;
+	_student[index].password = cNPass;
+	return 0;
 }
