@@ -156,7 +156,7 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 		cout << "Enter the number of credits: ";
 		cin >> crs.numCredits;
 		for(int i=0; i<2; i++){
-			cout << "Enter session " + i + " of the course:" << endl; 
+			cout << "Enter session " + (i+1) + " of the course:" << endl; 
 			lesson sess;
 			cout << "	Enter the day for the session: ";
 			cin >> sess.day;
