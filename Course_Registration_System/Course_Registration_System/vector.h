@@ -6,14 +6,6 @@
 template <typename T>
 struct vector {
 	T* array;
-<<<<<<< HEAD
-	int _capacity;
-	int _size;
-
-	int size();
-	void push_back(T _x);
-	void erase(int _index);s
-=======
 	int _size = 0;
 	int _capacity = 1;
 
@@ -21,6 +13,17 @@ struct vector {
 
 	int size() {
 		return _size;
+	}
+
+	T& operator[](int _index) {
+		if (_index < 0)
+			throw std::invalid_argument("access negative index!");
+
+		if (_index >= _size)
+			throw std::invalid_argument("access out of bounds index!");
+
+		return array[_index];
+
 	}
 
 	void push_back(T _x) {
@@ -37,7 +40,5 @@ struct vector {
 
 	void erase(int _index);
 
->>>>>>> refs/remotes/origin/main
-	T operator[](int _index);
 };
 #endif
