@@ -37,8 +37,8 @@ void enrollCourses(student& _student, semester _semester);
 void viewStudentScoreboard(student stu);
 
 //Additional function
-course& getCourse(semester _semester,string courseID);
-lesson getLesson(semester& _semester,string ID);//get the time of the course with ID
+course& getCourse(semester& _semester,string courseID);
+lesson getLesson(semester& _semester,string ID,int index);//get the time of the course with ID
 bool checkFullSlot(string ID);//check if the course is full yet
 void addStudentToCourse(student _student, string _courseID, semester& _semester);
 int login(vector<staff> _staff, vector<student> _student, int& index); // Return 0 if it doesn't match any IDs and pass

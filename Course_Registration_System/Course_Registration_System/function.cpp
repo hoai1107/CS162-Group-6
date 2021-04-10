@@ -190,11 +190,13 @@ void enrollCourses(student& _student, semester _semester){
 			_student.enrolled.push_back(temp);
 		}else{
 			for(int i=0;i<_student.enrolled.size();++i){
-				lesson time1=getLesson(_semester, ID);
-				lesson time2=getLesson(_semester, _student.enrolled[i].ID);
-				if(time1==time2){
-					cout<<"This course is conflicted with existing courses. Please choose another course.";
-					canEnroll=false;
+				for(int j=0;j<=1;++j){
+					lesson time1=getLesson(_semester, ID, j);
+					lesson time2=getLesson(_semester, _student.enrolled[i].ID, j);
+					if(time1==time2){
+						cout<<"This course is conflicted with existing courses. Please choose another course.";
+						canEnroll=false;
+					}
 				}
 			}
 
@@ -393,3 +395,18 @@ int changePassword_Student(vector<student>& _student, int index) {
 	return 0;
 }
 
+course& getCourse(semester& _semester,string courseID){
+	for(int i=0;i<_semester.listCourse.size();++i){
+		if(courseID == _semester.listCourse[i].ID){
+			return _semester.listCourse[i];
+		}
+	}
+}
+
+lesson getLesson(semester& _semester,string ID,int index){
+	for(int i=0;i<_semester.listCourse.size();++i){
+		if(ID == _semester.listCourse[i].ID){
+			return _semester.listCourse[i].listLesson[index];
+		}
+	}
+}
