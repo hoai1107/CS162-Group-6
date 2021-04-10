@@ -415,7 +415,7 @@ lesson getLesson(semester& _semester,string ID,int index){
 bool checkFullSlot(semester _semester,string ID){
 	for(int i=0;i<_semester.listCourse.size();++i){
 		if(ID == _semester.listCourse[i].ID){
-			return _semester.listCourse[i].listStudent.size() < _semester.listCourse[i].maxStudents;
+			return _semester.listCourse[i].listStudent.size() >= _semester.listCourse[i].maxStudents;
 		}
 	}
 }
