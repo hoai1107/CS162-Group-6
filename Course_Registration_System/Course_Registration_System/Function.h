@@ -23,7 +23,7 @@ void createNewClasses(schoolYear& _schoolYear);//(task 2)
 void addCourseToSemester(semester& sem); //(task 8)
 void createCourseRegistration(semester& sem);//(task 7)
 void updateCourseInfo(semester& _semester);
-
+void viewCourseScoreboard(course crs);
 
 //Class function
 void addStudentToClass(classUni className);//(task 4)
