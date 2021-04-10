@@ -22,6 +22,7 @@ bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 
 void createNewClasses(schoolYear& _schoolYear);//(task 2)
 void addCourseToSemester(semester& sem); //(task 8)
 void createCourseRegistration(semester& sem);//(task 7)
+void updateCourseInfo(semester& _semester);
 
 
 //Class function
@@ -35,7 +36,8 @@ bool removeCourseFromList(student& _student, string removeCourseID); //(task 15)
 void enrollCourses(student& _student, const semester& _semester);
 
 //Additional function
-lesson getLesson(string ID);//get the time of the course with ID
+course& getCourse(semester _semester,string courseID);
+lesson getLesson(semester& _semester,string ID);//get the time of the course with ID
 bool checkFullSlot(string ID);//check if the course is full yet
 void addStudentToCourse(student _student, string _courseID, semester& _semester);
 int login(vector<staff> _staff, vector<student> _student); // Return 0 if it doesn't match any IDs and pass
