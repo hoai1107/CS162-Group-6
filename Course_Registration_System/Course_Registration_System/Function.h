@@ -34,7 +34,7 @@ void displayClass(const	classUni& _class);//(task 18)
 void viewEnrolledCourses(const student& _student, const semester& _semester);//(task 14)
 bool removeCourseFromList(student& _student, string removeCourseID); //(task 15) return false in case there's no such course with that ID in list
 void enrollCourses(student& _student, const semester& _semester);
-
+void viewStudentScoreboard(student stu);
 //Additional function
 course& getCourse(semester _semester,string courseID);
 lesson getLesson(semester& _semester,string ID);//get the time of the course with ID
