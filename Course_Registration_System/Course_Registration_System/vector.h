@@ -38,7 +38,20 @@ struct vector {
 		return;
 	}
 
-	void erase(int _index);
+	void erase(int _index) {
+		if (_index < 0)
+			throw std::invalid_argument("erase negative index!");
+
+		if (_index >= _size)
+			throw std::invalid_argument("erase out of bounds index!");
+
+		for (int i = _index; i < _size - 1; i++)
+			array[i] = array[i + 1];
+
+		_size--;
+
+		return;
+	}
 
 };
 #endif
