@@ -5,6 +5,8 @@
 #include <fstream>
 #include <iomanip>
 #include <string>
+#include <Windows.h>
+#include "vector.h"
 
 using namespace std;
 
@@ -12,22 +14,39 @@ using namespace std;
 //  FUNCTION PROTOTYPE
 //
 
+//Staff function
+void viewCourses(const semester& sem); //(task 9/19)
+void viewStudentsInCourse(course crs);//(task 20)
+void viewListOfClass(const schoolYear& _schoolYear);//(task 17)
+bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 11) return false in case there's no such course with that ID in list
+void createNewClasses(schoolYear& _schoolYear);//(task 2)
+void addCourseToSemester(semester& sem); //(task 8)
+void createCourseRegistration(semester& sem);//(task 7)
 
+
+//Class function
+void addStudentToClass(const classUni& className);//(task 4)
+void displayStudent(const student& _student);//(task 18)
+void displayClass(const	classUni& _class);//(task 18)
+
+//Student function
+void viewEnrolledCourses(const student& _student, const semester& _semester);//(task 14)
+bool removeCourseFromList(student& _student, string removeCourseID); //(task 15) return false in case there's no such course with that ID in list
+void enrollCourses(student& _student, const semester& _semester);
+
+//Additional function
+lesson getLesson(string ID);//get the time of the course with ID
+bool checkFullSlot(string ID);//check if the course is full yet
+void addStudentToCourse(student _student, string _courseID, semester& _semester);
+int login(vector<staff> _staff, vector<student> _student); // Return 0 if it doesn't match any IDs and pass
+                                                           // 1 if it is staff, 2 if it is student
+void gotoxy(int x, int y);
 
 // DATA STRUCTURE
  
-// in "vector".h"
-template <typename T>
-struct vector {
-    // support function
-    // access by index
-    bool pushBack(T sth); // return false if sth is wrong when pushBack
-    bool erase(int index); // return false if sth is wrong when erase
-};
- 
 // STRUCT
 struct staff {
-    int id;
+    int ID;
     string name; // optional
     string password;
 };
