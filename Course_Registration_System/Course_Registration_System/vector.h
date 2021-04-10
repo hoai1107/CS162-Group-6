@@ -4,12 +4,15 @@
 template <typename T>
 struct vector {
 	T* array;
-	int _capacity;
-	int _size;
+	int _size = 0;
+	int _capacity = 0;
 
-	int size();
+	int size() {
+		return _size;
+	}
+
 	void push_back(T _x);
-	void erase(int _index);s
+	void erase(int _index);
 	T operator[](int _index);
 };
 #endif
