@@ -428,3 +428,51 @@ void addStudentToCourse(student _student, string _courseID, semester& _semester)
 		}
 	}
 }
+
+void textColor(int color) {
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
+ACTION key(int z) {
+	if (z == 224) {
+		char c;
+		c = _getch();
+		if (c == 72) return UP;
+		if (c == 80) return DOWN;
+		if (c == 77) return RIGHT;
+		if (c == 75) return LEFT;
+	}
+	else if (z == 13) return ENTER;
+	else if (z == 8) return BACK;
+	return RIGHT;
+}
+
+int actionList(string* str, int n) {
+	int status = 0;
+	int* color = new int[n];
+	for (int i = 0; i < n; i++) color[i] = 15;
+	color[status] = 176;
+	while (true) {
+		system("CLS");
+		for (int i = 0; i < n; i++) {
+			textColor(color[i]);
+			cout << i + 1 << ". " << str[i] << endl;
+		}
+		int z = _getch(); int action = key(z);
+		switch (action) {
+		case UP: {
+			if (!status) status = n - 1;
+			else status--;
+			break;
+		}
+		case DOWN: {
+			if (status == n - 1) status = 0;
+			else status++;
+			break;
+		}
+		case ENTER: return status;
+		};
+		for (int i = 0; i < n; i++) color[i] = 15;
+		color[status] = 176;
+	}
+}
