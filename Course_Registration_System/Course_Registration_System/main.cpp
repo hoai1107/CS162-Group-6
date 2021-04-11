@@ -27,7 +27,25 @@ int main() {
 	}
 
 	else {
-		// STUDENT
+		string allActions[16] {"","","",""}; // 16 can be changed.
+		int choice;
+		choice = actionList(allActions, allActions->size());
+		while (choice != allActions->size() - 1) {
+			switch (choice) {
+				case 1: {
+					break;
+				}
+				case 2: {
+					break;
+				}
+				case 3: {
+					break;
+				}
+			}
+			choice = actionList(allActions, allActions->size());
+		}
+		system("CLS");
+		cout << "Ending!" << endl;
 	}
 	return 0;
 }
