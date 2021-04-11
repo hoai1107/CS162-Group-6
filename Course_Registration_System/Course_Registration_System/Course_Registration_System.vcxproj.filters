@@ -13,6 +13,33 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="2020-2021">
+      <UniqueIdentifier>{aa838ba5-620a-412f-9e67-cee756533af9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2020-2021\Class">
+      <UniqueIdentifier>{48ebf8b4-07a9-48c9-933d-0c63bbbbd164}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2020-2021\Semester">
+      <UniqueIdentifier>{4a8b8df8-233a-4527-916c-02dd4910c0db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2020-2021\Class\20APCS1">
+      <UniqueIdentifier>{f7a55bed-b489-43ee-b6a6-a887bc79a0bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2020-2021\Class\20APCS2">
+      <UniqueIdentifier>{a9e17107-28fc-4f11-837d-b309544c7cef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2020-2021\Class\20APCS1\course_info">
+      <UniqueIdentifier>{8f082e2e-9564-4501-932a-ad3c30c6fd6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2020-2021\Semester\Autumn">
+      <UniqueIdentifier>{c40229da-d7b8-4078-937f-9d5ea508209f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2020-2021\Semester\Autumn\Course">
+      <UniqueIdentifier>{e2a7d5cb-9e06-4b8f-b6c0-72ed10c444b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Staff">
+      <UniqueIdentifier>{c60183ea-6598-4b51-8bf1-b944f32612c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Function.h">
@@ -29,5 +56,27 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="list.csv">
+      <Filter>2020-2021\Class\20APCS1</Filter>
+    </None>
+    <None Include="scoreboard.csv">
+      <Filter>2020-2021\Class\20APCS1</Filter>
+    </None>
+    <None Include="course_info.csv">
+      <Filter>2020-2021\Semester\Autumn\Course</Filter>
+    </None>
+    <None Include="cs162_list.csv">
+      <Filter>2020-2021\Semester\Autumn\Course</Filter>
+    </None>
+    <None Include="Staff.csv">
+      <Filter>Staff</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="semester.txt">
+      <Filter>2020-2021\Semester\Autumn</Filter>
+    </Text>
   </ItemGroup>
 </Project>

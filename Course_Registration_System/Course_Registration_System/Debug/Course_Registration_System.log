@@ -1,0 +1,211 @@
+﻿  function.cpp
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(18,18): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(18,27): error C2146: syntax error: missing ')' before identifier 'sem'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(19,27): error C2065: 'course': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(19,34): error C2146: syntax error: missing ')' before identifier 'crs'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(20,22): error C2065: 'schoolYear': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(20,33): error C2146: syntax error: missing ')' before identifier '_schoolYear'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(21,29): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(21,39): error C2065: '_semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(21,50): error C2275: 'std::string': illegal use of this type as an expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xstring(4648): message : see declaration of 'std::string'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(21,57): error C2146: syntax error: missing ')' before identifier 'removeCourseID'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(22,23): error C2065: 'schoolYear': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(22,35): error C2065: '_schoolYear': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(22,46): error C2182: 'createNewClasses': illegal use of type 'void'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(23,26): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(23,36): error C2065: 'sem': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(23,39): error C2182: 'addCourseToSemester': illegal use of type 'void'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(24,31): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(24,41): error C2065: 'sem': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(24,44): error C2182: 'createCourseRegistration': illegal use of type 'void'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(25,23): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(25,33): error C2065: '_semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(25,42): error C2182: 'updateCourseInfo': illegal use of type 'void'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(29,24): error C2065: 'classUni': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(29,33): error C2146: syntax error: missing ')' before identifier 'className'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(30,34): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(30,34): error C2143: syntax error: missing ',' before '&'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(31,19): error C2065: 'classUni': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(31,28): error C2146: syntax error: missing ')' before identifier '_class'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(34,26): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(34,34): error C2146: syntax error: missing ')' before identifier '_student'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(35,27): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(35,36): error C2065: '_student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(35,46): error C2275: 'std::string': illegal use of this type as an expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xstring(4648): message : see declaration of 'std::string'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(35,53): error C2146: syntax error: missing ')' before identifier 'removeCourseID'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(36,20): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(36,29): error C2065: '_student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(36,39): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(36,48): error C2146: syntax error: missing ')' before identifier '_semester'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(37,28): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(37,36): error C2146: syntax error: missing ')' before identifier 'stu'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(39,7): error C2143: syntax error: missing ';' before '&'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(39,7): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(39,19): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(39,28): error C2146: syntax error: missing ')' before identifier '_semester'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(40,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(40,8): error C2146: syntax error: missing ';' before identifier 'getLesson'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(42,25): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(42,33): error C2146: syntax error: missing ')' before identifier '_student'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(43,18): error C2065: 'staff': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(43,11): error C2923: 'vector': 'staff' is not a valid template type argument for parameter 'T'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(43,40): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(43,33): error C2923: 'vector': 'student' is not a valid template type argument for parameter 'T'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(46,33): error C2065: 'staff': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(46,26): error C2923: 'vector': 'staff' is not a valid template type argument for parameter 'T'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(47,35): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(47,28): error C2923: 'vector': 'student' is not a valid template type argument for parameter 'T'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(101,5): error C2923: 'vector': 'lesson' is not a valid template type argument for parameter 'T'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(40): message : see declaration of 'lesson'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(110,5): error C2923: 'vector': 'course' is not a valid template type argument for parameter 'T'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(39): message : see declaration of 'course'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(64,49): error C2662: 'int vector<T>::size(void)': cannot convert 'this' pointer from 'vector' to 'vector<T> &'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(64,49): message : Reason: cannot convert from 'vector' to 'vector<T>'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(64,32): message : Conversion requires a second user-defined-conversion operator or constructor
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\vector.h(14,6): message : see declaration of 'vector<T>::size'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(65,7): error C2678: binary '[': no operator found which takes a left-hand operand of type 'vector' (or there is no acceptable conversion)
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\vector.h(18,5): message : could be 'T &vector<T>::operator [](int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(65,7): message : while trying to match the argument list '(vector, int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(66,35): error C2678: binary '[': no operator found which takes a left-hand operand of type 'vector' (or there is no acceptable conversion)
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\vector.h(18,5): message : could be 'T &vector<T>::operator [](int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(66,35): message : while trying to match the argument list '(vector, int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(91,42): error C2662: 'int vector<T>::size(void)': cannot convert 'this' pointer from 'vector' to 'vector<T> &'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(91,42): message : Reason: cannot convert from 'vector' to 'vector<T>'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(91,25): message : Conversion requires a second user-defined-conversion operator or constructor
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\vector.h(14,6): message : see declaration of 'vector<T>::size'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(92,47): error C2678: binary '[': no operator found which takes a left-hand operand of type 'vector' (or there is no acceptable conversion)
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\vector.h(18,5): message : could be 'T &vector<T>::operator [](int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(92,47): message : while trying to match the argument list '(vector, int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(92,83): error C2678: binary '[': no operator found which takes a left-hand operand of type 'vector' (or there is no acceptable conversion)
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\vector.h(18,5): message : could be 'T &vector<T>::operator [](int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(92,83): message : while trying to match the argument list '(vector, int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(92,121): error C2678: binary '[': no operator found which takes a left-hand operand of type 'vector' (or there is no acceptable conversion)
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\vector.h(18,5): message : could be 'T &vector<T>::operator [](int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(92,121): message : while trying to match the argument list '(vector, int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(93,36): error C2678: binary '[': no operator found which takes a left-hand operand of type 'vector' (or there is no acceptable conversion)
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\vector.h(18,5): message : could be 'T &vector<T>::operator [](int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(93,36): message : while trying to match the argument list '(vector, int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(97,34): error C2146: syntax error: missing ')' before identifier 'crs'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(97,39): error C2143: syntax error: missing ';' before '{'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(97,39): error C2447: '{': missing function header (old-style formal list?)
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(115,43): error C2662: 'int vector<T>::size(void)': cannot convert 'this' pointer from 'vector' to 'vector<T> &'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(115,43): message : Reason: cannot convert from 'vector' to 'vector<T>'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(115,26): message : Conversion requires a second user-defined-conversion operator or constructor
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\vector.h(14,6): message : see declaration of 'vector<T>::size'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(116,5): error C2678: binary '[': no operator found which takes a left-hand operand of type 'vector' (or there is no acceptable conversion)
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\vector.h(18,5): message : could be 'T &vector<T>::operator [](int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(116,5): message : while trying to match the argument list '(vector, int)'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(117,32): error C2662: 'void vector<T>::erase(int)': cannot convert 'this' pointer from 'vector' to 'vector<T> &'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(117,32): message : Reason: cannot convert from 'vector' to 'vector<T>'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(117,13): message : Conversion requires a second user-defined-conversion operator or constructor
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\vector.h(41,7): message : see declaration of 'vector<T>::erase'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(124,6): error C2365: 'createNewClasses': redefinition; previous definition was 'data variable'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(22): message : see declaration of 'createNewClasses'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(142,6): error C2365: 'addCourseToSemester': redefinition; previous definition was 'data variable'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(23): message : see declaration of 'addCourseToSemester'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(149,10): error C2146: syntax error: missing ';' before identifier 'crs'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(149,10): error C2065: 'crs': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(151,10): error C2065: 'crs': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(153,10): error C2065: 'crs': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(155,10): error C2065: 'crs': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(157,10): error C2065: 'crs': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(160,11): error C2146: syntax error: missing ';' before identifier 'sess'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(160,11): error C2065: 'sess': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(162,11): error C2065: 'sess': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(164,11): error C2065: 'sess': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(165,4): error C2065: 'crs': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(165,29): error C2065: 'sess': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(193,12): error C2146: syntax error: missing ';' before identifier 'time1'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(193,12): error C2065: 'time1': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(193,18): error C3861: 'getLesson': identifier not found
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(194,12): error C2146: syntax error: missing ';' before identifier 'time2'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(194,12): error C2065: 'time2': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(194,18): error C3861: 'getLesson': identifier not found
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(195,8): error C2065: 'time1': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(195,15): error C2065: 'time2': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(209,5): error C3861: 'addStudentToCourse': identifier not found
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(223,6): error C2365: 'createCourseRegistration': redefinition; previous definition was 'data variable'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(24): message : see declaration of 'createCourseRegistration'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(260,14): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(260,17): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(265,6): error C2365: 'updateCourseInfo': redefinition; previous definition was 'data variable'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(25): message : see declaration of 'updateCourseInfo'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(270,10): error C2065: '_course': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(270,18): error C3861: 'getCourse': identifier not found
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(290,10): error C2065: '_course': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(297,17): error C2065: '_course': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(297,5): error C2672: 'getline': no matching overloaded function found
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(297,29): error C2780: 'std::basic_istream<_Elem,_Traits> &std::getline(std::basic_istream<_Elem,_Traits> &,std::basic_string<_Elem,_Traits,_Alloc> &)': expects 2 arguments - 1 provided
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\string(82): message : see declaration of 'std::getline'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(297,29): error C2780: 'std::basic_istream<_Elem,_Traits> &std::getline(std::basic_istream<_Elem,_Traits> &,std::basic_string<_Elem,_Traits,_Alloc> &,const _Elem)': expects 3 arguments - 1 provided
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\string(76): message : see declaration of 'std::getline'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\function.cpp(297,29): fatal error C1003: error count exceeds 100; stopping compilation
+  main.cpp
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(18,18): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(18,27): error C2146: syntax error: missing ')' before identifier 'sem'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(19,27): error C2065: 'course': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(19,34): error C2146: syntax error: missing ')' before identifier 'crs'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(20,22): error C2065: 'schoolYear': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(20,33): error C2146: syntax error: missing ')' before identifier '_schoolYear'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(21,29): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(21,39): error C2065: '_semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(21,50): error C2275: 'std::string': illegal use of this type as an expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xstring(4648): message : see declaration of 'std::string'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(21,57): error C2146: syntax error: missing ')' before identifier 'removeCourseID'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(22,23): error C2065: 'schoolYear': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(22,35): error C2065: '_schoolYear': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(22,46): error C2182: 'createNewClasses': illegal use of type 'void'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(23,26): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(23,36): error C2065: 'sem': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(23,39): error C2182: 'addCourseToSemester': illegal use of type 'void'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(24,31): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(24,41): error C2065: 'sem': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(24,44): error C2182: 'createCourseRegistration': illegal use of type 'void'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(25,23): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(25,33): error C2065: '_semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(25,42): error C2182: 'updateCourseInfo': illegal use of type 'void'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(29,24): error C2065: 'classUni': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(29,33): error C2146: syntax error: missing ')' before identifier 'className'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(30,34): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(30,34): error C2143: syntax error: missing ',' before '&'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(31,19): error C2065: 'classUni': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(31,28): error C2146: syntax error: missing ')' before identifier '_class'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(34,26): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(34,34): error C2146: syntax error: missing ')' before identifier '_student'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(35,27): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(35,36): error C2065: '_student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(35,46): error C2275: 'std::string': illegal use of this type as an expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include\xstring(4648): message : see declaration of 'std::string'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(35,53): error C2146: syntax error: missing ')' before identifier 'removeCourseID'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(36,20): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(36,29): error C2065: '_student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(36,39): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(36,48): error C2146: syntax error: missing ')' before identifier '_semester'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(37,28): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(37,36): error C2146: syntax error: missing ')' before identifier 'stu'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(39,7): error C2143: syntax error: missing ';' before '&'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(39,7): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(39,19): error C2065: 'semester': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(39,28): error C2146: syntax error: missing ')' before identifier '_semester'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(40,17): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(40,8): error C2146: syntax error: missing ';' before identifier 'getLesson'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(42,25): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(42,33): error C2146: syntax error: missing ')' before identifier '_student'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(43,18): error C2065: 'staff': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(43,11): error C2923: 'vector': 'staff' is not a valid template type argument for parameter 'T'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(43,40): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(43,33): error C2923: 'vector': 'student' is not a valid template type argument for parameter 'T'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(46,33): error C2065: 'staff': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(46,26): error C2923: 'vector': 'staff' is not a valid template type argument for parameter 'T'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(47,35): error C2065: 'student': undeclared identifier
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(47,28): error C2923: 'vector': 'student' is not a valid template type argument for parameter 'T'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(101,5): error C2923: 'vector': 'lesson' is not a valid template type argument for parameter 'T'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(40): message : see declaration of 'lesson'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(110,5): error C2923: 'vector': 'course' is not a valid template type argument for parameter 'T'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(39): message : see declaration of 'course'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\main.cpp(15,44): error C2664: 'int login(vector,vector,int &)': cannot convert argument 1 from 'vector<staff>' to 'vector'
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\main.cpp(15,15): message : No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+D:\20125106\CS162_Project\CS162-Group-6\Course_Registration_System\Course_Registration_System\Function.h(43,5): message : see declaration of 'login'
+  Generating Code...

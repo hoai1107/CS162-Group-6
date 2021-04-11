@@ -146,6 +146,16 @@
     <ClCompile Include="function.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="course_info.csv" />
+    <None Include="cs162_list.csv" />
+    <None Include="list.csv" />
+    <None Include="scoreboard.csv" />
+    <None Include="Staff.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="semester.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
