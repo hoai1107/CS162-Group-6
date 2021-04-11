@@ -428,3 +428,29 @@ void addStudentToCourse(student _student, string _courseID, semester& _semester)
 		}
 	}
 }
+
+void exportStudentInCourseToCSV(course& _course) {
+	ofstream fout;
+	const string name = _course.name + "_list" + ".csv";
+	fout.open(name);
+
+	if (fout.is_open()) {
+		for (int i = 0; i < _course.listStudent.size(); ++i) {
+			student _student = _course.listStudent[i];
+			fout << i + 1 << ','
+				<< _student.ID<< ','
+				<< _student.firstName << ','
+				<< _student.lastName << ','
+				<< _student.className << ','
+				<< _student.gender << ','
+				<< _student.DOB.day << '/' << _student.DOB.month << '/' << _student.DOB.year << ','
+				<< _student.socialID;
+
+			fout<<endl;	
+		}
+	}
+	else {
+		cout << "Something wrong with the file!!";
+	}
+	fout.close();
+}

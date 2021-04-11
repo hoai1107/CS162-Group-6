@@ -22,8 +22,10 @@ bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 
 void createNewClasses(schoolYear& _schoolYear);//(task 2)
 void addCourseToSemester(semester& sem); //(task 8)
 void createCourseRegistration(semester& sem);//(task 7)
-void updateCourseInfo(semester& _semester);
-void viewCourseScoreboard(course crs);
+void updateCourseInfo(semester& _semester);//(task 10)
+void viewCourseScoreboard(course crs);//(task 23)
+void exportStudentInCourseToCSV(course& _course);//(task 21)
+
 
 //Class function
 void addStudentToClass(classUni className);//(task 4)
