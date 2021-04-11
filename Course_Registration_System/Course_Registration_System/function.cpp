@@ -429,7 +429,6 @@ void addStudentToCourse(student _student, string _courseID, semester& _semester)
 	}
 }
 
-<<<<<<< HEAD
 void textColor(int color) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
@@ -476,7 +475,8 @@ int actionList(string* str, int n) {
 		for (int i = 0; i < n; i++) color[i] = 15;
 		color[status] = 176;
 	}
-=======
+}
+
 void exportStudentInCourseToCSV(course& _course) {
 	ofstream fout;
 	const string name = _course.name + "_list" + ".csv";
@@ -501,5 +501,66 @@ void exportStudentInCourseToCSV(course& _course) {
 		cout << "Something wrong with the file!!";
 	}
 	fout.close();
->>>>>>> 310dcfb118919138fd7f4b0da7940e44b0fcaf12
+}
+
+void importScoreboard(course& _course, schoolYear& _schoolYear) {
+	ifstream fin;
+	const string name = _course.name + "_list" + ".csv";
+	fin.open(name);
+
+	if(fin.is_open()){
+		//Assume that the order of student in the file is the same as the file when it is exported
+		for (int i = 0; i < _course.listStudent.size(); ++i) {
+
+			//Just to store the old info to get to the mark
+			student temp;
+			fin >> temp.no;
+			fin.ignore(1, ',');
+			getline(fin, temp.firstName, ',');
+			getline(fin, temp.lastName, ',');
+			getline(fin, temp.className, ',');
+			fin >> temp.gender;
+			fin.ignore(1,',');
+			fin >> temp.DOB.day;
+			fin.ignore(1, '/');
+			fin >> temp.DOB.month;
+			fin.ignore(1, '/');
+			fin >> temp.DOB.year;
+			fin.ignore(1, '/');
+			fin >> temp.socialID;
+			fin.ignore(1,',');
+
+
+			//Get the score
+			module _module;
+			_module.ID = _course.ID;
+			fin >> _module.grade.final;
+			fin.ignore(1, ',');
+			fin >> _module.grade.midterm;
+			fin.ignore(1, ',');
+			fin >> _module.grade.other;
+			fin.ignore(1, ',');
+			fin >> _module.grade.total;
+			fin.ignore();
+
+			//Store to the course
+			_course.listStudent[i].enrolled.push_back(_module);
+
+			//Store to the class
+			for (int i = 0; i < _schoolYear.newClass.size(); ++i) {
+				if (_schoolYear.newClass[i].name == temp.className) {
+					for (int j = 0; j < _schoolYear.newClass[i].listStudent.size(); ++i) {
+						if (_schoolYear.newClass[i].listStudent[j].ID == temp.ID) {
+							_schoolYear.newClass[i].listStudent[j].enrolled.push_back(_module);
+							goto nextStudent;
+						}
+					}
+				}
+			}
+
+		nextStudent: continue;
+		}
+	}else{
+		cout<<"Something wrong!!";
+	}
 }
