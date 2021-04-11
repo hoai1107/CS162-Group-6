@@ -346,10 +346,10 @@ void updateCourseInfo(semester& _semester){
 }
 
 void viewStudentScoreboard(student stu){
-	cout << left << setw(10) << "ID" << setw(10) << "Midterm" << setw(10) << "Final" << setw(10) << "Other" << setw(10) << "Total";
+	cout << left << setw(10) << "ID" << setw(10) << "Midterm" << setw(10) << "Final" << setw(10) << "Other" << setw(10) << "Total" << endl;
 	for(int i=0; i<stu.enrolled.size(); i++){
 		cout << left << setw(10) << stu.enrolled[i].ID << setw(10) << stu.enrolled[i].grade.midterm 
-		<< setw(10) << stu.enrolled[i].grade.final << setw(10) << stu.enrolled[i].grade.other << setw(10) << stu.enrolled[i].grade.total;
+		<< setw(10) << stu.enrolled[i].grade.final << setw(10) << stu.enrolled[i].grade.other << setw(10) << stu.enrolled[i].grade.total << endl;
 	}
 }
 
