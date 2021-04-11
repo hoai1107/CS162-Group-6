@@ -7,8 +7,11 @@
 #include <string>
 #include <Windows.h>
 #include "vector.h"
+#include <conio.h>
 
 using namespace std;
+
+enum ACTION {UP, DOWN, RIGHT, LEFT, ENTER, BACK};
 
 //
 //  FUNCTION PROTOTYPE
@@ -46,6 +49,9 @@ int login(vector<staff> _staff, vector<student> _student, int& index); // Return
 void gotoxy(int x, int y);
 int changePassword_Staff(vector<staff>& _staff, int index); // return 0 if change successfully, 1 if old password doesn't match password, 2 if new password doesn't match each other
 int changePassword_Student(vector<student>& _student, int index); // return 0 if change successfully, 1 if old password doesn't match password, 2 if new password doesn't match each other
+void textColor(int color);
+ACTION key(int z);
+int actionList(string* str, int n);
 
 // DATA STRUCTURE
  
