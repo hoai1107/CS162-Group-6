@@ -28,6 +28,7 @@ void createCourseRegistration(semester& sem);//(task 7)
 void updateCourseInfo(semester& _semester);//(task 10)
 void viewCourseScoreboard(course crs);//(task 23)
 void exportStudentInCourseToCSV(course& _course);//(task 21)
+void updateStudentResult(student& stu);
 
 
 //Class function

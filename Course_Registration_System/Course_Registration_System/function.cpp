@@ -383,10 +383,13 @@ void updateStudentResult(student& stu) {
 			switch (choice) {
 			case 1:
 				stu.enrolled[i].grade.midterm = score;
+				return;
 			case 2:
 				stu.enrolled[i].grade.final = score;
+				return;
 			case 3:
 				stu.enrolled[i].grade.other = score;
+				return;
 			}
 		}
 	}
