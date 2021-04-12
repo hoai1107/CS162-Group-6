@@ -59,6 +59,10 @@ struct vector {
 		delete[] array;
 		return;
 	}
+	
+	~vector() {
+		delete[] array;
+	}
 
 };
 #endif
