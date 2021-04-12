@@ -368,6 +368,32 @@ void viewCourseScoreboard(course crs){
 	}
 }
 
+void updateStudentResult(student& stu) {
+	cout << "Please enter the ID of the course you want to update result: ";
+	int id;
+	cin >> id;
+	for (int i = 0; i < stu.enrolled.size(); i++) {
+		if (stu.enrolled[i].ID == id) {
+			cout << "Enter the mark you want to update (1:midterm 2:final 3:other) : ";
+			int choice;
+			cin >> choice;
+			cout << "Enter the new score: ";
+			int score;
+			cin >> score;
+			switch (choice) {
+			case 1:
+				stu.enrolled[i].grade.midterm = score;
+			case 2:
+				stu.enrolled[i].grade.final = score;
+			case 3:
+				stu.enrolled[i].grade.other = score;
+			}
+		}
+	}
+	cout << "The course you entered doesn't exist";
+	return;
+}
+
 int changePassword_Staff(vector<staff>& _staff, int index) {
 	string oPass, nPass, cNPass;
 	gotoxy(5, 5); // Change later
