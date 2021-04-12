@@ -53,5 +53,10 @@ struct vector {
 		return;
 	}
 
+	void clear() {
+		_size = 0;
+		delete[] array;
+	}
+
 };
 #endif
