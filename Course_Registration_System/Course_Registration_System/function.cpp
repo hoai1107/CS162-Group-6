@@ -1,5 +1,6 @@
 #include "Function.h"
 #include<fstream>
+#include<ctime>
 
 using namespace std;
 
@@ -170,56 +171,70 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 }
 
 void enrollCourses(student& _student, semester& _semester){
-	cout<<"This is the detail of all the courses available in this semester. Choose the course(s) you want to enroll."<<endl;
-	viewCourses(_semester);
+	struct tm newtime;
+	time_t now = time(0);
+	localtime_s(&newtime, &now);
 
-	cout<<"Please enter 1 to start enroll.";
-	int choice;
-	cin>>choice;
+	date today;
+	today.day = newtime.tm_mday;
+	today.month = newtime.tm_mon + 1;
+	today.year = newtime.tm_year + 1900;
 
-	while(choice && _student.enrolled.size()<=5){
-		module temp;
-		string ID;
-		bool canEnroll=true;
+	if(_semester.regOpen<=today && today<=_semester.regClose){
 
-		cout<<"Enter the ID of the course you want to enroll: ";
-		cin>>ID;
-		temp.ID=ID;
+		cout<<"This is the detail of all the courses available in this semester. Choose the course(s) you want to enroll."<<endl;
+		viewCourses(_semester);
 
-		if(_student.enrolled.size()==0){
-			_student.enrolled.push_back(temp);
-		}else{
-			for(int i=0;i<_student.enrolled.size();++i){
-				for(int j=0;j<=1;++j){
-					//0 for first session and 1 for the other session
-					lesson time1=getLesson(_semester, ID, j);
-					lesson time2=getLesson(_semester, _student.enrolled[i].ID, j);
-					if(time1==time2){
-						cout<<"This course is conflicted with existing courses. Please choose another course.";
-						canEnroll=false;
+		cout<<"Please enter 1 to start enroll.";
+		int choice;
+		cin>>choice;
+
+		while(choice && _student.enrolled.size()<=5){
+			module temp;
+			string ID;
+			bool canEnroll=true;
+
+			cout<<"Enter the ID of the course you want to enroll: ";
+			cin>>ID;
+			temp.ID=ID;
+
+			if(_student.enrolled.size()==0){
+				_student.enrolled.push_back(temp);
+			}else{
+				for(int i=0;i<_student.enrolled.size();++i){
+					for(int j=0;j<=1;++j){
+						//0 for first session and 1 for the other session
+						lesson time1=getLesson(_semester, ID, j);
+						lesson time2=getLesson(_semester, _student.enrolled[i].ID, j);
+						if(time1==time2){
+							cout<<"This course is conflicted with existing courses. Please choose another course.";
+							canEnroll=false;
+						}
 					}
+				}
+
+				if(canEnroll && checkFullSlot(_semester,ID)){
+					cout<<"This course if full. Please choose another course";
+					canEnroll=false;
+				}
+
+				if(canEnroll){
+					cout<<"Enroll successfully!";
+					_student.enrolled.push_back(temp);
+					addStudentToCourse(_student, ID, _semester);
 				}
 			}
 
-			if(canEnroll && checkFullSlot(_semester,ID)){
-				cout<<"This course if full. Please choose another course";
-				canEnroll=false;
+			if(_student.enrolled.size()==5){
+				cout<<"You have reach the maximum numbers of courses that you can enroll.";
+				break;
 			}
 
-			if(canEnroll){
-				cout<<"Enroll successfully!";
-				_student.enrolled.push_back(temp);
-				addStudentToCourse(_student, ID, _semester);
-			}
+			cout<<"If you want to enroll in another course, enter 1. If you want to stop, enter 0.";
+			cin>>choice;
 		}
-
-		if(_student.enrolled.size()==5){
-			cout<<"You have reach the maximum numbers of courses that you can enroll.";
-			break;
-		}
-
-		cout<<"If you want to enroll in another course, enter 1. If you want to stop, enter 0.";
-		cin>>choice;
+	}else{
+		cout<<"The enrolling time has not started yet or it has been over already.";
 	}
 }
 
@@ -373,7 +388,7 @@ void updateStudentResult(student& stu) {
 	int id;
 	cin >> id;
 	for (int i = 0; i < stu.enrolled.size(); i++) {
-		if (stu.enrolled[i].ID == id) {
+		if (stu.enrolled[i].ID == to_string(id)) {
 			cout << "Enter the mark you want to update (1:midterm 2:final 3:other) : ";
 			int choice;
 			cin >> choice;

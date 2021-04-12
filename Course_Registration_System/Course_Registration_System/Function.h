@@ -67,6 +67,24 @@ struct staff {
  
 struct date {
     int day, month, year;
+
+    const bool operator <= (const date& other) const {
+		if (year < other.year) {
+			return true;
+		}
+		if (year == other.year) {
+			if (month < other.month) {
+				return true;
+			}
+
+			if (month == other.month) {
+				if (day <= other.day) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 };
  
 struct lesson {
