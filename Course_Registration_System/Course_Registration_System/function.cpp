@@ -369,7 +369,7 @@ void viewStudentScoreboard(student stu){
 }
 
 void viewCourseScoreboard(course crs){
-	cout << left << setw(30) << "Name" << setw(10) << "Midterm" << setw(10) << "Final" << setw(10) << "Other" << setw(10) << "Total";
+	cout << left << setw(30) << "Name" << setw(10) << "Midterm" << setw(10) << "Final" << setw(10) << "Other" << setw(10) << "Total" << endl;
 	for(int i=0; i < crs.listStudent.size(); i++){
 		for(int j=0; i < crs.listStudent[i].enrolled.size(); j++){
 			if(crs.listStudent[i].enrolled[j].ID == crs.ID){
@@ -377,7 +377,7 @@ void viewCourseScoreboard(course crs){
 				<< setw(10) << crs.listStudent[i].enrolled[j].grade.midterm
 				<< setw(10) << crs.listStudent[i].enrolled[j].grade.final
 				<< setw(10) << crs.listStudent[i].enrolled[j].grade.other
-				<< setw(10) << crs.listStudent[i].enrolled[j].grade.total;
+				<< setw(10) << crs.listStudent[i].enrolled[j].grade.total << endl;
 			}
 		}
 	}
