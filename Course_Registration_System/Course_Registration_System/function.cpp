@@ -560,8 +560,15 @@ void exportStudentInCourseToCSV(course& _course) {
 
 void importScoreboard(course& _course, schoolYear& _schoolYear) {
 	ifstream fin;
-	const string name = _course.name + "_list" + ".csv";
-	fin.open(name);
+
+	fs::path coursePath=root/"Semester"/_course.name/(_course.name+"_list.csv");
+	
+	if(!fs::exists(coursePath)){
+		cout<<_course.name+"_list.csv"<<" does not exist!";
+		return;
+	}
+
+	fin.open(coursePath);
 
 	if(fin.is_open()){
 		//Assume that the order of student in the file is the same as the file when it is exported
