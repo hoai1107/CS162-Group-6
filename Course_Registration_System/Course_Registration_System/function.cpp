@@ -1,13 +1,24 @@
 #include "Function.h"
 #include<fstream>
 #include<ctime>
+#include<filesystem>
 
+namespace fs= std::filesystem;
 using namespace std;
+
+const fs::path root= fs::current_path()/"2020-2021";
 
 void addStudentToClass(classUni className) {
 	ifstream fin;
-	const string name = className.name + ".csv";
-	fin.open(name);
+
+	fs::path classPath =root/"Class"/className.name/(className.name + ".csv");
+	if(!fs::exists(classPath)) {
+		cout<<className.name + ".csv"<<" does not exist!";
+		return;
+	}
+
+
+	fin.open(classPath);
 	int i = 1;
 	while(fin.good()) {
 		student st;
