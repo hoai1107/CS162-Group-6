@@ -18,6 +18,7 @@ enum ACTION {UP, DOWN, RIGHT, LEFT, ENTER, BACK};
 //
 
 //Staff function
+void createNewYear();
 void viewCourses(semester sem); //(task 9/19)
 void viewStudentsInCourse(course crs);//(task 20)
 void viewListOfClass(schoolYear _schoolYear);//(task 17)

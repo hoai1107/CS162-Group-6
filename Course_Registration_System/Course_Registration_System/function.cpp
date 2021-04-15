@@ -661,3 +661,21 @@ void viewClassScoreboard(schoolYear& _schoolYear, string className) {
 		cout << sum / _student.enrolled.size() << endl;
 	}
 }
+
+bool CheckExistence(string filename) {
+    struct stat fileinfo;
+    return !stat(filename.c_str(), &fileinfo);
+}
+
+void createNewYear() {
+	cout << "New Academic Year\n";
+	cout << "Start Year: ";
+	string startYear; cin >> startYear;
+	cout << "End Year: ";
+	string endYear; cin >> endYear;
+	string academicYear = startYear + ' ' + endYear;
+	if (CheckExistence(academicYear.c_str()))
+		cout << "Year " << academicYear << " has been created before!\n";
+	else
+		cout << "Year " << academicYear << " has been created.\n";
+}
