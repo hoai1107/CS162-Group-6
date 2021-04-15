@@ -630,3 +630,34 @@ void importScoreboard(course& _course, schoolYear& _schoolYear) {
 		cout<<"Something wrong!!";
 	}
 }
+
+void viewClassScoreboard(schoolYear& _schoolYear, string className) {
+	classUni _class;
+	for (int i = 0; i < _schoolYear.newClass.size(); ++i) {
+		if (_schoolYear.newClass[i].name == className) {
+			_class = _schoolYear.newClass[i];
+			break;
+		}
+	}
+
+	cout << setw(5) << left << "No.";
+	cout << setw(15) << left << "Student ID";
+	cout << setw(20) << left << "Full Name";
+
+	for (int i = 0; i < _class.listStudent.size(); ++i) {
+		student _student = _class.listStudent[i];
+
+		float sum = 0;
+		cout << setw(5) << left << i + 1;
+		cout << setw(15) << left << _student.ID;
+		cout << setw(20) << left << (_student.lastName + ' ' + _student.firstName);
+
+		for (int j = 0; j < _student.enrolled.size(); ++j) {
+			cout << setw(10) << left << _student.enrolled[j].grade.total << '(' << _student.enrolled[j].ID << ')';
+			sum += _student.enrolled[j].grade.total;
+		}
+
+		cout << "Avg GPA: " << fixed << setprecision(2);
+		cout << sum / _student.enrolled.size() << endl;
+	}
+}
