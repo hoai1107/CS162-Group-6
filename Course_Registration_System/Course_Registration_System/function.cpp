@@ -502,13 +502,14 @@ ACTION key(int z) {
 	return RIGHT;
 }
 
-int actionList(string* str, int n) {
+int actionList(vector<string> str, int n, string messages) {
 	int status = 0;
 	int* color = new int[n];
 	for (int i = 0; i < n; i++) color[i] = 15;
 	color[status] = 176;
 	while (true) {
 		system("CLS");
+		if (messages != "" ) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); cout << messages << endl;
 		for (int i = 0; i < n; i++) {
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color[i]);
 			if (i != 0) cout << "\n";
