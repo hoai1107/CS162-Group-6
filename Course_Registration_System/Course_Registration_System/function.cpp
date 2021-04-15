@@ -510,9 +510,11 @@ int actionList(string* str, int n) {
 	while (true) {
 		system("CLS");
 		for (int i = 0; i < n; i++) {
-			textColor(color[i]);
-			cout << i + 1 << ". " << str[i] << endl;
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color[i]);
+			if (i != 0) cout << "\n";
+            cout << i + 1 << ". " << str[i];
 		}
+        if (status == n - 1) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 		int z = _getch(); int action = key(z);
 		switch (action) {
 		case UP: {
@@ -526,6 +528,7 @@ int actionList(string* str, int n) {
 			break;
 		}
 		case ENTER: return status;
+        
 		};
 		for (int i = 0; i < n; i++) color[i] = 15;
 		color[status] = 176;
