@@ -502,37 +502,46 @@ ACTION key(int z) {
 	return RIGHT;
 }
 
-int actionList(vector<string> str, int n, string messages) {
+int actionList(vector<string> str, int n) {
+	system("CLS");
 	int status = 0;
 	int* color = new int[n];
 	for (int i = 0; i < n; i++) color[i] = 15;
 	color[status] = 176;
-	while (true) {
-		system("CLS");
-		if (messages != "" ) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15); cout << messages << endl;
-		for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n; i++) {
 			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color[i]);
 			if (i != 0) cout << "\n";
             cout << i + 1 << ". " << str[i];
 		}
-        if (status == n - 1) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+	while (true) {
+        // if (status == n - 1) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
 		int z = _getch(); int action = key(z);
 		switch (action) {
 		case UP: {
+			gotoxy(0,status);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			cout << status + 1 << ". " << str[status];
 			if (!status) status = n - 1;
 			else status--;
 			break;
 		}
 		case DOWN: {
+			gotoxy(0,status);
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			cout << status + 1 << ". " << str[status];
 			if (status == n - 1) status = 0;
 			else status++;
 			break;
 		}
-		case ENTER: return status;
-        
+		case ENTER: {
+			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+			system("CLS");
+			return status;
+			}
 		};
-		for (int i = 0; i < n; i++) color[i] = 15;
-		color[status] = 176;
+		gotoxy(0, status);
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 176);
+		cout << status + 1 << ". " << str[status];
 	}
 }
 
