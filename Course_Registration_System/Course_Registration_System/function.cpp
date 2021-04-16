@@ -99,26 +99,40 @@ void viewListOfClass(schoolYear _schoolYear) {
 }
 
 void viewCourses(semester sem) {
-	cout << left << setw(10) << "ID" << setw(50) << "Name" << setw(30) << "Teacher" << setw(10) << "Credits" << endl;
+	cout << left << setw(10) << "ID" 
+				 << setw(40) << "Name" 
+				 << setw(40) << "Teacher" 
+				 << setw(10) << "Credits" << endl;
 	for (int i = 0; i < sem.listCourse.size(); i++) {
-		cout << left << setw(10) << sem.listCourse[i].ID << setw(50) << sem.listCourse[i].name << setw(30) << sem.listCourse[i].teacher
-			 << setw(10) << sem.listCourse[i].numCredits << endl;
+		cout << left << setw(10) << sem.listCourse[i].ID 
+					 << setw(40) << sem.listCourse[i].name 
+					 << setw(40) << sem.listCourse[i].teacher
+			 		 << setw(10) << sem.listCourse[i].numCredits << endl;
 	}
 }	
 
 void viewStudentsInCourse(course crs) {
-	cout << left << setw(5) << "No" << setw(10) << "ID" << setw(20) << "Last name"
-		<< setw(15) << "First name" << setw(15) << "Class name" << setw(10) << "Gender"
-		<< setw(20) << "Date of birth" << setw(15) << "Social ID" << endl;
+	cout << left << setw(5) << "No" 
+				 << setw(10) << "ID" 
+				 << setw(20) << "Last name"
+				 << setw(15) << "First name" 
+				 << setw(15) << "Class name" 
+				 << setw(10) << "Gender"
+				 << setw(20) << "Date of birth" 
+				 << setw(15) << "Social ID" << endl
 	for (int i = 0; i < crs.listStudent.size(); i++) {
 		string gnd;
 		if (crs.listStudent[i].gender == 0)
 			gnd = "male";
 		else gnd = "female";
-		cout << left << setw(5) << crs.listStudent[i].no << setw(10) << crs.listStudent[i].ID << setw(20) << crs.listStudent[i].lastName
-			<< setw(15) << crs.listStudent[i].firstName << setw(15) << crs.listStudent[i].className << setw(10) << gnd
-			<< setw(20) << crs.listStudent[i].DOB.day << '/' << crs.listStudent[i].DOB.month << '/' << crs.listStudent[i].DOB.year 
-			<< setw(15) << "Social ID" << endl;
+		cout << left << setw(5) << crs.listStudent[i].no 
+			 	 	 << setw(10) << crs.listStudent[i].ID 
+					 << setw(20) << crs.listStudent[i].lastName
+					 << setw(15) << crs.listStudent[i].firstName 
+					 << setw(15) << crs.listStudent[i].className 
+					 << setw(10) << gnd
+					 << setw(20) << crs.listStudent[i].DOB.day << '/' << crs.listStudent[i].DOB.month << '/' << crs.listStudent[i].DOB.year 
+					 << setw(15) << "Social ID" << endl;
 	}
 }
 
@@ -372,23 +386,34 @@ void updateCourseInfo(semester& _semester){
 }
 
 void viewStudentScoreboard(student stu){
-	cout << left << setw(10) << "ID" << setw(10) << "Midterm" << setw(10) << "Final" << setw(10) << "Other" << setw(10) << "Total" << endl;
+	cout << left << setw(10) << "ID" 
+				 << setw(10) << "Midterm" 
+				 << setw(10) << "Final" 
+				 << setw(10) << "Other" 
+				 << setw(10) << "Total" << endl;
 	for(int i=0; i<stu.enrolled.size(); i++){
-		cout << left << setw(10) << stu.enrolled[i].ID << setw(10) << stu.enrolled[i].grade.midterm 
-		<< setw(10) << stu.enrolled[i].grade.final << setw(10) << stu.enrolled[i].grade.other << setw(10) << stu.enrolled[i].grade.total << endl;
+		cout << left << setw(10) << stu.enrolled[i].ID 
+					 << setw(10) << stu.enrolled[i].grade.midterm 
+		 			 << setw(10) << stu.enrolled[i].grade.final 
+					 << setw(10) << stu.enrolled[i].grade.other 
+					 << setw(10) << stu.enrolled[i].grade.total << endl;
 	}
 }
 
-void viewCourseScoreboard(course crs){
-	cout << left << setw(30) << "Name" << setw(10) << "Midterm" << setw(10) << "Final" << setw(10) << "Other" << setw(10) << "Total" << endl;
+void viewCourseScoreboard(course crs){                              
+	cout << left << setw(40) << "Name" 
+				 << setw(15) << "Midterm" 
+				 << setw(15) << "Final" 
+				 << setw(15) << "Other" 
+				 << setw(15) << "Total" << endl
 	for(int i=0; i < crs.listStudent.size(); i++){
 		for(int j=0; i < crs.listStudent[i].enrolled.size(); j++){
 			if(crs.listStudent[i].enrolled[j].ID == crs.ID){
-				cout << left << setw(30) << crs.listStudent[i].lastName << ' ' << crs.listStudent[i].firstName 
-				<< setw(10) << crs.listStudent[i].enrolled[j].grade.midterm
-				<< setw(10) << crs.listStudent[i].enrolled[j].grade.final
-				<< setw(10) << crs.listStudent[i].enrolled[j].grade.other
-				<< setw(10) << crs.listStudent[i].enrolled[j].grade.total << endl;
+				cout << left << setw(40) << crs.listStudent[i].lastName << ' ' << crs.listStudent[i].firstName 
+							 << setw(15) << crs.listStudent[i].enrolled[j].grade.midterm
+							 << setw(15) << crs.listStudent[i].enrolled[j].grade.final
+							 << setw(15) << crs.listStudent[i].enrolled[j].grade.other
+							 << setw(15) << crs.listStudent[i].enrolled[j].grade.total << endl;
 			}
 		}
 	}
@@ -638,4 +663,53 @@ void importScoreboard(course& _course, schoolYear& _schoolYear) {
 	}else{
 		cout<<"Something wrong!!";
 	}
+}
+
+void viewClassScoreboard(schoolYear& _schoolYear, string className) {
+	classUni _class;
+	for (int i = 0; i < _schoolYear.newClass.size(); ++i) {
+		if (_schoolYear.newClass[i].name == className) {
+			_class = _schoolYear.newClass[i];
+			break;
+		}
+	}
+
+	cout << setw(5) << left << "No.";
+	cout << setw(15) << left << "Student ID";
+	cout << setw(20) << left << "Full Name";
+
+	for (int i = 0; i < _class.listStudent.size(); ++i) {
+		student _student = _class.listStudent[i];
+
+		float sum = 0;
+		cout << setw(5) << left << i + 1;
+		cout << setw(15) << left << _student.ID;
+		cout << setw(20) << left << (_student.lastName + ' ' + _student.firstName);
+
+		for (int j = 0; j < _student.enrolled.size(); ++j) {
+			cout << setw(10) << left << _student.enrolled[j].grade.total << '(' << _student.enrolled[j].ID << ')';
+			sum += _student.enrolled[j].grade.total;
+		}
+
+		cout << "Avg GPA: " << fixed << setprecision(2);
+		cout << sum / _student.enrolled.size() << endl;
+	}
+}
+
+bool CheckExistence(string filename) {
+    struct stat fileinfo;
+    return !stat(filename.c_str(), &fileinfo);
+}
+
+void createNewYear() {
+	cout << "New Academic Year\n";
+	cout << "Start Year: ";
+	string startYear; cin >> startYear;
+	cout << "End Year: ";
+	string endYear; cin >> endYear;
+	string academicYear = startYear + ' ' + endYear;
+	if (CheckExistence(academicYear.c_str()))
+		cout << "Year " << academicYear << " has been created before!\n";
+	else
+		cout << "Year " << academicYear << " has been created.\n";
 }
