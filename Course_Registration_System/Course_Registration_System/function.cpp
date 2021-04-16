@@ -379,16 +379,20 @@ void viewStudentScoreboard(student stu){
 	}
 }
 
-void viewCourseScoreboard(course crs){
-	cout << left << setw(30) << "Name" << setw(10) << "Midterm" << setw(10) << "Final" << setw(10) << "Other" << setw(10) << "Total" << endl;
+void viewCourseScoreboard(course crs){                              
+	cout << left << setw(40) << "Name" 
+				 << setw(15) << "Midterm" 
+				 << setw(15) << "Final" 
+				 << setw(15) << "Other" 
+				 << setw(15) << "Total" << endl
 	for(int i=0; i < crs.listStudent.size(); i++){
 		for(int j=0; i < crs.listStudent[i].enrolled.size(); j++){
 			if(crs.listStudent[i].enrolled[j].ID == crs.ID){
-				cout << left << setw(30) << crs.listStudent[i].lastName << ' ' << crs.listStudent[i].firstName 
-				<< setw(10) << crs.listStudent[i].enrolled[j].grade.midterm
-				<< setw(10) << crs.listStudent[i].enrolled[j].grade.final
-				<< setw(10) << crs.listStudent[i].enrolled[j].grade.other
-				<< setw(10) << crs.listStudent[i].enrolled[j].grade.total << endl;
+				cout << left << setw(40) << crs.listStudent[i].lastName << ' ' << crs.listStudent[i].firstName 
+							 << setw(15) << crs.listStudent[i].enrolled[j].grade.midterm
+							 << setw(15) << crs.listStudent[i].enrolled[j].grade.final
+							 << setw(15) << crs.listStudent[i].enrolled[j].grade.other
+							 << setw(15) << crs.listStudent[i].enrolled[j].grade.total << endl;
 			}
 		}
 	}
