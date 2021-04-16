@@ -107,18 +107,27 @@ void viewCourses(semester sem) {
 }	
 
 void viewStudentsInCourse(course crs) {
-	cout << left << setw(5) << "No" << setw(10) << "ID" << setw(20) << "Last name"
-		<< setw(15) << "First name" << setw(15) << "Class name" << setw(10) << "Gender"
-		<< setw(20) << "Date of birth" << setw(15) << "Social ID" << endl;
+	cout << left << setw(5) << "No" 
+				 << setw(10) << "ID" 
+				 << setw(20) << "Last name"
+				 << setw(15) << "First name" 
+				 << setw(15) << "Class name" 
+				 << setw(10) << "Gender"
+				 << setw(20) << "Date of birth" 
+				 << setw(15) << "Social ID" << endl
 	for (int i = 0; i < crs.listStudent.size(); i++) {
 		string gnd;
 		if (crs.listStudent[i].gender == 0)
 			gnd = "male";
 		else gnd = "female";
-		cout << left << setw(5) << crs.listStudent[i].no << setw(10) << crs.listStudent[i].ID << setw(20) << crs.listStudent[i].lastName
-			<< setw(15) << crs.listStudent[i].firstName << setw(15) << crs.listStudent[i].className << setw(10) << gnd
-			<< setw(20) << crs.listStudent[i].DOB.day << '/' << crs.listStudent[i].DOB.month << '/' << crs.listStudent[i].DOB.year 
-			<< setw(15) << "Social ID" << endl;
+		cout << left << setw(5) << crs.listStudent[i].no 
+			 	 	 << setw(10) << crs.listStudent[i].ID 
+					 << setw(20) << crs.listStudent[i].lastName
+					 << setw(15) << crs.listStudent[i].firstName 
+					 << setw(15) << crs.listStudent[i].className 
+					 << setw(10) << gnd
+					 << setw(20) << crs.listStudent[i].DOB.day << '/' << crs.listStudent[i].DOB.month << '/' << crs.listStudent[i].DOB.year 
+					 << setw(15) << "Social ID" << endl;
 	}
 }
 
