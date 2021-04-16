@@ -599,10 +599,10 @@ void exportStudentInCourseToCSV(course& _course) {
 void importScoreboard(course& _course, schoolYear& _schoolYear) {
 	ifstream fin;
 
-	fs::path coursePath=root/"Semester"/_course.name/(_course.name+"_list.csv");
+	fs::path coursePath=root/"Semester"/_course.ID/"scoreboard.csv";
 	
 	if(!fs::exists(coursePath)){
-		cout<<_course.name+"_list.csv"<<" does not exist!";
+		cout<<"Can't import the scoreboard!!!";
 		return;
 	}
 
@@ -712,4 +712,15 @@ void createNewYear() {
 		cout << "Year " << academicYear << " has been created before!\n";
 	else
 		cout << "Year " << academicYear << " has been created.\n";
+}
+
+bool createScoreboardFile(const course& _course){
+	if(fs::exists(root/"Semester"/_course.ID/"scoreboard.csv")){
+		return true;
+	}
+	if(!fs::exists(root/"Semester"/_course.ID/(_course.ID+"_list.csv"))){
+		return false;
+	}
+	fs::copy_file(root/"Semester"/_course.ID/(_course.ID+"_list.csv"),root/"Semester"/_course.ID/"scoreboard.csv");
+	return true;
 }
