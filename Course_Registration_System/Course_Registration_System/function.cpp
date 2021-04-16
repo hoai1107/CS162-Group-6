@@ -99,10 +99,15 @@ void viewListOfClass(schoolYear _schoolYear) {
 }
 
 void viewCourses(semester sem) {
-	cout << left << setw(10) << "ID" << setw(50) << "Name" << setw(30) << "Teacher" << setw(10) << "Credits" << endl;
+	cout << left << setw(10) << "ID" 
+				 << setw(40) << "Name" 
+				 << setw(40) << "Teacher" 
+				 << setw(10) << "Credits" << endl;
 	for (int i = 0; i < sem.listCourse.size(); i++) {
-		cout << left << setw(10) << sem.listCourse[i].ID << setw(50) << sem.listCourse[i].name << setw(30) << sem.listCourse[i].teacher
-			 << setw(10) << sem.listCourse[i].numCredits << endl;
+		cout << left << setw(10) << sem.listCourse[i].ID 
+					 << setw(40) << sem.listCourse[i].name 
+					 << setw(40) << sem.listCourse[i].teacher
+			 		 << setw(10) << sem.listCourse[i].numCredits << endl;
 	}
 }	
 
