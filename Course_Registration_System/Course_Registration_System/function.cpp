@@ -119,7 +119,7 @@ void viewStudentsInCourse(course crs) {
 				 << setw(15) << "Class name" 
 				 << setw(10) << "Gender"
 				 << setw(20) << "Date of birth" 
-				 << setw(15) << "Social ID" << endl
+				 << setw(15) << "Social ID" << endl;
 	for (int i = 0; i < crs.listStudent.size(); i++) {
 		string gnd;
 		if (crs.listStudent[i].gender == 0)
@@ -405,7 +405,7 @@ void viewCourseScoreboard(course crs){
 				 << setw(15) << "Midterm" 
 				 << setw(15) << "Final" 
 				 << setw(15) << "Other" 
-				 << setw(15) << "Total" << endl
+				 << setw(15) << "Total" << endl;
 	for(int i=0; i < crs.listStudent.size(); i++){
 		for(int j=0; i < crs.listStudent[i].enrolled.size(); j++){
 			if(crs.listStudent[i].enrolled[j].ID == crs.ID){
