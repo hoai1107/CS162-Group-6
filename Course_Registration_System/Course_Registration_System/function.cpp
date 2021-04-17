@@ -48,22 +48,21 @@ void addStudentToClass(classUni className) {
 }
 
 void displayStudent(const student& _student) {
-	cout <<setw(5)<<left<< _student.no;
-	cout <<setw(15)<<left<< _student.ID;
-	cout <<setw(20)<<left<< (_student.lastName + ' ' + _student.firstName);
-	cout <<setw(20)<<left<< (to_string(_student.DOB.day) + '/' +to_string( _student.DOB.month) + to_string('/' + _student.DOB.year));
-	cout << _student.socialID;
-
+	cout << setw(10) << left << _student.no;
+	cout << setw(20) << left << _student.ID;
+	cout << setw(40) << left << (_student.lastName + ' ' + _student.firstName);
+	cout << setw(20) << left << (to_string(_student.DOB.day) + '/' +to_string( _student.DOB.month) + to_string('/' + _student.DOB.year));
+	cout << setw(20) << left << _student.socialID;
 	cout << endl;
 }
 
 void displayClass(classUni _class) {
 	cout << "Class " << _class.name << endl;
-	cout << setw(5) << left << "No";
-	cout << setw(15) << left << "Student ID";
-	cout << setw(20) << left << "Full Name";
+	cout << setw(10) << left << "No";
+	cout << setw(20) << left << "Student ID";
+	cout << setw(40) << left << "Full Name";
 	cout << setw(20) << left << "Date of Birth";
-	cout << "Social ID"<<endl;
+	cout << setw(20) << left << "Social ID" << endl;
 
 	for (int i = 0; i < _class.listStudent.size(); ++i) {
 		displayStudent(_class.listStudent[i]);
