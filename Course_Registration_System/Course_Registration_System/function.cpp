@@ -97,17 +97,17 @@ void viewListOfClass(schoolYear _schoolYear) {
 	}
 }
 
-void viewCourses(semester sem) {
-	cout << left << setw(10) << "ID" 
-				 << setw(40) << "Name" 
-				 << setw(40) << "Teacher" 
-				 << setw(10) << "Credits" << endl;
-	for (int i = 0; i < sem.listCourse.size(); i++) {
-		cout << left << setw(10) << sem.listCourse[i].ID 
-					 << setw(40) << sem.listCourse[i].name 
-					 << setw(40) << sem.listCourse[i].teacher
-			 		 << setw(10) << sem.listCourse[i].numCredits << endl;
-	}
+void viewCourses(vector<course> courseList) {
+    cout << left << setw(10) << "ID"
+        << setw(40) << "Name"
+        << setw(40) << "Teacher"
+        << setw(10) << "Credits" << endl;
+    for (int i = 0; i < courseList.size(); i++) {
+        cout << left << setw(10) << courseList[i].ID
+            << setw(40) << courseList[i].name
+            << setw(40) << courseList[i].teacher
+            << setw(10) << courseList[i].numCredits << endl;
+    }
 }	
 
 void viewStudentsInCourse(course crs) {
@@ -194,72 +194,65 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 	}
 }
 
-void enrollCourses(student& _student, semester& _semester){
-	struct tm newtime;
-	time_t now = time(0);
-	localtime_s(&newtime, &now);
+void enrollCourses(student& _student, semester _semester) {
+    struct tm newtime;
+    time_t now = time(0);
+    localtime_s(&newtime, &now);
 
-	date today;
-	today.day = newtime.tm_mday;
-	today.month = newtime.tm_mon + 1;
-	today.year = newtime.tm_year + 1900;
+    date today;
+    today.day = newtime.tm_mday;
+    today.month = newtime.tm_mon + 1;
+    today.year = newtime.tm_year + 1900;
 
-	if(_semester.regOpen<=today && today<=_semester.regClose){
+    if (_semester.regOpen <= today && today <= _semester.regClose) {
+        while (_student.enrolled.size() <= 5) {
+            vector<course> unenrolledCourse = getUnenrolledCourseList(_semester, _student);
+            cout << "Choose the course(s) you want to enroll. BACKSPACE to stop" << endl;
+            viewCourses(unenrolledCourse);
 
-		cout<<"This is the detail of all the courses available in this semester. Choose the course(s) you want to enroll."<<endl;
-		viewCourses(_semester);
+            vector<string> actions;
+            for (int i = 0; i < unenrolledCourse.size(); i++) actions.push_back("Enroll.");
+            int t = actionList(actions, actions.size(), "", { 105, 2 });
 
-		cout<<"Please enter 1 to start enroll.";
-		int choice;
-		cin>>choice;
+            if (t == actions.size()) return;
 
-		while(choice && _student.enrolled.size()<=5){
-			module temp;
-			string ID;
-			bool canEnroll=true;
+            module temp;
+            temp.ID = unenrolledCourse[t].ID;
+            bool canEnroll = true;
 
-			cout<<"Enter the ID of the course you want to enroll: ";
-			cin>>ID;
-			temp.ID=ID;
+            if (_student.enrolled.size() == 0) _student.enrolled.push_back(temp);
 
-			if(_student.enrolled.size()==0){
-				_student.enrolled.push_back(temp);
-			}else{
-				for(int i=0;i<_student.enrolled.size();++i){
-					for(int j=0;j<=1;++j){
-						//0 for first session and 1 for the other session
-						lesson time1=getLesson(_semester, ID, j);
-						lesson time2=getLesson(_semester, _student.enrolled[i].ID, j);
-						if(time1==time2){
-							cout<<"This course is conflicted with existing courses. Please choose another course.";
-							canEnroll=false;
-						}
-					}
-				}
+            for (int i = 0; i < _student.enrolled.size(); ++i) {
+                for (int j = 0; j <= 1; ++j) {
+                    //0 for first session and 1 for the other session
+                    lesson time1 = getLesson(_semester, temp.ID, j);
+                    lesson time2 = getLesson(_semester, _student.enrolled[i].ID, j);
+                    if (time1 == time2) {
+                        cout << "This course is conflicted with existing courses. Please choose another course.";
+                        canEnroll = false;
+                    }
+                }
+            }
 
-				if(canEnroll && checkFullSlot(_semester,ID)){
-					cout<<"This course if full. Please choose another course";
-					canEnroll=false;
-				}
+            if (canEnroll && checkFullSlot(_semester, temp.ID)) {
+                cout << "This course if full. Please choose another course";
+                canEnroll = false;
+            }
 
-				if(canEnroll){
-					cout<<"Enroll successfully!";
-					_student.enrolled.push_back(temp);
-					addStudentToCourse(_student, ID, _semester);
-				}
-			}
+            if (canEnroll) {
+                cout << "Enroll successfully!";
+                _student.enrolled.push_back(temp);
+                addStudentToCourse(_student, temp.ID, _semester);
+            }
 
-			if(_student.enrolled.size()==5){
-				cout<<"You have reach the maximum numbers of courses that you can enroll.";
-				break;
-			}
+            if (_student.enrolled.size() == 5) {
+                cout << "You have reach the maximum numbers of courses that you can enroll.";
+                break;
+            }
 
-			cout<<"If you want to enroll in another course, enter 1. If you want to stop, enter 0.";
-			cin>>choice;
-		}
-	}else{
-		cout<<"The enrolling time has not started yet or it has been over already.";
-	}
+        }
+    }
+    else cout << "The enrolling time has not started yet or it has been over already.";
 }
 
 void createCourseRegistration(semester& sem){
@@ -526,47 +519,50 @@ ACTION key(int z) {
 	return RIGHT;
 }
 
-int actionList(vector<string> str, int n) {
-	system("CLS");
-	int status = 0;
-	int* color = new int[n];
-	for (int i = 0; i < n; i++) color[i] = 15;
-	color[status] = 176;
-	for (int i = 0; i < n; i++) {
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color[i]);
-			if (i != 0) cout << "\n";
-            cout << i + 1 << ". " << str[i];
-		}
-	while (true) {
+int actionList(vector<string> str, int n, string messages, COORD position) {
+    int status = 0;
+    int* color = new int[n];
+    for (int i = 0; i < n; i++) color[i] = 15;
+    color[status] = 176;
+    for (int i = 0; i < n; i++) {
+        gotoxy(position.X, position.Y + i);
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color[i]);
+        cout << i + 1 << ". " << str[i];
+    }
+    while (true) {
         // if (status == n - 1) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-		int z = _getch(); int action = key(z);
-		switch (action) {
-		case UP: {
-			gotoxy(0,status);
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-			cout << status + 1 << ". " << str[status];
-			if (!status) status = n - 1;
-			else status--;
-			break;
-		}
-		case DOWN: {
-			gotoxy(0,status);
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-			cout << status + 1 << ". " << str[status];
-			if (status == n - 1) status = 0;
-			else status++;
-			break;
-		}
-		case ENTER: {
-			SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
-			system("CLS");
-			return status;
-			}
-		};
-		gotoxy(0, status);
-		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 176);
-		cout << status + 1 << ". " << str[status];
-	}
+        int z = _getch(); int action = key(z);
+        switch (action) {
+        case UP: {
+            gotoxy(position.X, position.Y + status);
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+            cout << status + 1 << ". " << str[status];
+            if (!status) status = n - 1;
+            else status--;
+            break;
+        }
+        case DOWN: {
+            gotoxy(position.X, position.Y + status);
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+            cout << status + 1 << ". " << str[status];
+            if (status == n - 1) status = 0;
+            else status++;
+            break;
+        }
+        case ENTER: {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+            system("CLS");
+            return status;
+        }
+        case BACK: {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+            return str.size();
+        }
+        };
+        gotoxy(position.X, position.Y + status);
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 176);
+        cout << status + 1 << ". " << str[status];
+    }
 }
 
 void exportStudentInCourseToCSV(course& _course) {
@@ -722,4 +718,19 @@ bool createScoreboardFile(const course& _course){
 	}
 	fs::copy_file(root/"Semester"/_course.ID/(_course.ID+"_list.csv"),root/"Semester"/_course.ID/"scoreboard.csv");
 	return true;
+}
+
+vector<course> getUnenrolledCourseList(semester _semester, student _student) {
+    vector<course> res;
+    bool check = true;
+    for (int i = 0; i < _semester.listCourse.size(); i++) {
+        check = true;
+        for (int j = 0; j < _student.enrolled.size(); j++)
+            if (_student.enrolled[j].ID == _semester.listCourse[i].ID) {
+                check = false;
+                break;
+            }
+        if (check) res.push_back(_semester.listCourse[i]);
+    }
+    return res;
 }
