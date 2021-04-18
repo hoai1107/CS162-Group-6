@@ -7,7 +7,7 @@ int main() {
 
 	// After load data.
 	int res = 0;
-	int indexOfUser;
+	int indexOfUser = 0;
 	while (res != 1 && res != 2) {
 		gotoxy(55, 1);
 		cout << "LOGIN";
@@ -27,10 +27,10 @@ int main() {
 	}
 
 	else {
-		string allActions[16] {"","","",""}; // 16 can be changed.
+		vector<string> allActions; // 16 can be changed.
 		int choice;
-		choice = actionList(allActions, allActions->size());
-		while (choice != allActions->size() - 1) {
+		choice = actionList(allActions, allActions.size(), "Enter to go into task!", {0, 0});
+		while (choice != allActions.size() - 1) {
 			switch (choice) {
 				case 1: {
 					break;
@@ -42,7 +42,7 @@ int main() {
 					break;
 				}
 			}
-			choice = actionList(allActions, allActions->size());
+			choice = actionList(allActions, allActions.size(), "Enter to go into task!", {0, 0});
 		}
 		system("CLS");
 		cout << "Ending!" << endl;
