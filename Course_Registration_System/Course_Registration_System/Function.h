@@ -13,13 +13,99 @@ using namespace std;
 
 enum ACTION {UP, DOWN, RIGHT, LEFT, ENTER, BACK};
 
+// STRUCT
+struct staff {
+    int ID;
+    string name; // optional
+    string password;
+};
+
+struct date {
+    int day, month, year;
+
+    const bool operator <= (const date& other) const {
+        if (year < other.year) {
+            return true;
+        }
+        if (year == other.year) {
+            if (month < other.month) {
+                return true;
+            }
+
+            if (month == other.month) {
+                if (day <= other.day) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
+
+struct lesson {
+    string day; // MON/TUE/...
+    string time; // '7:30', '9:30', ...
+
+    const bool operator == (const lesson& other) const {
+        return day == other.day && time == other.time;
+    }
+};
+
+struct mark {
+    double midterm, final, other, total;
+};
+
+struct module {
+    string ID; // ID of course
+    mark grade;
+};
+
+struct student {
+    int no, ID; // id to login also
+    string password;
+    string firstName, lastName;
+    string className;
+    int gender; // 0: male, 1: female
+    date DOB;
+    string socialID;
+    vector <module> enrolled;
+};
+
+struct classUni {
+    string name;
+    vector <student> listStudent;
+};
+
+struct course {
+    string ID, name;
+    string teacher;
+    int numCredits;
+    int maxStudents = 50;
+    vector <lesson> listLesson;
+    vector <student> listStudent;
+};
+
+struct semester {
+    string name;
+    int academicYear;
+    date regOpen, regClose;
+    date startDate, endDate;
+    vector <course> listCourse;
+};
+
+
+struct schoolYear {
+    vector <classUni> newClass;
+    vector <semester> listSemester;
+};
+
 //
 //  FUNCTION PROTOTYPE
 //
 
 //Staff function
 void createNewYear();
-void viewCourses(semester sem); //(task 9/19)
+void viewCourses(vector<course> courseList); //(task 9/19)
 void viewStudentsInCourse(course crs);//(task 20)
 void viewListOfClass(schoolYear _schoolYear);//(task 17)
 bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 11) return false in case there's no such course with that ID in list
@@ -56,93 +142,11 @@ int changePassword_Staff(vector<staff>& _staff, int index); // return 0 if chang
 int changePassword_Student(vector<student>& _student, int index); // return 0 if change successfully, 1 if old password doesn't match password, 2 if new password doesn't match each other
 void textColor(int color);
 ACTION key(int z);
-int actionList(vector<string> str, int n, string messages);
+int actionList(vector<string> str, int n, string messages, COORD position);
+vector<course> getUnenrolledCourseList(semester _semester, student _student);
 
 // DATA STRUCTURE
  
-// STRUCT
-struct staff {
-    int ID;
-    string name; // optional
-    string password;
-};
- 
-struct date {
-    int day, month, year;
 
-    const bool operator <= (const date& other) const {
-		if (year < other.year) {
-			return true;
-		}
-		if (year == other.year) {
-			if (month < other.month) {
-				return true;
-			}
-
-			if (month == other.month) {
-				if (day <= other.day) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-};
- 
-struct lesson {
-    string day; // MON/TUE/...
-    string time; // '7:30', '9:30', ...
-
-    const bool operator == (const lesson& other) const {
-		return day == other.day && time == other.time;
-	}
-};
- 
-struct mark {
-    double midterm, final, other, total;
-};
- 
-struct module {
-    string ID; // ID of course
-    mark grade;
-};
- 
-struct student {
-    int no, ID; // id to login also
-    string password;
-    string firstName, lastName;
-    string className;
-    int gender; // 0: male, 1: female
-    date DOB;
-    string socialID;
-    vector <module> enrolled;
-};
- 
-struct classUni {
-    string name;
-    vector <student> listStudent;
-};
- 
-struct course {
-    string ID, name;
-    string teacher;
-    int numCredits;
-    int maxStudents = 50;
-    vector <lesson> listLesson;
-    vector <student> listStudent;
-};
- 
-struct semester {
-    string name;
-    int academicYear;
-    date regOpen, regClose;
-    date startDate, endDate;
-    vector <course> listCourse;
-};
- 
-struct schoolYear {
-    vector <classUni> newClass;
-    vector <semester> listSemester;
-};
 
 #endif // !_MYFUNCTION_H_
