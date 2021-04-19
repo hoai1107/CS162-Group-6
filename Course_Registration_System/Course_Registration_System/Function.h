@@ -145,6 +145,11 @@ ACTION key(int z);
 int actionList(vector<string> str, int n, COORD position);
 vector<course> getUnenrolledCourseList(semester _semester, student _student);
 
+void loadSemesterInfo(semester& _semester);
+void loadCourseInfo(course& _course);
+void saveCourseInfo(course& _course);
+void saveSemesterInfo(semester& _semester);
+
 // DATA STRUCTURE
  
 

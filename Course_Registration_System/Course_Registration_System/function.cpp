@@ -784,3 +784,115 @@ vector<course> getUnenrolledCourseList(semester _semester, student _student) {
     }
     return res;
 }
+
+void loadSemesterInfo(semester& _semester) {
+	ifstream fin;
+	fin.open(root / "Semester" / "semester.txt");
+
+	if (fin.is_open()) {
+		getline(fin, _semester.name);
+		fin >> _semester.academicYear;
+		
+
+		fin >> _semester.regOpen.day;
+		fin.ignore(1,'/');
+		fin >> _semester.regOpen.month;
+		fin.ignore(1,'/');
+		fin >> _semester.regOpen.year;
+		fin.ignore();
+
+		fin >> _semester.regClose.day;
+		fin.ignore(1,'/');
+		fin >> _semester.regClose.month;
+		fin.ignore(1,'/');
+		fin >> _semester.regClose.year;
+		fin.ignore();
+
+		fin >> _semester.startDate.day;
+		fin.ignore(1,'/');
+		fin >> _semester.startDate.month;
+		fin.ignore(1,'/');
+		fin >> _semester.startDate.year;
+		fin.ignore();
+
+		fin >> _semester.endDate.day;
+		fin.ignore(1,'/');
+		fin >> _semester.endDate.month;
+		fin.ignore(1,'/');
+		fin >> _semester.endDate.year;
+		fin.ignore();
+
+		while (!fin.eof()) {
+			course _course;
+			getline(fin, _course.ID);
+			loadCourseInfo(_course);
+			_semester.listCourse.push_back(_course);
+		}
+
+	}
+}
+
+void loadCourseInfo(course& _course) {
+	ifstream fin;
+	fin.open(root / "Semester" / _course.ID / ("course_info.txt"));
+
+	if (fin.is_open()) {
+		getline(fin, _course.name);
+		getline(fin, _course.teacher);
+		fin >> _course.numCredits;
+
+		lesson _lesson;
+		getline(fin, _lesson.day, ',');
+		getline(fin, _lesson.time);
+		_course.listLesson.push_back(_lesson);
+
+		getline(fin, _lesson.day, ',');
+		getline(fin, _lesson.time);
+		_course.listLesson.push_back(_lesson);
+	}
+}
+
+void saveCourseInfo(course& _course) {
+	ofstream fout;
+
+	if (!fs::exists(root / "Semester" / _course.ID / ("course_info.txt"))) {
+		fs::create_directory(root / "Semester" / _course.ID / ("course_info.txt"));
+	}
+
+	fout.open(root / "Semester" / _course.ID / ("course_info.txt"));
+
+	if (fout.is_open()) {
+		fout << _course.name << endl;
+		fout << _course.teacher << endl;
+		fout << _course.numCredits;
+
+		for (int i = 0; i < 2; ++i) {
+			fout << endl << _course.listLesson[i].day << ',' << _course.listLesson[i].time;
+		}
+	}
+}
+
+void saveSemesterInfo(semester& _semester) {
+	ofstream fout;
+
+	if (!fs::exists(root / "Semester" / "semester.txt")) {
+		fs::create_directory(root / "Semester" / "semester.txt");
+	}
+
+	fout.open(root / "Semester" / "semester.txt");
+	
+	if (fout.is_open()) {
+		fout << _semester.name << endl;
+		fout << _semester.academicYear << endl;
+
+		fout << _semester.regOpen.day << '/' << _semester.regOpen.month << '/' << _semester.regOpen.year << endl;
+		fout << _semester.regClose.day << '/' << _semester.regClose.month << '/' << _semester.regClose.year << endl;
+		fout << _semester.startDate.day << '/' << _semester.startDate.month << '/' << _semester.startDate.year << endl;
+		fout << _semester.endDate.day << '/' << _semester.endDate.month << '/' << _semester.endDate.year;
+
+		for (int i = 0; i < _semester.listCourse.size(); ++i) {
+			fout << endl << _semester.listCourse[i].ID;
+			saveCourseInfo(_semester.listCourse[i]);
+		}
+	}
+}
