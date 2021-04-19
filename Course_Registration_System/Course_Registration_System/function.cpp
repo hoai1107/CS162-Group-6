@@ -103,7 +103,7 @@ void removeCourseFromList(student& _student, semester _semester) {
 
             vector<string> actions;
             for (int i = 0; i < _student.enrolled.size(); i++) actions.push_back("Remove.");
-            int t = actionList(actions, actions.size(), "", { 105, 2 });
+            int t = actionList(actions, actions.size(), { 105, 2 });
 
             if (t == actions.size()) return;
 
@@ -250,7 +250,7 @@ void enrollCourses(student& _student, semester _semester) {
 
             vector<string> actions;
             for (int i = 0; i < unenrolledCourse.size(); i++) actions.push_back("Enroll.");
-            int t = actionList(actions, actions.size(), "", { 105, 2 });
+            int t = actionList(actions, actions.size(), { 105, 2 });
 
             if (t == actions.size()) return;
 
@@ -569,7 +569,7 @@ ACTION key(int z) {
 	return RIGHT;
 }
 
-int actionList(vector<string> str, int n, string messages, COORD position) {
+int actionList(vector<string> str, int n, COORD position) {
     int status = 0;
     int* color = new int[n];
     for (int i = 0; i < n; i++) color[i] = 15;

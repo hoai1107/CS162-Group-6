@@ -27,9 +27,9 @@ int main() {
 	}
 
 	else {
-		vector<string> allActions; // 16 can be changed.
+		vector<string> allActions; 
 		int choice;
-		choice = actionList(allActions, allActions.size(), "Enter to go into task!", {0, 0});
+		choice = actionList(allActions, allActions.size(), {0, 0});
 		while (choice != allActions.size() - 1) {
 			switch (choice) {
 				case 1: {
@@ -42,7 +42,7 @@ int main() {
 					break;
 				}
 			}
-			choice = actionList(allActions, allActions.size(), "Enter to go into task!", {0, 0});
+			choice = actionList(allActions, allActions.size(), {0, 0});
 		}
 		system("CLS");
 		cout << "Ending!" << endl;

@@ -142,7 +142,7 @@ int changePassword_Staff(vector<staff>& _staff, int index); // return 0 if chang
 int changePassword_Student(vector<student>& _student, int index); // return 0 if change successfully, 1 if old password doesn't match password, 2 if new password doesn't match each other
 void textColor(int color);
 ACTION key(int z);
-int actionList(vector<string> str, int n, string messages, COORD position);
+int actionList(vector<string> str, int n, COORD position);
 vector<course> getUnenrolledCourseList(semester _semester, student _student);
 
 // DATA STRUCTURE
