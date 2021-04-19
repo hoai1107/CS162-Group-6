@@ -70,25 +70,63 @@ void displayClass(classUni _class) {
 }
 
 void viewEnrolledCourses(student _student, semester _semester) {
-	for (int i = 0; i < _student.enrolled.size(); ++i) {
-		string courseID = _student.enrolled[i].ID;
-		for (int j = 0; j < _semester.listCourse.size(); ++j) {
-			if (courseID == _semester.listCourse[i].ID) {
-				cout << _semester.listCourse[i].name;
-				break;
-			}
-		}
-	}
+    vector<course> res;
+    for (int i = 0; i < _student.enrolled.size(); ++i) {
+        for (int j = 0; j < _semester.listCourse.size(); ++j)
+            if (_student.enrolled[i].ID == _semester.listCourse[j].ID) {
+                res.push_back(_semester.listCourse[i]);
+                break;
+            }
+    }
+    viewCourses(res);
 }
 
-bool removeCourseFromList(student& _student, string removeCourseID) {
-	for (int i = 0; i <	_student.enrolled.size(); ++i) {
-		if (removeCourseID == _student.enrolled[i].ID) {
-			_student.enrolled.erase(i);
-			return true;
-		}
-	}
-	return false;
+void removeCourseFromList(student& _student, semester _semester) {
+    struct tm newtime;
+    time_t now = time(0);
+    localtime_s(&newtime, &now);
+
+    date today;
+    today.day = newtime.tm_mday;
+    today.month = newtime.tm_mon + 1;
+    today.year = newtime.tm_year + 1900;
+
+    if (_semester.regOpen <= today && today <= _semester.regClose) {
+        if (_student.enrolled.size() == 0) {
+            cout << "You haven't enrolled in a subject yet." << endl;
+            system("pause");
+            return;
+        }
+        while (true) {
+            cout << "Choose the course you want to remove. BACKSPACE to stop." << endl;
+            viewEnrolledCourses(_student, _semester);
+
+            vector<string> actions;
+            for (int i = 0; i < _student.enrolled.size(); i++) actions.push_back("Remove.");
+            int t = actionList(actions, actions.size(), "", { 105, 2 });
+
+            if (t == actions.size()) return;
+
+            _student.enrolled.erase(t);
+
+            system("CLS");
+
+            cout << "Remove successfully!" << endl;
+            system("pause");
+            if (_student.enrolled.size() == 0) {
+                system("CLS");
+                cout << "You have removed all courses." << endl;
+                system("pause");
+                return;
+            }
+
+            system("CLS");
+        }
+    }
+    else {
+        cout << "The registration time has not started yet or it has been over already." << endl;
+        system("pause");
+    }
 }
 
 void viewListOfClass(schoolYear _schoolYear) {
@@ -207,7 +245,7 @@ void enrollCourses(student& _student, semester _semester) {
     if (_semester.regOpen <= today && today <= _semester.regClose) {
         while (_student.enrolled.size() <= 5) {
             vector<course> unenrolledCourse = getUnenrolledCourseList(_semester, _student);
-            cout << "Choose the course(s) you want to enroll. BACKSPACE to stop" << endl;
+            cout << "Choose the course you want to enroll. BACKSPACE to stop." << endl;
             viewCourses(unenrolledCourse);
 
             vector<string> actions;
@@ -228,31 +266,43 @@ void enrollCourses(student& _student, semester _semester) {
                     lesson time1 = getLesson(_semester, temp.ID, j);
                     lesson time2 = getLesson(_semester, _student.enrolled[i].ID, j);
                     if (time1 == time2) {
-                        cout << "This course is conflicted with existing courses. Please choose another course.";
+						system("CLS");
+                        cout << "This course is conflicted with existing courses. Please choose another course." << endl;
                         canEnroll = false;
+						system("pause");
                     }
                 }
             }
 
             if (canEnroll && checkFullSlot(_semester, temp.ID)) {
-                cout << "This course if full. Please choose another course";
+				system("CLS");
+                cout << "This course if full. Please choose another course" << endl;
+				system("pause");
                 canEnroll = false;
             }
 
             if (canEnroll) {
-                cout << "Enroll successfully!";
+				system("CLS");
+                cout << "Enroll successfully!" << endl;
+				system("pause");
                 _student.enrolled.push_back(temp);
                 addStudentToCourse(_student, temp.ID, _semester);
             }
 
             if (_student.enrolled.size() == 5) {
-                cout << "You have reach the maximum numbers of courses that you can enroll.";
-                break;
+				system("CLS");
+                cout << "You have reach the maximum numbers of courses that you can enroll." << endl;
+                system("pause");
+				break;
             }
 
+			system("CLS");
         }
     }
-    else cout << "The enrolling time has not started yet or it has been over already.";
+    else {
+		cout << "The enrolling time has not started yet or it has been over already.";
+		system("pause");	
+	}
 }
 
 void createCourseRegistration(semester& sem){
