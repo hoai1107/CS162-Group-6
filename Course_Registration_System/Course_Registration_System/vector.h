@@ -16,11 +16,10 @@ struct Vector {
 	}
 
 	Vector(const Vector <T> &that) {
-        _size = that._size + 1;
+        _size = that._size;
 	    _capacity = that._capacity;
-	    delete[] array;
 	    array = new T[_capacity];
-	    for (int i = 0; i < _size; i++)
+	    for (int i = 0; i < that._size; i++)
             array[i] = that.array[i];
         return;
 	}
