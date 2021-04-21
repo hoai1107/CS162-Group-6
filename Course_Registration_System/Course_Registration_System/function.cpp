@@ -93,7 +93,7 @@ void removeCourseFromList(student& _student, semester _semester) {
 
         vector<string> actions;
         for (int i = 0; i < _student.enrolled.size(); i++) actions.push_back("Remove.");
-        int t = actionList(actions, actions.size(), { 105, 2 });
+        int t = actionList(actions, { 105, 2 });
 
         if (t == actions.size()) return;
 
@@ -225,7 +225,7 @@ void enrollCourses(student& _student, semester _semester) {
 
         vector<string> actions;
         for (int i = 0; i < unenrolledCourse.size(); i++) actions.push_back("Enroll.");
-        int t = actionList(actions, actions.size(), { 105, 2 });
+        int t = actionList(actions, { 105, 2 });
 
         if (t == actions.size()) return;
 
@@ -539,7 +539,8 @@ ACTION key(int z) {
 	return RIGHT;
 }
 
-int actionList(vector<string> str, int n, COORD position) {
+int actionList(vector<string> str, COORD position) {
+	int n = str.size();
     int status = 0;
     int* color = new int[n];
     for (int i = 0; i < n; i++) color[i] = 15;
@@ -583,6 +584,7 @@ int actionList(vector<string> str, int n, COORD position) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 176);
         cout << status + 1 << ". " << str[status];
     }
+	delete[] color;
 }
 
 void exportStudentInCourseToCSV(course& _course) {
