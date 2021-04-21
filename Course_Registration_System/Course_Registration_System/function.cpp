@@ -70,7 +70,7 @@ void displayClass(classUni _class) {
 }
 
 void viewEnrolledCourses(student _student, semester _semester) {
-    vector<course> res;
+    Vector <course> res;
     for (int i = 0; i < _student.enrolled.size(); ++i) {
         for (int j = 0; j < _semester.listCourse.size(); ++j)
             if (_student.enrolled[i].ID == _semester.listCourse[j].ID) {
@@ -91,7 +91,7 @@ void removeCourseFromList(student& _student, semester _semester) {
         cout << "Choose the course you want to remove. BACKSPACE to stop." << endl;
         viewEnrolledCourses(_student, _semester);
 
-        vector<string> actions;
+        Vector<string> actions;
         for (int i = 0; i < _student.enrolled.size(); i++) actions.push_back("Remove.");
         int t = actionList(actions, { 105, 2 });
 
@@ -120,7 +120,7 @@ void viewListOfClass(schoolYear _schoolYear) {
 	}
 }
 
-void viewCourses(vector<course> courseList) {
+void viewCourses(Vector<course> courseList) {
     cout << left << setw(10) << "ID"
         << setw(40) << "Name"
         << setw(40) << "Teacher"
@@ -219,11 +219,11 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 
 void enrollCourses(student& _student, semester _semester) {
     while (_student.enrolled.size() <= 5) {
-        vector<course> unenrolledCourse = getUnenrolledCourseList(_semester, _student);
+        Vector<course> unenrolledCourse = getUnenrolledCourseList(_semester, _student);
         cout << "Choose the course you want to enroll. BACKSPACE to stop." << endl;
         viewCourses(unenrolledCourse);
 
-        vector<string> actions;
+        Vector<string> actions;
         for (int i = 0; i < unenrolledCourse.size(); i++) actions.push_back("Enroll.");
         int t = actionList(actions, { 105, 2 });
 
@@ -283,7 +283,7 @@ void createCourseRegistration(semester& sem){
 	cin >> sem.regClose.day >> sem.regClose.month >> sem.regClose.year;
 }
 
-int login(vector<staff> _staff, vector<student> _student, int& index) {
+int login(Vector<staff> _staff, Vector<student> _student, int& index) {
 
 	int attempID;
 	string attempPass;
@@ -460,7 +460,7 @@ void updateStudentResult(student& stu) {
 	return;
 }
 
-int changePassword_Staff(vector<staff>& _staff, int index) {
+int changePassword_Staff(Vector<staff>& _staff, int index) {
 	string oPass, nPass, cNPass;
 	gotoxy(5, 5); // Change later
 	cout << "Old password: "; getline(cin, oPass);
@@ -474,7 +474,7 @@ int changePassword_Staff(vector<staff>& _staff, int index) {
 	return 0;
 }
 
-int changePassword_Student(vector<student>& _student, int index) {
+int changePassword_Student(Vector<student>& _student, int index) {
 	string oPass, nPass, cNPass;
 	gotoxy(5, 5); // Change later
 	cout << "Old password: "; getline(cin, oPass);
@@ -539,7 +539,7 @@ ACTION key(int z) {
 	return RIGHT;
 }
 
-int actionList(vector<string> str, COORD position) {
+int actionList(Vector<string> str, COORD position) {
 	int n = str.size();
     int status = 0;
     int* color = new int[n];
@@ -742,8 +742,8 @@ bool createScoreboardFile(const course& _course){
 	return true;
 }
 
-vector<course> getUnenrolledCourseList(semester _semester, student _student) {
-    vector<course> res;
+Vector<course> getUnenrolledCourseList(semester _semester, student _student) {
+    Vector<course> res;
     bool check = true;
     for (int i = 0; i < _semester.listCourse.size(); i++) {
         check = true;
