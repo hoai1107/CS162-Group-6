@@ -24,6 +24,15 @@ struct Vector {
         return;
 	}
 
+	Vector& operator = (const Vector <T> &that) {
+	    delete[] array;
+		_size = that._size;
+		_capacity = that._capacity;
+		array = new T[_capacity];
+		for(int i = 0; i < _size; ++i) array[i] = that.array[i];
+		return *this;
+	}
+
 	int size() {
 		return _size;
 	}
