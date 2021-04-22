@@ -111,6 +111,7 @@ void viewStudentsInCourse(course crs);//(task 20)
 void viewListOfClass(schoolYear _schoolYear);//(task 17)
 bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 11) return false in case there's no such course with that ID in list
 void createNewClasses(schoolYear& _schoolYear);//(task 2)
+void createSemester(schoolYear& _schoolYear);//(task 6)
 void addCourseToSemester(semester& sem); //(task 8)
 void createCourseRegistration(semester& sem);//(task 7)
 void updateCourseInfo(semester& _semester);//(task 10)
@@ -120,7 +121,7 @@ void updateStudentResult(student& stu);
 void viewClassScoreboard(schoolYear& _schoolYear, string className);
 
 //Class function
-void addStudentToClass(classUni className);//(task 4)
+void addStudentToClass(classUni& className);//(task 4)
 void displayStudent(const student& _student);//(task 18)
 void displayClass(classUni _class);//(task 18)
 

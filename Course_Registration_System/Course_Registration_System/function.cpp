@@ -9,7 +9,7 @@ using namespace std;
 
 fs::path root= fs::current_path()/"data";
 
-void addStudentToClass(classUni className) {
+void addStudentToClass(classUni& className) {
 	ifstream fin;
 
 	fs::path classPath =root/"Class"/className.name/(className.name + ".csv");
@@ -38,7 +38,7 @@ void addStudentToClass(classUni className) {
 		fin >> st.DOB.month;
 		fin.ignore(1, '/');
 		fin >> st.DOB.year;
-		fin.ignore(1, '/');
+		fin.ignore(1, ',');
 
 		fin >> st.socialID;
         fin.ignore();
@@ -177,11 +177,11 @@ void createNewClasses(schoolYear& _schoolYear){
 	cin>>choice;
 
 	while(choice){
-		classUni newClass;
+		classUni nClass;
 		cout<<"Enter name of the class: ";
-		cin>>newClass.name;
-		addStudentToClass(newClass);
-		_schoolYear.newClass.push_back(newClass);
+		getline(cin,nClass.name);
+		addStudentToClass(nClass);
+		_schoolYear.newClass.push_back(nClass);
 
 		cout<<"Enter 1 to add another class or 0 to stop.";
 		cin>>choice;
@@ -992,4 +992,26 @@ void allStaffFunction() {
 
         system("CLS");
     }
+}
+void createSemester(schoolYear& _schoolYear) {
+	cout << "Enter 1 to create a semester, enter 0 to stop: ";
+	int choice;
+	cin >> choice;
+
+	while (choice) {
+		semester _semester;
+		cout << "Enter semester name: ";
+		getline(cin, _semester.name);
+		cout << "Enter the academic year of the semester: ";
+		cin >> _semester.academicYear;
+		cout << "Enter start date: ";
+		cin >> _semester.startDate.day >> _semester.startDate.month >> _semester.startDate.year;
+		cout << "Enter end date: ";
+		cin >> _semester.endDate.day >> _semester.endDate.month >> _semester.endDate.year;
+
+		_schoolYear.listSemester.push_back(_semester);
+		cout << "Create successfully!";
+		cout << "Enter 1 to create another semester or enter 0 to stop: ";
+		cin >> choice;
+	}
 }
