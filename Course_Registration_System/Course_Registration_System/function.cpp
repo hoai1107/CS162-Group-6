@@ -762,56 +762,76 @@ Vector<course> getUnenrolledCourseList(semester _semester, student _student) {
     return res;
 }
 
-void loadSemesterInfo(semester& _semester) {
+void loadSemesterInfo(Vector<semester>& _semester) {
+	
 	ifstream fin;
-	fin.open(root / "Semester" / "semester.txt");
 
-	if (fin.is_open()) {
-		getline(fin, _semester.name);
-		fin >> _semester.academicYear;
+	for (int i = 0; i < 3; i++) {
 		
+		string folderName;
+		semester sTemp;
 
-		fin >> _semester.regOpen.day;
-		fin.ignore(1,'/');
-		fin >> _semester.regOpen.month;
-		fin.ignore(1,'/');
-		fin >> _semester.regOpen.year;
-		fin.ignore();
+		if (i == 0) folderName = "Fall";
+		if (i == 1) folderName = "Summer";
+		if (i == 2) folderName = "Autumn";
 
-		fin >> _semester.regClose.day;
-		fin.ignore(1,'/');
-		fin >> _semester.regClose.month;
-		fin.ignore(1,'/');
-		fin >> _semester.regClose.year;
-		fin.ignore();
+		fin.open(root / "Semester"/ folderName / "semester.txt");
 
-		fin >> _semester.startDate.day;
-		fin.ignore(1,'/');
-		fin >> _semester.startDate.month;
-		fin.ignore(1,'/');
-		fin >> _semester.startDate.year;
-		fin.ignore();
+		if (fin.is_open()) {
+			getline(fin, sTemp.name);
+			fin >> sTemp.academicYear;
+			
 
-		fin >> _semester.endDate.day;
-		fin.ignore(1,'/');
-		fin >> _semester.endDate.month;
-		fin.ignore(1,'/');
-		fin >> _semester.endDate.year;
-		fin.ignore();
+			fin >> sTemp.regOpen.day;
+			fin.ignore(1,'/');
+			fin >> sTemp.regOpen.month;
+			fin.ignore(1,'/');
+			fin >> sTemp.regOpen.year;
+			fin.ignore();
 
-		while (!fin.eof()) {
-			course _course;
-			getline(fin, _course.ID);
-			loadCourseInfo(_course);
-			_semester.listCourse.push_back(_course);
+			fin >> sTemp.regClose.day;
+			fin.ignore(1,'/');
+			fin >> sTemp.regClose.month;
+			fin.ignore(1,'/');
+			fin >> sTemp.regClose.year;
+			fin.ignore();
+
+			fin >> sTemp.startDate.day;
+			fin.ignore(1,'/');
+			fin >> sTemp.startDate.month;
+			fin.ignore(1,'/');
+			fin >> sTemp.startDate.year;
+			fin.ignore();
+
+			fin >> sTemp.endDate.day;
+			fin.ignore(1,'/');
+			fin >> sTemp.endDate.month;
+			fin.ignore(1,'/');
+			fin >> sTemp.endDate.year;
+			fin.ignore();
+
+			while (!fin.eof()) {
+				course _course;
+				getline(fin, _course.ID);
+				loadCourseInfo(_semester[i] ,_course);
+				sTemp.listCourse.push_back(_course);
+			}
+
+			fin.close();
+			_semester.push_back(sTemp);
 		}
-
 	}
 }
 
-void loadCourseInfo(course& _course) {
+void loadCourseInfo(semester _semester, course& _course) {
 	ifstream fin;
-	fin.open(root / "Semester" / _course.ID / ("course_info.txt"));
+
+	string folderName;
+	if (_semester.name == "1" || _semester.name == "fall" || _semester.name == "Fall") folderName = "Fall";
+	if (_semester.name == "2" || _semester.name == "summer" || _semester.name == "Summer") folderName = "Summer";
+	if (_semester.name == "3" || _semester.name == "autumn" || _semester.name == "Autumn") folderName = "Autumn";
+
+	fin.open(root / "Semester" / folderName / _course.ID / ("course_info.txt"));
 
 	if (fin.is_open()) {
 		getline(fin, _course.name);
@@ -827,16 +847,23 @@ void loadCourseInfo(course& _course) {
 		getline(fin, _lesson.time);
 		_course.listLesson.push_back(_lesson);
 	}
+
+	fin.close();
 }
 
-void saveCourseInfo(course& _course) {
+void saveCourseInfo(semester _semester, course& _course) {
 	ofstream fout;
+	
+	string folderName;
+	if (_semester.name == "1" || _semester.name == "fall" || _semester.name == "Fall") folderName = "Fall";
+	if (_semester.name == "2" || _semester.name == "summer" || _semester.name == "Summer") folderName = "Summer";
+	if (_semester.name == "3" || _semester.name == "autumn" || _semester.name == "Autumn") folderName = "Autumn";
 
-	if (!fs::exists(root / "Semester" / _course.ID / ("course_info.txt"))) {
-		fs::create_directory(root / "Semester" / _course.ID / ("course_info.txt"));
+	if (!fs::exists(root / "Semester"/ folderName / _course.ID / ("course_info.txt"))) {
+		fs::create_directory(root / "Semester"/ folderName / _course.ID / ("course_info.txt"));
 	}
 
-	fout.open(root / "Semester" / _course.ID / ("course_info.txt"));
+	fout.open(root / "Semester"/ folderName / _course.ID / ("course_info.txt"));
 
 	if (fout.is_open()) {
 		fout << _course.name << endl;
@@ -847,30 +874,42 @@ void saveCourseInfo(course& _course) {
 			fout << endl << _course.listLesson[i].day << ',' << _course.listLesson[i].time;
 		}
 	}
+
+	fout.close();
 }
 
-void saveSemesterInfo(semester& _semester) {
+void saveSemesterInfo(Vector<semester>& _semester) {
 	ofstream fout;
-
-	if (!fs::exists(root / "Semester" / "semester.txt")) {
-		fs::create_directory(root / "Semester" / "semester.txt");
-	}
-
-	fout.open(root / "Semester" / "semester.txt");
 	
-	if (fout.is_open()) {
-		fout << _semester.name << endl;
-		fout << _semester.academicYear << endl;
+	for (int i = 0; i < 3; i++) {
+		
+		string folderName;
+		if (_semester[i].name == "1" || _semester[i].name == "fall" || _semester[i].name == "Fall") folderName = "Fall";
+		if (_semester[i].name == "2" || _semester[i].name == "summer" || _semester[i].name == "Summer") folderName = "Summer";
+		if (_semester[i].name == "3" || _semester[i].name == "autumn" || _semester[i].name == "Autumn") folderName = "Autumn";
 
-		fout << _semester.regOpen.day << '/' << _semester.regOpen.month << '/' << _semester.regOpen.year << endl;
-		fout << _semester.regClose.day << '/' << _semester.regClose.month << '/' << _semester.regClose.year << endl;
-		fout << _semester.startDate.day << '/' << _semester.startDate.month << '/' << _semester.startDate.year << endl;
-		fout << _semester.endDate.day << '/' << _semester.endDate.month << '/' << _semester.endDate.year;
-
-		for (int i = 0; i < _semester.listCourse.size(); ++i) {
-			fout << endl << _semester.listCourse[i].ID;
-			saveCourseInfo(_semester.listCourse[i]);
+		if (!fs::exists(root / "Semester" / folderName / "semester.txt")) {
+			fs::create_directory(root / "Semester" / folderName / "semester.txt");
 		}
+
+		fout.open(root / "Semester" / _semester[i].name / "semester.txt");
+		
+		if (fout.is_open()) {
+			fout << _semester[i].name << endl;
+			fout << _semester[i].academicYear << endl;
+
+			fout << _semester[i].regOpen.day << '/' << _semester[i].regOpen.month << '/' << _semester[i].regOpen.year << endl;
+			fout << _semester[i].regClose.day << '/' << _semester[i].regClose.month << '/' << _semester[i].regClose.year << endl;
+			fout << _semester[i].startDate.day << '/' << _semester[i].startDate.month << '/' << _semester[i].startDate.year << endl;
+			fout << _semester[i].endDate.day << '/' << _semester[i].endDate.month << '/' << _semester[i].endDate.year;
+
+			for (int i = 0; i < _semester[i].listCourse.size(); ++i) {
+				fout << endl << _semester[i].listCourse[i].ID;
+				saveCourseInfo(_semester[i] ,_semester[i].listCourse[i]);
+			}
+		}
+		
+		fout.close();
 	}
 }
 
