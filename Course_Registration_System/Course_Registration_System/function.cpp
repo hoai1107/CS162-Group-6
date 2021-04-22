@@ -873,3 +873,26 @@ void saveSemesterInfo(semester& _semester) {
 		}
 	}
 }
+
+void createSemester(schoolYear& _schoolYear) {
+	cout << "Enter 1 to create a semester, enter 0 to stop: ";
+	int choice;
+	cin >> choice;
+
+	while (choice) {
+		semester _semester;
+		cout << "Enter semester name: ";
+		getline(cin, _semester.name);
+		cout << "Enter the academic year of the semester: ";
+		cin >> _semester.academicYear;
+		cout << "Enter start date: ";
+		cin >> _semester.startDate.day >> _semester.startDate.month >> _semester.startDate.year;
+		cout << "Enter end date: ";
+		cin >> _semester.endDate.day >> _semester.endDate.month >> _semester.endDate.year;
+
+		_schoolYear.listSemester.push_back(_semester);
+		cout << "Create successfully!";
+		cout << "Enter 1 to create another semester or enter 0 to stop: ";
+		cin >> choice;
+	}
+}

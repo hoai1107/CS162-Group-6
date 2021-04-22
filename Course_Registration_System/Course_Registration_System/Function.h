@@ -110,6 +110,7 @@ void viewStudentsInCourse(course crs);//(task 20)
 void viewListOfClass(schoolYear _schoolYear);//(task 17)
 bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 11) return false in case there's no such course with that ID in list
 void createNewClasses(schoolYear& _schoolYear);//(task 2)
+void createSemester(schoolYear& _schoolYear);//(task 6)
 void addCourseToSemester(semester& sem); //(task 8)
 void createCourseRegistration(semester& sem);//(task 7)
 void updateCourseInfo(semester& _semester);//(task 10)
