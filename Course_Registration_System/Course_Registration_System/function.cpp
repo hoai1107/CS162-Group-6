@@ -3,8 +3,8 @@
 #include<ctime>
 #include<filesystem>
 
-namespace fs= std::filesystem;
 using namespace std;
+namespace fs= std::filesystem;
 
 const fs::path root= fs::current_path()/"2020-2021";
 
