@@ -105,7 +105,7 @@ struct schoolYear {
 //
 
 //Staff function
-void createNewYear();
+void createNewYear(Vector<schoolYear> &allYear);
 void viewCourses(Vector<course> courseList); //(task 9/19)
 void viewStudentsInCourse(course crs);//(task 20)
 void viewListOfClass(schoolYear _schoolYear);//(task 17)
@@ -148,16 +148,17 @@ int actionList(Vector<string> str, COORD position);
 Vector<course> getUnenrolledCourseList(semester _semester, student _student);
 
 void loadSemesterInfo(semester& _semester);
-void loadCourseInfo(course& _course);
+void loadCourseInfo(semester _semester, course& _course);
 void saveCourseInfo(course& _course);
 void saveSemesterInfo(semester& _semester);
 void loadLastSave(Vector <schoolYear> &listYear);
 
 bool IsPathExist(const string &s);
 void allStaffFunction();
-void chooseAcademicYear();
-void editSchoolYear(string &year);
+void chooseAcademicYear(Vector<schoolYear> &allYear);
+void editSchoolYear(schoolYear &year);
 void addClassToYear(schoolYear &year);
+void addSemesterToYear(schoolYear &year);
  
 
 

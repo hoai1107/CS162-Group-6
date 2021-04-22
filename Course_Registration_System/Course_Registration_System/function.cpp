@@ -171,21 +171,20 @@ bool deleteCourseInSemester(semester& _semester, string removeCourseID){
 }
 
 void createNewClasses(schoolYear& _schoolYear){
-	cout<<"Enter 1 to add a new class or 0 to stop.";
-	
-	int choice;
-	cin>>choice;
-
-	while(choice){
-		classUni nClass;
-		cout<<"Enter name of the class: ";
-		getline(cin,nClass.name);
-		addStudentToClass(nClass);
-		_schoolYear.newClass.push_back(nClass);
-
-		cout<<"Enter 1 to add another class or 0 to stop.";
-		cin>>choice;
-	}
+	classUni nClass;
+	cout << "Enter name of the class: ";
+	getline(cin,nClass.name);
+	cout << "Enter or drag path of your .csv file: ";
+	string link; getline(cin, link);
+	fs::path path = root/"Class"/nClass.name;
+	system(("mkdir " + path.string()).c_str());
+	system(("cd " + path.string() + "&& type nul > " + nClass.name + ".csv").c_str());
+	path = path/(nClass.name + ".csv");
+	system(("copy " + link + " " + path.string() + " > nul").c_str());
+	addStudentToClass(nClass);
+	_schoolYear.newClass.push_back(nClass);
+	cout << "Class has been added successfully.\n";
+	system("pause");
 }
 
 void addCourseToSemester(semester& sem){ // chi add info, chua add student
@@ -919,6 +918,20 @@ void addClassToYear(schoolYear &year) {
 	}
 }
 
+void addSemesterToYear(schoolYear &year) {
+	fs::path link = root/year.name;
+
+	if (!fs::exists(link/"semester"));
+	else {
+		fs::path tmp = root;
+		root = link;
+		Vector <semester> _semester;
+		loadSemesterInfo(_semester);
+		year.listSemester = _semester;
+		root = tmp;
+	}
+}
+
 //https://www.bfilipek.com/2019/04/dir-iterate.html
 void loadLastSave(Vector <schoolYear> &listYear) {
 	for (const auto& entry : fs::directory_iterator(root)) {
@@ -927,19 +940,28 @@ void loadLastSave(Vector <schoolYear> &listYear) {
 			if (folder.size() != 9) continue;
 			bool wrong = false;
 			for (int i = 0; i < 9; i++) {
-				if (i == 4) if (folder[i] != '-') wrong = true;
+				if (i == 4) {
+					if (folder[i] != '-') wrong = true;
+				}
 				else if (!isdigit(folder[i])) wrong = true;
 			}
 			if (wrong) continue;
+
+			fs::path tmpRoot = root;
+			root = root/folder;
+
 			schoolYear tmp;
 			tmp.name = folder;
 			addClassToYear(tmp);
+			addSemesterToYear(tmp);
 			listYear.push_back(tmp);
+
+			root = tmpRoot;
 		}
 	}
 }
 
-void createNewYear() {
+void createNewYear(Vector<schoolYear> &allYear) {
 	cout << "------New Academic Year------\n\n";
 	cout << "Start Year: ";
 	string startYear; cin >> startYear;
@@ -950,16 +972,21 @@ void createNewYear() {
 		cout << "Year " << academicYear << " has been created before!\n";
 	else {
         system(("mkdir " + academicYear).c_str());
+		schoolYear tmp;
+		tmp.name = academicYear;
+		allYear.push_back(tmp);
 		cout << "Year " << academicYear << " has been created.\n";
 	}
     system("pause");
 }
 
-void editSchoolYear(string& year) {
+void editSchoolYear(schoolYear &year) {
 	Vector <string> listOperation;
 	listOperation.push_back("Add new classes");
+
 	while (true) {
-		cout << "-----" << year << "-----\n\n";
+		system ("cls");
+		cout << "-----" << year.name << "-----\n\n";
 		cout << "Choose the function you want to perform. BACKSPACE to stop\n";
 
 		int t = actionList(listOperation, {0, 4});
@@ -968,23 +995,24 @@ void editSchoolYear(string& year) {
 
 		switch (t) {
 		case 0:
+			createNewClasses(year);
 			break;
 		
 		default:
 			break;
 		}
+
+		system ("cls");
 	}
 	system("pause");
 }
 
-void chooseAcademicYear() {
+void chooseAcademicYear(Vector<schoolYear> &allYear) {
 	system("cls");
 	// cout << "------List Academic Year------\n\n";
 	Vector <string> listYear;
-	for (int i = 1900; i <= 3000; i++) {
-		string folder = to_string(i) + '-' + to_string(i+1);
-		if (IsPathExist(folder)) listYear.push_back(folder);
-	}
+	for (int i = 0; i < allYear.size(); i++)
+		listYear.push_back(allYear[i].name);
 
 	while (true) {
         cout << "Choose the Academic Year you want to edit. BACKSPACE to stop\n";
@@ -993,15 +1021,19 @@ void chooseAcademicYear() {
         
 		if (t == listYear.size()) return;
 
+		fs::path tmp = root;
 		root = root / listYear[t].c_str();
 
-		editSchoolYear(listYear[t]);
+		editSchoolYear(allYear[t]);
+
+		root = tmp;
 
         system("CLS");
     }	
 }
 
 void allStaffFunction() {
+	// exit (0);
 	Vector <schoolYear> allYear;
 	loadLastSave(allYear);
 
@@ -1017,11 +1049,11 @@ void allStaffFunction() {
         int t = actionList(listOperation, {0, 1});
         switch (t) {
             case 0:
-                createNewYear();
+                createNewYear(allYear);
                 break;
 
 			case 1:
-				chooseAcademicYear();
+				chooseAcademicYear(allYear);
 				break;
 
             default:
@@ -1032,6 +1064,7 @@ void allStaffFunction() {
         system("CLS");
     }
 }
+
 void createSemester(schoolYear& _schoolYear) {
 	cout << "Enter 1 to create a semester, enter 0 to stop: ";
 	int choice;
