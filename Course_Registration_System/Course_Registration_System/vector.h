@@ -1,21 +1,34 @@
-#ifndef VECTOR_H
-#define VECTOR_H
+#ifndef Vector_H
+#define Vector_H
 
 #include <stdexcept>
+#include <iostream>
+using namespace std;
 
 template <typename T>
-struct vector {
+struct Vector {
 	T* array;
 	int _size = 0;
 	int _capacity = 1;
 
-	vector() : array(new T[_capacity]) {}
+	Vector() {
+		array = new T[_capacity];
+	}
+
+	Vector(const Vector <T> &that) {
+        _size = that._size;
+	    _capacity = that._capacity;
+	    array = new T[_capacity];
+	    for (int i = 0; i < that._size; i++)
+            array[i] = that.array[i];
+        return;
+	}
 
 	int size() {
 		return _size;
 	}
 
-	T& operator[](int _index) {
+    T& operator[](int _index) {
 		if (_index < 0)
 			throw std::invalid_argument("access negative index!");
 
@@ -59,10 +72,10 @@ struct vector {
 		delete[] array;
 		return;
 	}
-	
-	~vector() {
+
+	~Vector() {
 		delete[] array;
 	}
-
 };
+
 #endif

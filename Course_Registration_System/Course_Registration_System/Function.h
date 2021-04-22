@@ -68,12 +68,12 @@ struct student {
     int gender; // 0: male, 1: female
     date DOB;
     string socialID;
-    vector <module> enrolled;
+    Vector <module> enrolled;
 };
 
 struct classUni {
     string name;
-    vector <student> listStudent;
+    Vector <student> listStudent;
 };
 
 struct course {
@@ -81,8 +81,8 @@ struct course {
     string teacher;
     int numCredits;
     int maxStudents = 50;
-    vector <lesson> listLesson;
-    vector <student> listStudent;
+    Vector <lesson> listLesson;
+    Vector <student> listStudent;
 };
 
 struct semester {
@@ -90,13 +90,13 @@ struct semester {
     int academicYear;
     date regOpen, regClose;
     date startDate, endDate;
-    vector <course> listCourse;
+    Vector <course> listCourse;
 };
 
 
 struct schoolYear {
-    vector <classUni> newClass;
-    vector <semester> listSemester;
+    Vector <classUni> newClass;
+    Vector <semester> listSemester;
 };
 
 //
@@ -105,11 +105,12 @@ struct schoolYear {
 
 //Staff function
 void createNewYear();
-void viewCourses(vector<course> courseList); //(task 9/19)
+void viewCourses(Vector<course> courseList); //(task 9/19)
 void viewStudentsInCourse(course crs);//(task 20)
 void viewListOfClass(schoolYear _schoolYear);//(task 17)
 bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 11) return false in case there's no such course with that ID in list
 void createNewClasses(schoolYear& _schoolYear);//(task 2)
+void createSemester(schoolYear& _schoolYear);//(task 6)
 void addCourseToSemester(semester& sem); //(task 8)
 void createCourseRegistration(semester& sem);//(task 7)
 void updateCourseInfo(semester& _semester);//(task 10)
@@ -119,7 +120,7 @@ void updateStudentResult(student& stu);
 void viewClassScoreboard(schoolYear& _schoolYear, string className);
 
 //Class function
-void addStudentToClass(classUni className);//(task 4)
+void addStudentToClass(classUni& className);//(task 4)
 void displayStudent(const student& _student);//(task 18)
 void displayClass(classUni _class);//(task 18)
 
@@ -135,15 +136,15 @@ lesson getLesson(semester& _semester,string ID,int index);//get the time of the 
 bool checkFullSlot(semester _semester,string ID);//check if the course is full yet
 void addStudentToCourse(student _student, string _courseID, semester& _semester);
 bool createScoreboardFile(const course& _course);
-int login(vector<staff> _staff, vector<student> _student, int& index); // Return 0 if it doesn't match any IDs and pass
+int login(Vector<staff> _staff, Vector<student> _student, int& index); // Return 0 if it doesn't match any IDs and pass
                                                                        // 1 if it is staff, 2 if it is student
 void gotoxy(int x, int y);
-int changePassword_Staff(vector<staff>& _staff, int index); // return 0 if change successfully, 1 if old password doesn't match password, 2 if new password doesn't match each other
-int changePassword_Student(vector<student>& _student, int index); // return 0 if change successfully, 1 if old password doesn't match password, 2 if new password doesn't match each other
+int changePassword_Staff(Vector<staff>& _staff, int index); // return 0 if change successfully, 1 if old password doesn't match password, 2 if new password doesn't match each other
+int changePassword_Student(Vector<student>& _student, int index); // return 0 if change successfully, 1 if old password doesn't match password, 2 if new password doesn't match each other
 void textColor(int color);
 ACTION key(int z);
-int actionList(vector<string> str, int n, COORD position);
-vector<course> getUnenrolledCourseList(semester _semester, student _student);
+int actionList(Vector<string> str, COORD position);
+Vector<course> getUnenrolledCourseList(semester _semester, student _student);
 
 void loadSemesterInfo(semester& _semester);
 void loadCourseInfo(course& _course);

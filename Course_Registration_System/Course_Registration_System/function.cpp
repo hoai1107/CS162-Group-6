@@ -2,13 +2,14 @@
 #include<fstream>
 #include<ctime>
 #include<filesystem>
+#include<sys/stat.h>
 
 using namespace std;
 namespace fs= std::filesystem;
 
 const fs::path root= fs::current_path()/"2020-2021";
 
-void addStudentToClass(classUni className) {
+void addStudentToClass(classUni& className) {
 	ifstream fin;
 
 	fs::path classPath =root/"Class"/className.name/(className.name + ".csv");
@@ -37,7 +38,7 @@ void addStudentToClass(classUni className) {
 		fin >> st.DOB.month;
 		fin.ignore(1, '/');
 		fin >> st.DOB.year;
-		fin.ignore(1, '/');
+		fin.ignore(1, ',');
 
 		fin >> st.socialID;
         fin.ignore();
@@ -70,7 +71,7 @@ void displayClass(classUni _class) {
 }
 
 void viewEnrolledCourses(student _student, semester _semester) {
-    vector<course> res;
+    Vector <course> res;
     for (int i = 0; i < _student.enrolled.size(); ++i) {
         for (int j = 0; j < _semester.listCourse.size(); ++j)
             if (_student.enrolled[i].ID == _semester.listCourse[j].ID) {
@@ -91,9 +92,9 @@ void removeCourseFromList(student& _student, semester _semester) {
         cout << "Choose the course you want to remove. BACKSPACE to stop." << endl;
         viewEnrolledCourses(_student, _semester);
 
-        vector<string> actions;
+        Vector<string> actions;
         for (int i = 0; i < _student.enrolled.size(); i++) actions.push_back("Remove.");
-        int t = actionList(actions, actions.size(), { 105, 2 });
+        int t = actionList(actions, { 105, 2 });
 
         if (t == actions.size()) return;
 
@@ -120,7 +121,7 @@ void viewListOfClass(schoolYear _schoolYear) {
 	}
 }
 
-void viewCourses(vector<course> courseList) {
+void viewCourses(Vector<course> courseList) {
     cout << left << setw(10) << "ID"
         << setw(40) << "Name"
         << setw(40) << "Teacher"
@@ -176,11 +177,11 @@ void createNewClasses(schoolYear& _schoolYear){
 	cin>>choice;
 
 	while(choice){
-		classUni newClass;
+		classUni nClass;
 		cout<<"Enter name of the class: ";
-		cin>>newClass.name;
-		addStudentToClass(newClass);
-		_schoolYear.newClass.push_back(newClass);
+		getline(cin,nClass.name);
+		addStudentToClass(nClass);
+		_schoolYear.newClass.push_back(nClass);
 
 		cout<<"Enter 1 to add another class or 0 to stop.";
 		cin>>choice;
@@ -219,13 +220,13 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 
 void enrollCourses(student& _student, semester _semester) {
     while (_student.enrolled.size() <= 5) {
-        vector<course> unenrolledCourse = getUnenrolledCourseList(_semester, _student);
+        Vector<course> unenrolledCourse = getUnenrolledCourseList(_semester, _student);
         cout << "Choose the course you want to enroll. BACKSPACE to stop." << endl;
         viewCourses(unenrolledCourse);
 
-        vector<string> actions;
+        Vector<string> actions;
         for (int i = 0; i < unenrolledCourse.size(); i++) actions.push_back("Enroll.");
-        int t = actionList(actions, actions.size(), { 105, 2 });
+        int t = actionList(actions, { 105, 2 });
 
         if (t == actions.size()) return;
 
@@ -283,7 +284,7 @@ void createCourseRegistration(semester& sem){
 	cin >> sem.regClose.day >> sem.regClose.month >> sem.regClose.year;
 }
 
-int login(vector<staff> _staff, vector<student> _student, int& index) {
+int login(Vector<staff> _staff, Vector<student> _student, int& index) {
 
 	int attempID;
 	string attempPass;
@@ -460,7 +461,7 @@ void updateStudentResult(student& stu) {
 	return;
 }
 
-int changePassword_Staff(vector<staff>& _staff, int index) {
+int changePassword_Staff(Vector<staff>& _staff, int index) {
 	string oPass, nPass, cNPass;
 	gotoxy(5, 5); // Change later
 	cout << "Old password: "; getline(cin, oPass);
@@ -474,7 +475,7 @@ int changePassword_Staff(vector<staff>& _staff, int index) {
 	return 0;
 }
 
-int changePassword_Student(vector<student>& _student, int index) {
+int changePassword_Student(Vector<student>& _student, int index) {
 	string oPass, nPass, cNPass;
 	gotoxy(5, 5); // Change later
 	cout << "Old password: "; getline(cin, oPass);
@@ -539,7 +540,8 @@ ACTION key(int z) {
 	return RIGHT;
 }
 
-int actionList(vector<string> str, int n, COORD position) {
+int actionList(Vector<string> str, COORD position) {
+	int n = str.size();
     int status = 0;
     int* color = new int[n];
     for (int i = 0; i < n; i++) color[i] = 15;
@@ -583,6 +585,7 @@ int actionList(vector<string> str, int n, COORD position) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 176);
         cout << status + 1 << ". " << str[status];
     }
+	delete[] color;
 }
 
 void exportStudentInCourseToCSV(course& _course) {
@@ -711,22 +714,26 @@ void viewClassScoreboard(schoolYear& _schoolYear, string className) {
 	}
 }
 
-bool CheckExistence(string filename) {
-    struct stat fileinfo;
-    return !stat(filename.c_str(), &fileinfo);
+bool IsPathExist(const string &s)
+{
+  struct stat buffer;
+  return (stat (s.c_str(), &buffer) == 0);
 }
 
 void createNewYear() {
-	cout << "New Academic Year\n";
+	cout << "------New Academic Year------\n\n";
 	cout << "Start Year: ";
 	string startYear; cin >> startYear;
 	cout << "End Year: ";
 	string endYear; cin >> endYear;
-	string academicYear = startYear + ' ' + endYear;
-	if (CheckExistence(academicYear.c_str()))
+	string academicYear = startYear + '-' + endYear;
+	if (IsPathExist(academicYear))
 		cout << "Year " << academicYear << " has been created before!\n";
-	else
+	else {
+        system(("mkdir " + academicYear).c_str());
 		cout << "Year " << academicYear << " has been created.\n";
+	}
+    system("pause");
 }
 
 bool createScoreboardFile(const course& _course){
@@ -740,8 +747,8 @@ bool createScoreboardFile(const course& _course){
 	return true;
 }
 
-vector<course> getUnenrolledCourseList(semester _semester, student _student) {
-    vector<course> res;
+Vector<course> getUnenrolledCourseList(semester _semester, student _student) {
+    Vector<course> res;
     bool check = true;
     for (int i = 0; i < _semester.listCourse.size(); i++) {
         check = true;
@@ -864,5 +871,28 @@ void saveSemesterInfo(semester& _semester) {
 			fout << endl << _semester.listCourse[i].ID;
 			saveCourseInfo(_semester.listCourse[i]);
 		}
+	}
+}
+
+void createSemester(schoolYear& _schoolYear) {
+	cout << "Enter 1 to create a semester, enter 0 to stop: ";
+	int choice;
+	cin >> choice;
+
+	while (choice) {
+		semester _semester;
+		cout << "Enter semester name: ";
+		getline(cin, _semester.name);
+		cout << "Enter the academic year of the semester: ";
+		cin >> _semester.academicYear;
+		cout << "Enter start date: ";
+		cin >> _semester.startDate.day >> _semester.startDate.month >> _semester.startDate.year;
+		cout << "Enter end date: ";
+		cin >> _semester.endDate.day >> _semester.endDate.month >> _semester.endDate.year;
+
+		_schoolYear.listSemester.push_back(_semester);
+		cout << "Create successfully!";
+		cout << "Enter 1 to create another semester or enter 0 to stop: ";
+		cin >> choice;
 	}
 }
