@@ -119,7 +119,7 @@ void updateStudentResult(student& stu);
 void viewClassScoreboard(schoolYear& _schoolYear, string className);
 
 //Class function
-void addStudentToClass(classUni className);//(task 4)
+void addStudentToClass(classUni& className);//(task 4)
 void displayStudent(const student& _student);//(task 18)
 void displayClass(classUni _class);//(task 18)
 

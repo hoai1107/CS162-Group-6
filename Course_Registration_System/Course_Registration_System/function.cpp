@@ -9,7 +9,7 @@ using namespace std;
 
 const fs::path root= fs::current_path()/"2020-2021";
 
-void addStudentToClass(classUni className) {
+void addStudentToClass(classUni& className) {
 	ifstream fin;
 
 	fs::path classPath =root/"Class"/className.name/(className.name + ".csv");
@@ -38,7 +38,7 @@ void addStudentToClass(classUni className) {
 		fin >> st.DOB.month;
 		fin.ignore(1, '/');
 		fin >> st.DOB.year;
-		fin.ignore(1, '/');
+		fin.ignore(1, ',');
 
 		fin >> st.socialID;
         fin.ignore();
@@ -177,11 +177,11 @@ void createNewClasses(schoolYear& _schoolYear){
 	cin>>choice;
 
 	while(choice){
-		classUni newClass;
+		classUni nClass;
 		cout<<"Enter name of the class: ";
-		cin>>newClass.name;
-		addStudentToClass(newClass);
-		_schoolYear.newClass.push_back(newClass);
+		getline(cin,nClass.name);
+		addStudentToClass(nClass);
+		_schoolYear.newClass.push_back(nClass);
 
 		cout<<"Enter 1 to add another class or 0 to stop.";
 		cin>>choice;
