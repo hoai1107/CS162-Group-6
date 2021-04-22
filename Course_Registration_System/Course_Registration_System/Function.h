@@ -95,6 +95,7 @@ struct semester {
 
 
 struct schoolYear {
+    string name;
     Vector <classUni> newClass;
     Vector <semester> listSemester;
 };
@@ -146,11 +147,26 @@ ACTION key(int z);
 int actionList(Vector<string> str, COORD position);
 Vector<course> getUnenrolledCourseList(semester _semester, student _student);
 
+<<<<<<< HEAD
 void loadSemesterInfo(Vector<semester>& _semester);
 void loadCourseInfo(semester _semester, course& _course);
 void saveCourseInfo(semester _semester, course& _course);
 void saveSemesterInfo(Vector<semester>& _semester);
 
+=======
+void loadSemesterInfo(semester& _semester);
+void loadCourseInfo(course& _course);
+void saveCourseInfo(course& _course);
+void saveSemesterInfo(semester& _semester);
+void loadLastSave(Vector <schoolYear> &listYear);
+
+// Dungdq 's function
+bool IsPathExist(const string &s);
+void allStaffFunction();
+void chooseAcademicYear();
+void editSchoolYear(string &year);
+void addClassToYear(schoolYear &year);
+>>>>>>> 2b824dd5f489022ea9da2c05b4ff3b7b54ba3b8d
 // DATA STRUCTURE
  
 
