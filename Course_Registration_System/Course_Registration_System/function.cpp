@@ -714,28 +714,6 @@ void viewClassScoreboard(schoolYear& _schoolYear, string className) {
 	}
 }
 
-bool IsPathExist(const string &s)
-{
-  struct stat buffer;
-  return (stat (s.c_str(), &buffer) == 0);
-}
-
-void createNewYear() {
-	cout << "------New Academic Year------\n\n";
-	cout << "Start Year: ";
-	string startYear; cin >> startYear;
-	cout << "End Year: ";
-	string endYear; cin >> endYear;
-	string academicYear = startYear + '-' + endYear;
-	if (IsPathExist(academicYear))
-		cout << "Year " << academicYear << " has been created before!\n";
-	else {
-        system(("mkdir " + academicYear).c_str());
-		cout << "Year " << academicYear << " has been created.\n";
-	}
-    system("pause");
-}
-
 bool createScoreboardFile(const course& _course){
 	if(fs::exists(root/"Semester"/_course.ID/"scoreboard.csv")){
 		return true;
