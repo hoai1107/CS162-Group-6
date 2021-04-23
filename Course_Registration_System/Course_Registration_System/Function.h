@@ -87,7 +87,7 @@ struct course {
 
 struct semester {
     string name;
-    int academicYear;
+    string academicYear;
     date regOpen, regClose;
     date startDate, endDate;
     Vector <course> listCourse;
@@ -159,6 +159,7 @@ void chooseAcademicYear(Vector<schoolYear> &allYear);
 void editSchoolYear(schoolYear &year);
 void addClassToYear(schoolYear &year);
 void addSemesterToYear(schoolYear &year);
+void saveSemester(semester& _semester);
  
 
 

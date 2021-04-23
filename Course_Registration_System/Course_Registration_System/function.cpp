@@ -171,6 +171,7 @@ bool deleteCourseInSemester(semester& _semester, string removeCourseID){
 }
 
 void createNewClasses(schoolYear& _schoolYear){
+	system ("cls");
 	classUni nClass;
 	cout << "Enter name of the class: ";
 	getline(cin,nClass.name);
@@ -764,20 +765,6 @@ void loadSemesterInfo(Vector<semester>& _semester) {
 			fin >> sTemp.academicYear;
 			
 
-			fin >> sTemp.regOpen.day;
-			fin.ignore(1,'/');
-			fin >> sTemp.regOpen.month;
-			fin.ignore(1,'/');
-			fin >> sTemp.regOpen.year;
-			fin.ignore();
-
-			fin >> sTemp.regClose.day;
-			fin.ignore(1,'/');
-			fin >> sTemp.regClose.month;
-			fin.ignore(1,'/');
-			fin >> sTemp.regClose.year;
-			fin.ignore();
-
 			fin >> sTemp.startDate.day;
 			fin.ignore(1,'/');
 			fin >> sTemp.startDate.month;
@@ -792,10 +779,23 @@ void loadSemesterInfo(Vector<semester>& _semester) {
 			fin >> sTemp.endDate.year;
 			fin.ignore();
 
-			while (!fin.eof()) {
-				course _course;
-				getline(fin, _course.ID);
-				loadCourseInfo(_semester[i] ,_course);
+			fin >> sTemp.regOpen.day;
+			fin.ignore(1,'/');
+			fin >> sTemp.regOpen.month;
+			fin.ignore(1,'/');
+			fin >> sTemp.regOpen.year;
+			fin.ignore();
+
+			fin >> sTemp.regClose.day;
+			fin.ignore(1,'/');
+			fin >> sTemp.regClose.month;
+			fin.ignore(1,'/');
+			fin >> sTemp.regClose.year;
+			fin.ignore();
+
+			course _course;
+			while (getline(fin, _course.ID)) {
+				loadCourseInfo(sTemp ,_course);
 				sTemp.listCourse.push_back(_course);
 			}
 
@@ -880,10 +880,10 @@ void saveSemesterInfo(Vector<semester>& _semester) {
 			fout << _semester[i].name << endl;
 			fout << _semester[i].academicYear << endl;
 
-			fout << _semester[i].regOpen.day << '/' << _semester[i].regOpen.month << '/' << _semester[i].regOpen.year << endl;
-			fout << _semester[i].regClose.day << '/' << _semester[i].regClose.month << '/' << _semester[i].regClose.year << endl;
 			fout << _semester[i].startDate.day << '/' << _semester[i].startDate.month << '/' << _semester[i].startDate.year << endl;
 			fout << _semester[i].endDate.day << '/' << _semester[i].endDate.month << '/' << _semester[i].endDate.year;
+			fout << _semester[i].regOpen.day << '/' << _semester[i].regOpen.month << '/' << _semester[i].regOpen.year << endl;
+			fout << _semester[i].regClose.day << '/' << _semester[i].regClose.month << '/' << _semester[i].regClose.year << endl;
 
 			for (int i = 0; i < _semester[i].listCourse.size(); ++i) {
 				fout << endl << _semester[i].listCourse[i].ID;
@@ -919,16 +919,11 @@ void addClassToYear(schoolYear &year) {
 }
 
 void addSemesterToYear(schoolYear &year) {
-	fs::path link = root/year.name;
-
-	if (!fs::exists(link/"semester"));
+	if (!fs::exists(root/"Semester"));
 	else {
-		fs::path tmp = root;
-		root = link;
 		Vector <semester> _semester;
 		loadSemesterInfo(_semester);
 		year.listSemester = _semester;
-		root = tmp;
 	}
 }
 
@@ -962,6 +957,7 @@ void loadLastSave(Vector <schoolYear> &listYear) {
 }
 
 void createNewYear(Vector<schoolYear> &allYear) {
+	system("cls");
 	cout << "------New Academic Year------\n\n";
 	cout << "Start Year: ";
 	string startYear; cin >> startYear;
@@ -983,6 +979,7 @@ void createNewYear(Vector<schoolYear> &allYear) {
 void editSchoolYear(schoolYear &year) {
 	Vector <string> listOperation;
 	listOperation.push_back("Add new classes");
+	listOperation.push_back("Create new semester");
 
 	while (true) {
 		system ("cls");
@@ -996,6 +993,10 @@ void editSchoolYear(schoolYear &year) {
 		switch (t) {
 		case 0:
 			createNewClasses(year);
+			break;
+
+		case 1:
+			createSemester(year);
 			break;
 		
 		default:
@@ -1066,24 +1067,64 @@ void allStaffFunction() {
 }
 
 void createSemester(schoolYear& _schoolYear) {
-	cout << "Enter 1 to create a semester, enter 0 to stop: ";
-	int choice;
-	cin >> choice;
+	system ("cls");
+	semester _semester;
+	cout << "Enter semester name: ";
+	getline(cin, _semester.name);
 
-	while (choice) {
-		semester _semester;
-		cout << "Enter semester name: ";
-		getline(cin, _semester.name);
-		cout << "Enter the academic year of the semester: ";
-		cin >> _semester.academicYear;
-		cout << "Enter start date: ";
-		cin >> _semester.startDate.day >> _semester.startDate.month >> _semester.startDate.year;
-		cout << "Enter end date: ";
-		cin >> _semester.endDate.day >> _semester.endDate.month >> _semester.endDate.year;
+	for (int i = 0; i < _schoolYear.listSemester.size(); i++)
+		if (_schoolYear.listSemester[i].name == _semester.name) {
+			cout << "This semester has been created before!\n";
+			system("pause");
+			return;
+		}
 
-		_schoolYear.listSemester.push_back(_semester);
-		cout << "Create successfully!";
-		cout << "Enter 1 to create another semester or enter 0 to stop: ";
-		cin >> choice;
+	// cout << "Enter the academic year of the semester: ";
+	// getline(cin, _semester.academicYear);
+	_semester.academicYear = _schoolYear.name;
+	cout << "Enter start date (DD/MM/YYYY): ";
+	cin >> _semester.startDate.day; cin.get();
+	cin >> _semester.startDate.month; cin.get();
+	cin >> _semester.startDate.year;
+	cout << "Enter end date (DD/MM/YYYY): ";
+	cin >> _semester.endDate.day; cin.get();
+	cin >> _semester.endDate.month; cin.get();
+	cin >> _semester.endDate.year;
+	if (!(_semester.startDate <= _semester.endDate)) {
+		cout << "Start date must be before End date!\n";
+		system("pause");
+		return;
 	}
+
+	saveSemester(_semester);
+	
+	_schoolYear.listSemester.push_back(_semester);
+
+	cout << "Semester is created successfully.\n";
+	system("pause");
+}
+
+void saveSemester(semester& _semester) {
+	fs :: path link = root/"Semester"/_semester.name;
+	system(("mkdir " + link.string()).c_str());
+	
+	ofstream fout;
+	fout.open(root / "Semester" / _semester.name / "semester.txt");
+		
+	if (fout.is_open()) {
+		fout << _semester.name << endl;
+		fout << _semester.academicYear << endl;
+
+		fout << _semester.startDate.day << '/' << _semester.startDate.month << '/' << _semester.startDate.year << endl;
+		fout << _semester.endDate.day << '/' << _semester.endDate.month << '/' << _semester.endDate.year << endl;
+		fout << _semester.regOpen.day << '/' << _semester.regOpen.month << '/' << _semester.regOpen.year << endl;
+		fout << _semester.regClose.day << '/' << _semester.regClose.month << '/' << _semester.regClose.year << endl;
+
+		for (int i = 0; i < _semester.listCourse.size(); ++i) {
+			fout << endl << _semester.listCourse[i].ID;
+			saveCourseInfo(_semester ,_semester.listCourse[i]);
+		}
+	}
+	
+	fout.close();
 }
