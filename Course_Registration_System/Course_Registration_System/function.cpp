@@ -276,12 +276,46 @@ void enrollCourses(student& _student, semester _semester) {
     }
 }
 
-void createCourseRegistration(semester& sem){
-	cout << "Please set the start date and end date for registration:" << endl;
-	cout << "	Start date: ";
-	cin >> sem.regOpen.day >> sem.regOpen.month >> sem.regOpen.year;
-	cout << "	End date: ";
-	cin >> sem.regClose.day >> sem.regClose.month >> sem.regClose.year;
+void createCourseRegistration(schoolYear& _schoolYear) {
+	system("cls");
+	Vector <semester> listSem = _schoolYear.listSemester;
+	if (listSem.size() == 0) {
+		cout << "None semester in this year!\n";
+		return;
+	}
+	Vector <string> Sem;
+	for (int i = 0; i < listSem.size(); i++)
+		Sem.push_back(listSem[i].name);
+
+	while (true) {
+		system("cls");
+		cout << "Choose the semester. BACKSPACE to stop\n";
+		int t = actionList(Sem, {0, 1});
+
+		if (t == Sem.size()) return;
+
+		auto &sem = _schoolYear.listSemester[t];
+		cout << "Please set the start date and end date for registration:" << endl;
+		cout << "Enter start date (DD/MM/YYYY): ";
+		cin >> sem.regOpen.day; cin.get();
+		cin >> sem.regOpen.month; cin.get();
+		cin >> sem.regOpen.year;
+		cout << "Enter end date (DD/MM/YYYY): ";
+		cin >> sem.regClose.day; cin.get();
+		cin >> sem.regClose.month; cin.get();
+		cin >> sem.regClose.year;
+
+		if (!(sem.regOpen <= sem.regClose)) {
+			cout << "Error: Start date must be before End date!\n";
+			system("pause");
+		}
+		else {
+			saveSemester(sem);
+			cout << "Registration session is created successfully.\n";
+			system("pause");
+			return;
+		}
+	}
 }
 
 int login(Vector<staff> _staff, Vector<student> _student, int& index) {
@@ -980,6 +1014,7 @@ void editSchoolYear(schoolYear &year) {
 	Vector <string> listOperation;
 	listOperation.push_back("Add new classes");
 	listOperation.push_back("Create new semester");
+	listOperation.push_back("Add course registration session");
 
 	while (true) {
 		system ("cls");
@@ -999,6 +1034,9 @@ void editSchoolYear(schoolYear &year) {
 			createSemester(year);
 			break;
 		
+		case 2:
+			createCourseRegistration(year);
+			break;
 		default:
 			break;
 		}
@@ -1106,8 +1144,11 @@ void createSemester(schoolYear& _schoolYear) {
 
 void saveSemester(semester& _semester) {
 	fs :: path link = root/"Semester"/_semester.name;
-	system(("mkdir " + link.string()).c_str());
-	
+	// cout << "bug!\n";
+	if (!fs::exists(link))
+		system(("mkdir -p " + link.string()).c_str());
+	// cout << "bug!\n";
+
 	ofstream fout;
 	fout.open(root / "Semester" / _semester.name / "semester.txt");
 		
