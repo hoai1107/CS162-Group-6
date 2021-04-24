@@ -899,6 +899,7 @@ void loadCourseInfo(semester _semester, course& _course) {
 		getline(fin, _course.name);
 		getline(fin, _course.teacher);
 		fin >> _course.numCredits;
+		fin.ignore();
 
 		lesson _lesson;
 		getline(fin, _lesson.day, ',');
