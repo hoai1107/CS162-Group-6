@@ -121,7 +121,7 @@ void viewListOfClass(schoolYear _schoolYear) {
 	}
 }
 
-void viewCourses(Vector<course> courseList) {
+void viewCourses(Vector<course> &courseList) {
     cout << left << setw(10) << "ID"
         << setw(40) << "Name"
         << setw(40) << "Teacher"
@@ -132,6 +132,7 @@ void viewCourses(Vector<course> courseList) {
             << setw(40) << courseList[i].teacher
             << setw(10) << courseList[i].numCredits << endl;
     }
+	system("pause");
 }	
 
 void viewStudentsInCourse(course crs) {
@@ -157,6 +158,7 @@ void viewStudentsInCourse(course crs) {
 					 << setw(20) << crs.listStudent[i].DOB.day << '/' << crs.listStudent[i].DOB.month << '/' << crs.listStudent[i].DOB.year 
 					 << setw(15) << "Social ID" << endl;
 	}
+	system("pause");
 }
 
 
@@ -214,6 +216,7 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 		crs.listLesson.push_back(sess);
 	}
 	sem.listCourse.push_back(crs);
+	saveSemester(sem);
 	saveCourseInfo(sem, crs);
 	cout << "Course is added successfully!\n";
 	system("pause");
@@ -310,6 +313,7 @@ void editSemester(semester& _semester) {
 	Vector <string> listAction;
 	listAction.push_back("Create course registration session");
 	listAction.push_back("Add a course");
+	listAction.push_back("View list of courses");
 
 	while(true) {
 		system("cls");
@@ -325,6 +329,10 @@ void editSemester(semester& _semester) {
 
 			case 1:
 				addCourseToSemester(_semester);
+				break;
+
+			case 2:
+				viewCourses(_semester.listCourse);
 				break;
 		}
 	}
@@ -500,6 +508,7 @@ void viewCourseScoreboard(course crs){
 			}
 		}
 	}
+	system("pause");
 }
 
 void updateStudentResult(student& stu) {
@@ -865,6 +874,7 @@ void loadSemesterInfo(Vector<semester>& _semester) {
 
 			course _course;
 			while (getline(fin, _course.ID)) {
+				if (_course.ID.size() == 0) continue;
 				loadCourseInfo(sTemp ,_course);
 				sTemp.listCourse.push_back(_course);
 			}
@@ -946,7 +956,7 @@ void saveSemesterInfo(Vector<semester>& _semester) {
 
 		fout.open(root / "Semester" / _semester[i].name / "semester.txt");
 		
-		if (fout.is_open()) {
+		// if (fout.is_open()) {
 			fout << _semester[i].name << endl;
 			fout << _semester[i].academicYear << endl;
 
@@ -959,7 +969,7 @@ void saveSemesterInfo(Vector<semester>& _semester) {
 				fout << endl << _semester[i].listCourse[i].ID;
 				saveCourseInfo(_semester[i] ,_semester[i].listCourse[i]);
 			}
-		}
+		// }
 		
 		fout.close();
 	}
@@ -1072,7 +1082,6 @@ void editSchoolYear(schoolYear &year) {
 		
 		case 2:
 			chooseSemester(year);
-			cout << year.listSemester[0].regOpen.day << '\n';
 			break;
 		default:
 			break;
@@ -1113,6 +1122,8 @@ void allStaffFunction() {
 	Vector <schoolYear> allYear;
 	loadLastSave(allYear);
 
+	// cout << allYear[1].listSemester[1].listCourse.size() << '\n';
+	// exit (0);
 	// for (int i = 0; i < allYear[1].listSemester.size(); i++) {
 	// 	cout << allYear[1].listSemester[i].name << '\n';
 	// }
@@ -1204,7 +1215,8 @@ void saveSemester(semester& _semester) {
 		fout << _semester.regClose.day << '/' << _semester.regClose.month << '/' << _semester.regClose.year << endl;
 
 		for (int i = 0; i < _semester.listCourse.size(); ++i) {
-			fout << endl << _semester.listCourse[i].ID;
+			// cout << _semester.listCourse[i].ID << '\n';
+			fout << _semester.listCourse[i].ID << '\n';
 			saveCourseInfo(_semester ,_semester.listCourse[i]);
 		}
 	}

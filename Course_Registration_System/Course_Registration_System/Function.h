@@ -106,7 +106,7 @@ struct schoolYear {
 
 //Staff function
 void createNewYear(Vector<schoolYear> &allYear);
-void viewCourses(Vector<course> courseList); //(task 9/19)
+void viewCourses(Vector<course> &courseList); //(task 9/19)
 void viewStudentsInCourse(course crs);//(task 20)
 void viewListOfClass(schoolYear _schoolYear);//(task 17)
 bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 11) return false in case there's no such course with that ID in list
