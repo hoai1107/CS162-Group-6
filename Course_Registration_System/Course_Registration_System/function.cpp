@@ -189,33 +189,37 @@ void createNewClasses(schoolYear& _schoolYear){
 }
 
 void addCourseToSemester(semester& sem){ // chi add info, chua add student
-	cout<<"Enter 1 to add a new course or 0 to stop.";
+	// cout<<"Enter 1 to add a new course or 0 to stop.";
 	
-	int choice;
-	cin>>choice;
+	// int choice;
+	// cin>>choice;
 
-	while(choice){
-		course crs;
-		cout << "Enter ID of the course: ";
-		cin >> crs.ID;
-		cout << "Enter name of the course: ";
-		cin >> crs.name;
-		cout << "Enter name of the teacher: ";
-		cin >> crs.teacher;
-		cout << "Enter the number of credits: ";
-		cin >> crs.numCredits;
-		for(int i=0; i<2; i++){
-			cout << "Enter session " << (i+1) << " of the course:" << endl; 
-			lesson sess;
-			cout << "	Enter the day for the session: ";
-			cin >> sess.day;
-			cout << "	At what time ? : ";
-			cin >> sess.time;
-			crs.listLesson.push_back(sess);
-		}
-		cout << "Done!" << endl << "Enter 1 to add another course or 0 to stop.";
-		cin>>choice;
+	// while(choice){
+	course crs;
+	cout << "Course ID: ";
+	cin >> crs.ID; cin.get();
+	cout << "Course name: ";
+	getline(cin, crs.name);
+	cout << "Teacher name: ";
+	getline(cin, crs.teacher);
+	cout << "Number of credits: ";
+	cin >> crs.numCredits;
+	for(int i=0; i<2; i++){
+		cout << "Session " << (i+1) << " of the course:" << endl; 
+		lesson sess;
+		cout << "	Day for the session (MON / TUE / WED / THU / FRI / SAT): ";
+		cin >> sess.day;
+		cout << "	Time for the session (7:30 / 9:30 / 13:30 / 15:30): ";
+		cin >> sess.time;
+		crs.listLesson.push_back(sess);
 	}
+	sem.listCourse.push_back(crs);
+	saveCourseInfo(sem, crs);
+	cout << "Course is added successfully!\n";
+	system("pause");
+	// 	cout << "Done!" << endl << "Enter 1 to add another course or 0 to stop.";
+	// 	cin>>choice;
+	// }
 }
 
 void enrollCourses(student& _student, semester _semester) {
@@ -276,16 +280,19 @@ void enrollCourses(student& _student, semester _semester) {
     }
 }
 
-void createCourseRegistration(schoolYear& _schoolYear) {
+void chooseSemester(schoolYear& _schoolYear) {
 	system("cls");
-	Vector <semester> listSem = _schoolYear.listSemester;
-	if (listSem.size() == 0) {
+	if (_schoolYear.listSemester.size() == 0) {
 		cout << "None semester in this year!\n";
 		return;
 	}
 	Vector <string> Sem;
-	for (int i = 0; i < listSem.size(); i++)
-		Sem.push_back(listSem[i].name);
+	// cout << "Oh no\n";
+	for (int i = 0; i < _schoolYear.listSemester.size(); i++) {
+		Sem.push_back(_schoolYear.listSemester[i].name);
+		// cout << Sem[Sem.size()-1]  << '\n';
+	}
+	// exit (0);
 
 	while (true) {
 		system("cls");
@@ -294,27 +301,56 @@ void createCourseRegistration(schoolYear& _schoolYear) {
 
 		if (t == Sem.size()) return;
 
-		auto &sem = _schoolYear.listSemester[t];
-		cout << "Please set the start date and end date for registration:" << endl;
-		cout << "Enter start date (DD/MM/YYYY): ";
-		cin >> sem.regOpen.day; cin.get();
-		cin >> sem.regOpen.month; cin.get();
-		cin >> sem.regOpen.year;
-		cout << "Enter end date (DD/MM/YYYY): ";
-		cin >> sem.regClose.day; cin.get();
-		cin >> sem.regClose.month; cin.get();
-		cin >> sem.regClose.year;
+		editSemester(_schoolYear.listSemester[t]);
+	}
+}
 
-		if (!(sem.regOpen <= sem.regClose)) {
-			cout << "Error: Start date must be before End date!\n";
-			system("pause");
+void editSemester(semester& _semester) {
+	system("cls");
+	Vector <string> listAction;
+	listAction.push_back("Create course registration session");
+	listAction.push_back("Add a course");
+
+	while(true) {
+		system("cls");
+		cout << "Choose your function. BACKSPACE to stop\n";
+		int t = actionList(listAction, {0, 1});
+
+		if (t == listAction.size()) return;
+
+		switch (t) {
+			case 0:
+				createCourseRegistration(_semester);
+				break;
+
+			case 1:
+				addCourseToSemester(_semester);
+				break;
 		}
-		else {
-			saveSemester(sem);
-			cout << "Registration session is created successfully.\n";
-			system("pause");
-			return;
-		}
+	}
+}
+
+void createCourseRegistration(semester& sem) {
+	system("cls");
+	cout << "Please set the start date and end date for registration:" << endl;
+	cout << "Enter start date (DD/MM/YYYY): ";
+	cin >> sem.regOpen.day; cin.get();
+	cin >> sem.regOpen.month; cin.get();
+	cin >> sem.regOpen.year;
+	cout << "Enter end date (DD/MM/YYYY): ";
+	cin >> sem.regClose.day; cin.get();
+	cin >> sem.regClose.month; cin.get();
+	cin >> sem.regClose.year;
+
+	if (!(sem.regOpen <= sem.regClose)) {
+		cout << "Error: Start date must be before End date!\n";
+		system("pause");
+	}
+	else {
+		saveSemester(sem);
+		cout << "Registration session is created successfully.\n";
+		system("pause");
+		return;
 	}
 }
 
@@ -782,7 +818,7 @@ Vector<course> getUnenrolledCourseList(semester _semester, student _student) {
 void loadSemesterInfo(Vector<semester>& _semester) {
 	
 	ifstream fin;
-
+	
 	for (int i = 0; i < 3; i++) {
 		
 		string folderName;
@@ -875,8 +911,8 @@ void saveCourseInfo(semester _semester, course& _course) {
 	if (_semester.name == "2" || _semester.name == "summer" || _semester.name == "Summer") folderName = "Summer";
 	if (_semester.name == "3" || _semester.name == "autumn" || _semester.name == "Autumn") folderName = "Autumn";
 
-	if (!fs::exists(root / "Semester"/ folderName / _course.ID / ("course_info.txt"))) {
-		fs::create_directory(root / "Semester"/ folderName / _course.ID / ("course_info.txt"));
+	if (!fs::exists(root / "Semester"/ folderName / _course.ID)) {
+		fs::create_directory(root / "Semester"/ folderName / _course.ID);
 	}
 
 	fout.open(root / "Semester"/ folderName / _course.ID / ("course_info.txt"));
@@ -1014,7 +1050,7 @@ void editSchoolYear(schoolYear &year) {
 	Vector <string> listOperation;
 	listOperation.push_back("Add new classes");
 	listOperation.push_back("Create new semester");
-	listOperation.push_back("Add course registration session");
+	listOperation.push_back("Edit semester");
 
 	while (true) {
 		system ("cls");
@@ -1035,7 +1071,8 @@ void editSchoolYear(schoolYear &year) {
 			break;
 		
 		case 2:
-			createCourseRegistration(year);
+			chooseSemester(year);
+			cout << year.listSemester[0].regOpen.day << '\n';
 			break;
 		default:
 			break;
@@ -1075,6 +1112,11 @@ void allStaffFunction() {
 	// exit (0);
 	Vector <schoolYear> allYear;
 	loadLastSave(allYear);
+
+	// for (int i = 0; i < allYear[1].listSemester.size(); i++) {
+	// 	cout << allYear[1].listSemester[i].name << '\n';
+	// }
+	// exit (0);
 
 	system("cls");
 

@@ -113,7 +113,7 @@ bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 
 void createNewClasses(schoolYear& _schoolYear);//(task 2)
 void createSemester(schoolYear& _schoolYear);//(task 6)
 void addCourseToSemester(semester& sem); //(task 8)
-void createCourseRegistration(schoolYear& _schoolYear);//(task 7)
+void createCourseRegistration(semester& _semester);//(task 7)
 void updateCourseInfo(semester& _semester);//(task 10)
 void viewCourseScoreboard(course crs);//(task 23)
 void exportStudentInCourseToCSV(course& _course);//(task 21)
@@ -149,7 +149,7 @@ Vector<course> getUnenrolledCourseList(semester _semester, student _student);
 
 void loadSemesterInfo(semester& _semester);
 void loadCourseInfo(semester _semester, course& _course);
-void saveCourseInfo(course& _course);
+void saveCourseInfo(semester _semester, course& _course);
 void saveSemesterInfo(semester& _semester);
 void loadLastSave(Vector <schoolYear> &listYear);
 
@@ -160,7 +160,8 @@ void editSchoolYear(schoolYear &year);
 void addClassToYear(schoolYear &year);
 void addSemesterToYear(schoolYear &year);
 void saveSemester(semester& _semester);
- 
-
+void editSemester(semester& _semester);
+void chooseSemester(schoolYear& _schoolYear);
+// void fakeFunction();
 
 #endif // !_MYFUNCTION_H_
