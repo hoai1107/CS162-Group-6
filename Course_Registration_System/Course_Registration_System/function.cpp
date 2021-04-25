@@ -944,7 +944,12 @@ void loadCourseInfo(semester _semester, course& _course) {
 	if (fin.is_open()) {
 		getline(fin, _course.name);
 		getline(fin, _course.teacher);
+<<<<<<< HEAD
 		fin >> _course.numCredits; fin.ignore();
+=======
+		fin >> _course.numCredits;
+		fin.ignore();
+>>>>>>> e79eb8d50594cfd2c4d20fc41a13906a0aa2fe20
 
 		lesson _lesson;
 		getline(fin, _lesson.day, ',');
