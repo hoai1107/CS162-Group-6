@@ -317,7 +317,7 @@ void editSemester(semester& _semester) {
 	listAction.push_back("View list of courses");
 	listAction.push_back("Update a course infomation");
 	listAction.push_back("Delete a course");
-
+	listAction.push_back("View course scoreboard");
 	while(true) {
 		system("cls");
 		cout << "Choose your function. BACKSPACE to stop\n";
@@ -344,6 +344,10 @@ void editSemester(semester& _semester) {
 
 			case 4:
 				deleteCourseInSemester(_semester);
+				break;
+
+			case 5:
+				viewCourseScoreboard(_semester);
 				break;
 
 			default:
@@ -520,7 +524,10 @@ void viewStudentScoreboard(student stu){
 	}
 }
 
-void viewCourseScoreboard(course crs){                              
+void viewCourseScoreboard(semester& _semester){     
+	course crs = getCourse(_semester);
+	if (crs.name == "-1") return;
+	system("cls");
 	cout << left << setw(40) << "Name" 
 				 << setw(15) << "Midterm" 
 				 << setw(15) << "Final" 
