@@ -109,7 +109,7 @@ void createNewYear(Vector<schoolYear> &allYear);
 void viewCourses(Vector<course> &courseList); //(task 9/19)
 void viewStudentsInCourse(course crs);//(task 20)
 void viewListOfClass(schoolYear _schoolYear);//(task 17)
-bool deleteCourseInSemester(semester& _semester, string removeCourseID);//(task 11) return false in case there's no such course with that ID in list
+bool deleteCourseInSemester(semester& _semester);//(task 11) return false in case there's no such course with that ID in list
 void createNewClasses(schoolYear& _schoolYear);//(task 2)
 void createSemester(schoolYear& _schoolYear);//(task 6)
 void addCourseToSemester(semester& sem); //(task 8)
@@ -132,7 +132,7 @@ void enrollCourses(student& _student, semester& _semester);
 void viewStudentScoreboard(student stu);
 
 //Additional function
-course& getCourse(semester& _semester,string courseID);
+course& getCourse(semester& _semester);
 lesson getLesson(semester& _semester,string ID,int index);//get the time of the course with ID
 bool checkFullSlot(semester _semester,string ID);//check if the course is full yet
 void addStudentToCourse(student _student, string _courseID, semester& _semester);

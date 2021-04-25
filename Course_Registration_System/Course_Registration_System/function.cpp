@@ -8,6 +8,7 @@ using namespace std;
 namespace fs= std::filesystem;
 
 fs::path root= fs::current_path()/"data";
+course fakeCourse;
 
 void addStudentToClass(classUni& className) {
 	ifstream fin;
@@ -161,11 +162,17 @@ void viewStudentsInCourse(course crs) {
 	system("pause");
 }
 
-
-bool deleteCourseInSemester(semester& _semester, string removeCourseID){
+bool deleteCourseInSemester(semester& _semester){
+	course& removeCourse = getCourse(_semester);
 	for(int i=0;i< _semester.listCourse.size();++i){
-		if(removeCourseID==_semester.listCourse[i].name){
+		if(removeCourse.ID==_semester.listCourse[i].ID){
 			_semester.listCourse.erase(i);
+			if (fs::exists(root / "Semester"/ _semester.name / removeCourse.ID)) {
+				fs::remove_all(root / "Semester"/ _semester.name / removeCourse.ID);
+			}
+			saveSemester(_semester);
+			cout << "Course is removed successfully.\n";
+			system("pause");
 			return true;
 		}
 	}
@@ -191,12 +198,6 @@ void createNewClasses(schoolYear& _schoolYear){
 }
 
 void addCourseToSemester(semester& sem){ // chi add info, chua add student
-	// cout<<"Enter 1 to add a new course or 0 to stop.";
-	
-	// int choice;
-	// cin>>choice;
-
-	// while(choice){
 	course crs;
 	cout << "Course ID: ";
 	cin >> crs.ID; cin.get();
@@ -211,18 +212,18 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 		lesson sess;
 		cout << "	Day for the session (MON / TUE / WED / THU / FRI / SAT): ";
 		cin >> sess.day;
+		cout << sess.day << '\n';
 		cout << "	Time for the session (7:30 / 9:30 / 13:30 / 15:30): ";
 		cin >> sess.time;
+		cout << sess.time << '\n';
 		crs.listLesson.push_back(sess);
 	}
+	cout << crs.listLesson.size() << '\n';
 	sem.listCourse.push_back(crs);
 	saveSemester(sem);
-	saveCourseInfo(sem, crs);
+	// saveCourseInfo(sem, crs);
 	cout << "Course is added successfully!\n";
 	system("pause");
-	// 	cout << "Done!" << endl << "Enter 1 to add another course or 0 to stop.";
-	// 	cin>>choice;
-	// }
 }
 
 void enrollCourses(student& _student, semester _semester) {
@@ -314,6 +315,8 @@ void editSemester(semester& _semester) {
 	listAction.push_back("Create course registration session");
 	listAction.push_back("Add a course");
 	listAction.push_back("View list of courses");
+	listAction.push_back("Update a course infomation");
+	listAction.push_back("Delete a course");
 
 	while(true) {
 		system("cls");
@@ -333,6 +336,17 @@ void editSemester(semester& _semester) {
 
 			case 2:
 				viewCourses(_semester.listCourse);
+				break;
+			
+			case 3:
+				updateCourseInfo(_semester);
+				break;
+
+			case 4:
+				deleteCourseInSemester(_semester);
+				break;
+
+			default:
 				break;
 		}
 	}
@@ -395,57 +409,70 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(h, c);
 }
 
+/// STILL BUGGGGGGGGGGGGGGGGGGGGGGGGGGG
 void updateCourseInfo(semester& _semester){
-	cout<<"Enter the ID of the course you want to update information: ";
-	string courseID;
-	getline(cin,courseID);
+	course& _course=getCourse(_semester);
+	if (_course.name == "-1") return;
 
-	course& _course=getCourse(_semester,courseID);
+	Vector <string> update;
+	update.push_back("Course ID");
+	update.push_back("Course Name");
+	update.push_back("Teacher Name");
+	update.push_back("Number of Credits");
+	update.push_back("Sessions");
 
-	cout<<"Please choose the section you want to update for the course:"<<endl
-		<<"1: Course ID"<<endl
-		<<"2: Course Name"<<endl
-		<<"3: Teacher Name"<<endl
-		<<"4: Number of Credits"<<endl
-		<<"5: Sessions"<<endl
-		<<"0: Stop update"<<endl
-		<<"Enter the number of the part you want to change: ";
-
-	int choice;
-	cin>>choice;
-
-	while(choice){
-		switch(choice){
-			case 1: 
+	fs::path link = root / "Semester" / _semester.name;
+	// cout << link << '\n';
+	// exit (0);
+	cin.ignore();
+	while(true){
+		system ("cls");
+		cout<<"Please choose the section you want to update for the course. BACKSPACE to stop"<<endl;
+		int t = actionList(update, {0, 1});
+		if (t == update.size()) break;
+		switch(t){
+			case 0: 
 			{
 				cout<<"Enter the new ID: ";
-				cin.ignore();
-				cin>>_course.ID;
+				// cin.ignore();
+				// cout << int(cin.get()) << '\n';
+				string tmp = _course.ID;
+				getline(cin, _course.ID);
+				fs::rename(link / tmp, link / _course.ID);
+				cout << "Updated successfully!\n";
+				system("pause");
+				// system ("pause");
 				break;
 			}
-			case 2:	
+			case 1:	
 			{
 				cout<<"Enter the new course name: ";
-				cin.ignore();
+				// cin.ignore();
 				getline(cin,_course.name);
+				cout << "Updated successfully!\n";
+				system("pause");
+				break;
+			}
+			case 2: 
+			{
+				cout<<"Enter the new teacher name: ";
+				// cin.ignore();
+				getline(cin,_course.teacher);
+				cout << "Updated successfully!\n";
+				system("pause");
 				break;
 			}
 			case 3: 
 			{
-				cout<<"Enter the new teacher name: ";
-				cin.ignore();
-				getline(cin,_course.teacher);
+				cout<<"Enter the new number of credits: ";
+				cin>>_course.numCredits; cin.ignore();
+				cout << "Updated successfully!\n";
+				system("pause");
 				break;
 			}
 			case 4: 
-			{
-				cout<<"Enter the new number of credits: ";
-				cin>>_course.numCredits;
-				break;
-			}
-			case 5: 
 			{	
-				cout<<"Choose the session you want to update: ";
+				cout<<"Choose the session you want to update:\n";
 				cout<<"1: "<<_course.listLesson[0].day<<' '<<_course.listLesson[0].time<<endl;
 				cout<<"2: "<<_course.listLesson[1].day<<' '<<_course.listLesson[1].time<<endl;
 				int temp;
@@ -453,27 +480,29 @@ void updateCourseInfo(semester& _semester){
 
 				cin.ignore();
 				cout<<"Enter the new day: ";
-				getline(cin,_course.listLesson[temp].day);
+				getline(cin,_course.listLesson[temp-1].day);
 				cout<<"Enter the new time: ";
-				getline(cin,_course.listLesson[temp].time);
+				getline(cin,_course.listLesson[temp-1].time);
 				
 				cout<<"Do you want to change the other session?(y/n)";
 				char check;
-				cin>>check;
+				cin>>check; cin.ignore();
 
 				if(tolower(check)=='y'){
-					temp^=1;
-					cin.ignore();
+					temp = 3 - temp;
+					// cin.ignore();
 					cout<<"Enter the new day: ";
-					getline(cin,_course.listLesson[temp].day);
+					getline(cin,_course.listLesson[temp-1].day);
 					cout<<"Enter the new time: ";
-					getline(cin,_course.listLesson[temp].time);
+					getline(cin,_course.listLesson[temp-1].time);
 				}
+				cout << "Updated successfully!\n";
+				system("pause");
 			}
 		}
-		cout<<"Do you want to update anything else?";
-		cin>>choice;
 	}
+	saveSemester(_semester);
+	saveCourseInfo(_semester, _course);
 }
 
 void viewStudentScoreboard(student stu){
@@ -568,14 +597,24 @@ int changePassword_Student(Vector<student>& _student, int index) {
 	return 0;
 }
 
-course& getCourse(semester& _semester,string courseID){
+course& getCourse(semester& _semester){
+	Vector <string> lCourse;
 	for(int i=0;i<_semester.listCourse.size();++i){
-		if(courseID == _semester.listCourse[i].ID){
-			return _semester.listCourse[i];
-		}
+		lCourse.push_back(_semester.listCourse[i].name);
 	}
-	cout << "Something Wrong Here!!! -> getCourse";
-	return _semester.listCourse[0];
+	system("cls");
+	if (lCourse.size() == 0) {
+		cout << "None course in this semester!\n";
+		system("pause");
+		return fakeCourse;
+	}
+	while (true) {
+		system("cls");
+		cout << "Choose your course. BACKSPACE to stop\n";
+		int t = actionList(lCourse, {0, 1});
+		if (t == lCourse.size()) return fakeCourse;
+		return _semester.listCourse[t];
+	}
 }
 
 lesson getLesson(semester& _semester,string ID,int index){
@@ -898,7 +937,7 @@ void loadCourseInfo(semester _semester, course& _course) {
 	if (fin.is_open()) {
 		getline(fin, _course.name);
 		getline(fin, _course.teacher);
-		fin >> _course.numCredits;
+		fin >> _course.numCredits; fin.ignore();
 
 		lesson _lesson;
 		getline(fin, _lesson.day, ',');
@@ -930,10 +969,10 @@ void saveCourseInfo(semester _semester, course& _course) {
 	if (fout.is_open()) {
 		fout << _course.name << endl;
 		fout << _course.teacher << endl;
-		fout << _course.numCredits;
+		fout << _course.numCredits << endl;
 
 		for (int i = 0; i < 2; ++i) {
-			fout << endl << _course.listLesson[i].day << ',' << _course.listLesson[i].time;
+			fout << _course.listLesson[i].day << ',' << _course.listLesson[i].time << '\n';
 		}
 	}
 
@@ -1083,6 +1122,7 @@ void editSchoolYear(schoolYear &year) {
 		case 2:
 			chooseSemester(year);
 			break;
+
 		default:
 			break;
 		}
@@ -1118,6 +1158,7 @@ void chooseAcademicYear(Vector<schoolYear> &allYear) {
 }
 
 void allStaffFunction() {
+	fakeCourse.name = "-1";
 	// exit (0);
 	Vector <schoolYear> allYear;
 	loadLastSave(allYear);
@@ -1199,7 +1240,7 @@ void saveSemester(semester& _semester) {
 	fs :: path link = root/"Semester"/_semester.name;
 	// cout << "bug!\n";
 	if (!fs::exists(link))
-		system(("mkdir -p " + link.string()).c_str());
+		system(("mkdir " + link.string()).c_str());
 	// cout << "bug!\n";
 
 	ofstream fout;
