@@ -870,15 +870,48 @@ void viewClassScoreboard(schoolYear& _schoolYear, string className) {
 	}
 }
 
-bool createScoreboardFile(const course& _course){
-	if(fs::exists(root/"Semester"/_course.ID/"scoreboard.csv")){
-		return true;
+void createScoreboardFile(course& _course, semester _semester) {
+	ofstream fout;
+
+	string folderName;
+	if (_semester.name == "1" || _semester.name == "fall" || _semester.name == "Fall") folderName = "Fall";
+	if (_semester.name == "2" || _semester.name == "summer" || _semester.name == "Summer") folderName = "Summer";
+	if (_semester.name == "3" || _semester.name == "autumn" || _semester.name == "Autumn") folderName = "Autumn";
+	fs::path coursePath = root / "Semester" / folderName / _course.ID / "scoreboard.csv";
+	fout.open(coursePath);
+
+	if (fout.is_open()) {
+		fout << "No" << ','
+			<< "ID" << ','
+			<< "First Name" << ','
+			<< "Last Name" << ','
+			<< "Class" << ','
+			<< "Gender" << ','
+			<< "DOB" << ','
+			<< "Social ID" << ','
+			<< "Midterm" << ','
+			<< "Final" << ','
+			<< "Other" << ','
+			<< "Total" << endl;
+
+		for (int i = 0; i < _course.listStudent.size(); ++i) {
+			student _student = _course.listStudent[i];
+			fout << i + 1 << ','
+				<< _student.ID << ','
+				<< _student.firstName << ','
+				<< _student.lastName << ','
+				<< _student.className << ','
+				<< _student.gender << ','
+				<< _student.DOB.day << '/' << _student.DOB.month << '/' << _student.DOB.year << ','
+				<< _student.socialID;
+
+			fout << endl;
+		}
 	}
-	if(!fs::exists(root/"Semester"/_course.ID/(_course.ID+"_list.csv"))){
-		return false;
+	else {
+		cout << "Something wrong with the file!!";
 	}
-	fs::copy_file(root/"Semester"/_course.ID/(_course.ID+"_list.csv"),root/"Semester"/_course.ID/"scoreboard.csv");
-	return true;
+	fout.close();
 }
 
 Vector<course> getUnenrolledCourseList(semester _semester, student _student) {
