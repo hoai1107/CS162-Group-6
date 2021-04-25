@@ -718,16 +718,31 @@ int actionList(Vector<string> str, COORD position) {
 	delete[] color;
 }
 
-void exportStudentInCourseToCSV(course& _course) {
+void exportStudentInCourseToCSV(course& _course, semester _semester) {
 	ofstream fout;
-	const string name = _course.name + "_list" + ".csv";
-	fout.open(name);
+
+	string folderName;
+	if (_semester.name == "1" || _semester.name == "fall" || _semester.name == "Fall") folderName = "Fall";
+	if (_semester.name == "2" || _semester.name == "summer" || _semester.name == "Summer") folderName = "Summer";
+	if (_semester.name == "3" || _semester.name == "autumn" || _semester.name == "Autumn") folderName = "Autumn";
+
+	const string name = _course.ID + "_list" + ".csv";
+	fout.open(root / "Semester" / folderName /_course.ID / name);
 
 	if (fout.is_open()) {
+		fout << "No" << ','
+			<< "ID" << ','
+			<< "First Name" << ','
+			<< "Last Name" << ','
+			<< "Class" << ','
+			<< "Gender" << ','
+			<< "DOB" << ','
+			<< "Social ID" << endl;
+
 		for (int i = 0; i < _course.listStudent.size(); ++i) {
 			student _student = _course.listStudent[i];
 			fout << i + 1 << ','
-				<< _student.ID<< ','
+				<< _student.ID << ','
 				<< _student.firstName << ','
 				<< _student.lastName << ','
 				<< _student.className << ','
@@ -735,7 +750,7 @@ void exportStudentInCourseToCSV(course& _course) {
 				<< _student.DOB.day << '/' << _student.DOB.month << '/' << _student.DOB.year << ','
 				<< _student.socialID;
 
-			fout<<endl;	
+			fout << endl;
 		}
 	}
 	else {
