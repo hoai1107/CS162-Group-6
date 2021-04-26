@@ -27,6 +27,7 @@ void addStudentToClass(classUni& className) {
 		student st;
 		st.no = i;
 		fin >> st.ID;
+		if (i >= 2 && st.ID == className.listStudent[i - 2].ID) break;
 		fin.ignore(1, ',');
 
 		getline(fin, st.firstName, ',');
@@ -42,8 +43,9 @@ void addStudentToClass(classUni& className) {
 		fin >> st.DOB.year;
 		fin.ignore(1, ',');
 
-		fin >> st.socialID;
-        fin.ignore();
+		getline(fin,st.socialID, ',');
+		getline(fin, st.password, '\n');
+
         ++i;
 		className.listStudent.push_back(st);
 	}
@@ -73,7 +75,8 @@ void displayClass(classUni _class) {
 }
 
 void viewEnrolledCourses(student _student, semester _semester) {
-    Vector <course> res;
+	cout << "You have enrolled:\n";
+	Vector <course> res;
     for (int i = 0; i < _student.enrolled.size(); ++i) {
         for (int j = 0; j < _semester.listCourse.size(); ++j)
             if (_student.enrolled[i].ID == _semester.listCourse[j].ID) {
@@ -228,8 +231,13 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 }
 
 void enrollCourses(student& _student, semester _semester) {
-    while (_student.enrolled.size() <= 5) {
+	while (_student.enrolled.size() <= 5) {
         Vector<course> unenrolledCourse = getUnenrolledCourseList(_semester, _student);
+		if (unenrolledCourse.size() == 0) {
+			cout << "There isn't any courses available for you.";
+			system("pause");
+			return;
+		}
         cout << "Choose the course you want to enroll. BACKSPACE to stop." << endl;
         viewCourses(unenrolledCourse);
 
@@ -381,27 +389,30 @@ void createCourseRegistration(semester& sem) {
 	}
 }
 
-int login(Vector<staff> _staff, Vector<student> _student, int& index) {
+int login(Vector<staff> _staff, Vector<schoolYear> _year, int& userIndex, int& classIndex, int& yearIndex) {
 
 	int attempID;
 	string attempPass;
 
-	gotoxy(45, 3);
-	cout << "ID      : "; cin >> attempID;
-
-	gotoxy(45, 4);
+	cout << "ID      : "; cin >> attempID; cin.ignore();
 	cout << "Password: "; getline(cin, attempPass);
+	cout << "\n";
 
 	for (int i = 0; i < _staff.size(); i++)
 		if (attempID == _staff[i].ID && attempPass == _staff[i].password) {
-			index = i;
+			userIndex = i;
 			return 1;
 		}
-	for (int i = 0; i < _staff.size(); i++)
-		if (attempID == _student[i].ID && attempPass == _student[i].password) {
-			index = i;
-			return 2;
-		}
+	for (int i = 0; i < _year.size(); i++) 
+		for (int j = 0; j < _year[i].newClass.size(); j++) 
+			for (int k = 0; k < _year[i].newClass[j].listStudent.size(); k++)
+				if (_year[i].newClass[j].listStudent[k].ID == attempID && _year[i].newClass[j].listStudent[k].password == attempPass) {
+					userIndex = k;
+					classIndex = j;
+					yearIndex = i;
+					return 2;
+				
+
 	return 0;
 }
 
@@ -414,7 +425,6 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(h, c);
 }
 
-/// STILL BUGGGGGGGGGGGGGGGGGGGGGGGGGGG
 void updateCourseInfo(semester& _semester){
 	course& _course=getCourse(_semester);
 	if (_course.name == "-1") return;
