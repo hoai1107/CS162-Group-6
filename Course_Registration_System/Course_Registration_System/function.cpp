@@ -27,8 +27,8 @@ void addStudentToClass(classUni& className) {
 		student st;
 		st.no = i;
 		fin >> st.ID;
+		if (i >= 2 && st.ID == className.listStudent[i - 2].ID) break;
 		fin.ignore(1, ',');
-
 		getline(fin, st.firstName, ',');
 		getline(fin, st.lastName, ',');
 
@@ -42,8 +42,9 @@ void addStudentToClass(classUni& className) {
 		fin >> st.DOB.year;
 		fin.ignore(1, ',');
 
-		fin >> st.socialID;
-        fin.ignore();
+		getline(fin,st.socialID, ',');
+		getline(fin, st.password, '\n');
+
         ++i;
 		className.listStudent.push_back(st);
 	}
@@ -73,7 +74,8 @@ void displayClass(classUni _class) {
 }
 
 void viewEnrolledCourses(student _student, semester _semester) {
-    Vector <course> res;
+	cout << "You have enrolled:\n";
+	Vector <course> res;
     for (int i = 0; i < _student.enrolled.size(); ++i) {
         for (int j = 0; j < _semester.listCourse.size(); ++j)
             if (_student.enrolled[i].ID == _semester.listCourse[j].ID) {
@@ -222,14 +224,18 @@ void addCourseToSemester(semester& sem){ // chi add info, chua add student
 	cout << crs.listLesson.size() << '\n';
 	sem.listCourse.push_back(crs);
 	saveSemester(sem);
-	// saveCourseInfo(sem, crs);
 	cout << "Course is added successfully!\n";
 	system("pause");
 }
 
 void enrollCourses(student& _student, semester _semester) {
-    while (_student.enrolled.size() <= 5) {
+	while (_student.enrolled.size() <= 5) {
         Vector<course> unenrolledCourse = getUnenrolledCourseList(_semester, _student);
+		if (unenrolledCourse.size() == 0) {
+			cout << "There isn't any courses available for you.";
+			system("pause");
+			return;
+		}
         cout << "Choose the course you want to enroll. BACKSPACE to stop." << endl;
         viewCourses(unenrolledCourse);
 
@@ -319,7 +325,9 @@ void editSemester(semester& _semester) {
 	listAction.push_back("Update a course infomation");
 	listAction.push_back("Delete a course");
 	listAction.push_back("View course scoreboard");
-	listAction.push_back("Update student result");
+	listAction.push_back("Export list of students in course (.csv)");
+	listAction.push_back("Import course scoreboard (.csv)");
+	// listAction.push_back("Update student result");
 
 	while(true) {
 		system("cls");
@@ -354,7 +362,13 @@ void editSemester(semester& _semester) {
 				break;
 
 			case 6:
-				updateStudentResult(_semester);
+				exportStudentInCourseToCSV(_semester);
+				break;
+
+			// case 7:
+			// 	importScoreboard(_semester);
+			// case 6:
+			// 	updateStudentResult(_semester);
 
 			default:
 				break;
@@ -386,26 +400,28 @@ void createCourseRegistration(semester& sem) {
 	}
 }
 
-int login(Vector<staff> _staff, Vector<student> _student, int& index) {
+int login(Vector<staff> _staff, Vector<schoolYear> _year, int& userIndex, int& classIndex, int& yearIndex) {
 
 	int attempID;
 	string attempPass;
 
-	gotoxy(45, 3);
-	cout << "ID      : "; cin >> attempID;
-
-	gotoxy(45, 4);
+	cout << "ID      : "; cin >> attempID; cin.ignore();
 	cout << "Password: "; getline(cin, attempPass);
+	cout << "\n";
 
 	for (int i = 0; i < _staff.size(); i++)
 		if (attempID == _staff[i].ID && attempPass == _staff[i].password) {
-			index = i;
+			userIndex = i;
 			return 1;
 		}
-	for (int i = 0; i < _staff.size(); i++)
-		if (attempID == _student[i].ID && attempPass == _student[i].password) {
-			index = i;
-			return 2;
+	for (int i = 0; i < _year.size(); i++) 
+		for (int j = 0; j < _year[i].newClass.size(); j++) 
+			for (int k = 0; k < _year[i].newClass[j].listStudent.size(); k++)
+				if (_year[i].newClass[j].listStudent[k].ID == attempID && _year[i].newClass[j].listStudent[k].password == attempPass) {
+					userIndex = k;
+					classIndex = j;
+					yearIndex = i;
+					return 2;
 		}
 	return 0;
 }
@@ -556,12 +572,12 @@ void viewCourseScoreboard(semester& _semester){
 }
 
 void updateStudentResult(semester& _semester) {
-	// course& crs = getCourse(_semester);
-	// if (crs.name == "-1") return;
+	course& crs = getCourse(_semester);
+	if (crs.name == "-1") return;
 
-	// cout << "Student ID: ";
-	// int id;
-	// cin >> id;
+	cout << "Student ID: ";
+	int id;
+	cin >> id;
 	// for (int i = 0; i < stu.enrolled.size(); i++) {
 	// 	if (stu.enrolled[i].ID == to_string(id)) {
 	// 		cout << "Enter the mark you want to update (1:midterm 2:final 3:other) : ";
@@ -583,8 +599,8 @@ void updateStudentResult(semester& _semester) {
 	// 		}
 	// 	}
 	// }
-	// cout << "The course you entered doesn't exist";
-	// return;
+	cout << "The course you entered doesn't exist";
+	return;
 }
 
 int changePassword_Staff(Vector<staff>& _staff, int index) {
@@ -729,7 +745,9 @@ int actionList(Vector<string> str, COORD position) {
 	delete[] color;
 }
 
-void exportStudentInCourseToCSV(course& _course, semester _semester) {
+void exportStudentInCourseToCSV(semester& _semester) {
+	auto _course = getCourse(_semester);
+	if (_course.name == "-1") return;
 	ofstream fout;
 
 	string folderName;
@@ -738,36 +756,36 @@ void exportStudentInCourseToCSV(course& _course, semester _semester) {
 	if (_semester.name == "3" || _semester.name == "autumn" || _semester.name == "Autumn") folderName = "Autumn";
 
 	const string name = _course.ID + "_list" + ".csv";
+	fs::path link = root / "Semester" / folderName /_course.ID / name;
 	fout.open(root / "Semester" / folderName /_course.ID / name);
 
 	if (fout.is_open()) {
 		fout << "No" << ','
 			<< "ID" << ','
-			<< "First Name" << ','
-			<< "Last Name" << ','
-			<< "Class" << ','
-			<< "Gender" << ','
-			<< "DOB" << ','
-			<< "Social ID" << endl;
+			<< "Fullname" << ','
+			<< "Class";
 
 		for (int i = 0; i < _course.listStudent.size(); ++i) {
 			student _student = _course.listStudent[i];
 			fout << i + 1 << ','
 				<< _student.ID << ','
-				<< _student.firstName << ','
-				<< _student.lastName << ','
-				<< _student.className << ','
-				<< _student.gender << ','
-				<< _student.DOB.day << '/' << _student.DOB.month << '/' << _student.DOB.year << ','
-				<< _student.socialID;
+				<< _student.firstName + _student.className << ','
+				<< _student.className;
 
 			fout << endl;
 		}
+		fout.close();
+		// system(link.string().c_str());
+		/// hehe ko bug dau hehehehehehehehheh
+		ShellExecute(NULL,NULL, link.string().c_str(), NULL, NULL, SW_SHOW);
+		cout << "Export file successfully\n";
+		system("pause");
 	}
 	else {
 		cout << "Something wrong with the file!!";
+		fout.close();
+		system ("pause");
 	}
-	fout.close();
 }
 
 void importScoreboard(course& _course, schoolYear& _schoolYear, semester _semester) {
@@ -1097,8 +1115,7 @@ bool IsPathExist(const string &s) {
 }
 
 void addClassToYear(schoolYear &year) {
-	fs::path link = root/year.name;
-
+	fs::path link = root;
 	// CLASS
 	if (!fs::exists(link/"Class"));
 	else {
