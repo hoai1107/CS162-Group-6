@@ -116,10 +116,10 @@ void addCourseToSemester(semester& sem); //(task 8)
 void createCourseRegistration(semester& _semester);//(task 7)
 void updateCourseInfo(semester& _semester);//(task 10)
 void viewCourseScoreboard(semester& _semester);//(task 23)
-void exportStudentInCourseToCSV(course& _course);//(task 21)
-void importScoreboard(course& _course, schoolYear& _schoolYear);
-void updateStudentResult(semester& _semester); // (task 24)
-void viewClassScoreboard(schoolYear& _schoolYear, string className); // task 25
+void exportStudentInCourseToCSV(course& _course, semester _semester);//(task 21)
+void importScoreboard(course& _course, schoolYear& _schoolYear, semester _semester);
+void updateStudentResult(student& stu);
+void viewClassScoreboard(schoolYear& _schoolYear, string className);
 
 //Class function
 void addStudentToClass(classUni& className);//(task 4)
@@ -137,7 +137,7 @@ course& getCourse(semester& _semester);
 lesson getLesson(semester& _semester,string ID,int index);//get the time of the course with ID
 bool checkFullSlot(semester _semester,string ID);//check if the course is full yet
 void addStudentToCourse(student _student, string _courseID, semester& _semester);
-bool createScoreboardFile(const course& _course);
+void createScoreboardFile(course& _course, semester _semester);
 int login(Vector<staff> _staff, Vector<student> _student, int& index); // Return 0 if it doesn't match any IDs and pass
                                                                        // 1 if it is staff, 2 if it is student
 void gotoxy(int x, int y);
