@@ -318,6 +318,8 @@ void editSemester(semester& _semester) {
 	listAction.push_back("Update a course infomation");
 	listAction.push_back("Delete a course");
 	listAction.push_back("View course scoreboard");
+	listAction.push_back("Update student result");
+
 	while(true) {
 		system("cls");
 		cout << "Choose your function. BACKSPACE to stop\n";
@@ -349,6 +351,9 @@ void editSemester(semester& _semester) {
 			case 5:
 				viewCourseScoreboard(_semester);
 				break;
+
+			case 6:
+				updateStudentResult(_semester);
 
 			default:
 				break;
@@ -413,7 +418,6 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(h, c);
 }
 
-/// STILL BUGGGGGGGGGGGGGGGGGGGGGGGGGGG
 void updateCourseInfo(semester& _semester){
 	course& _course=getCourse(_semester);
 	if (_course.name == "-1") return;
@@ -428,12 +432,13 @@ void updateCourseInfo(semester& _semester){
 	fs::path link = root / "Semester" / _semester.name;
 	// cout << link << '\n';
 	// exit (0);
-	cin.ignore();
+	// cin.ignore();
 	while(true){
 		system ("cls");
 		cout<<"Please choose the section you want to update for the course. BACKSPACE to stop"<<endl;
 		int t = actionList(update, {0, 1});
 		if (t == update.size()) break;
+		// cin.ignore(1, '\n');
 		switch(t){
 			case 0: 
 			{
@@ -469,7 +474,8 @@ void updateCourseInfo(semester& _semester){
 			case 3: 
 			{
 				cout<<"Enter the new number of credits: ";
-				cin>>_course.numCredits; cin.ignore();
+				cin>>_course.numCredits;
+				 cin.ignore();
 				cout << "Updated successfully!\n";
 				system("pause");
 				break;
@@ -490,7 +496,8 @@ void updateCourseInfo(semester& _semester){
 				
 				cout<<"Do you want to change the other session?(y/n)";
 				char check;
-				cin>>check; cin.ignore();
+				cin>>check; 
+				cin.ignore();
 
 				if(tolower(check)=='y'){
 					temp = 3 - temp;
@@ -547,33 +554,36 @@ void viewCourseScoreboard(semester& _semester){
 	system("pause");
 }
 
-void updateStudentResult(student& stu) {
-	cout << "Please enter the ID of the course you want to update result: ";
-	int id;
-	cin >> id;
-	for (int i = 0; i < stu.enrolled.size(); i++) {
-		if (stu.enrolled[i].ID == to_string(id)) {
-			cout << "Enter the mark you want to update (1:midterm 2:final 3:other) : ";
-			int choice;
-			cin >> choice;
-			cout << "Enter the new score: ";
-			int score;
-			cin >> score;
-			switch (choice) {
-			case 1:
-				stu.enrolled[i].grade.midterm = score;
-				return;
-			case 2:
-				stu.enrolled[i].grade.final = score;
-				return;
-			case 3:
-				stu.enrolled[i].grade.other = score;
-				return;
-			}
-		}
-	}
-	cout << "The course you entered doesn't exist";
-	return;
+void updateStudentResult(semester& _semester) {
+	// course& crs = getCourse(_semester);
+	// if (crs.name == "-1") return;
+
+	// cout << "Student ID: ";
+	// int id;
+	// cin >> id;
+	// for (int i = 0; i < stu.enrolled.size(); i++) {
+	// 	if (stu.enrolled[i].ID == to_string(id)) {
+	// 		cout << "Enter the mark you want to update (1:midterm 2:final 3:other) : ";
+	// 		int choice;
+	// 		cin >> choice;
+	// 		cout << "Enter the new score: ";
+	// 		int score;
+	// 		cin >> score;
+	// 		switch (choice) {
+	// 		case 1:
+	// 			stu.enrolled[i].grade.midterm = score;
+	// 			return;
+	// 		case 2:
+	// 			stu.enrolled[i].grade.final = score;
+	// 			return;
+	// 		case 3:
+	// 			stu.enrolled[i].grade.other = score;
+	// 			return;
+	// 		}
+	// 	}
+	// }
+	// cout << "The course you entered doesn't exist";
+	// return;
 }
 
 int changePassword_Staff(Vector<staff>& _staff, int index) {

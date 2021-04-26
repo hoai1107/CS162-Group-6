@@ -1,5 +1,0 @@
-computer science
-dinh ba tien
-10
-MON,7:30
-TUE,9:30

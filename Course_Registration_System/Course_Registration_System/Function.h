@@ -117,8 +117,9 @@ void createCourseRegistration(semester& _semester);//(task 7)
 void updateCourseInfo(semester& _semester);//(task 10)
 void viewCourseScoreboard(semester& _semester);//(task 23)
 void exportStudentInCourseToCSV(course& _course);//(task 21)
-void updateStudentResult(student& stu);
-void viewClassScoreboard(schoolYear& _schoolYear, string className);
+void importScoreboard(course& _course, schoolYear& _schoolYear);
+void updateStudentResult(semester& _semester); // (task 24)
+void viewClassScoreboard(schoolYear& _schoolYear, string className); // task 25
 
 //Class function
 void addStudentToClass(classUni& className);//(task 4)
