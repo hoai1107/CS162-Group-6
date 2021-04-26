@@ -138,7 +138,7 @@ lesson getLesson(semester& _semester,string ID,int index);//get the time of the 
 bool checkFullSlot(semester _semester,string ID);//check if the course is full yet
 void addStudentToCourse(student _student, string _courseID, semester& _semester);
 void createScoreboardFile(course& _course, semester _semester);
-int login(Vector<staff> _staff, Vector<student> _student, int& index); // Return 0 if it doesn't match any IDs and pass
+int login(Vector<staff> _staff, Vector<schoolYear> _year, int& userIndex, int& classIndex, int& yearIndex); // Return 0 if it doesn't match any IDs and pass
                                                                        // 1 if it is staff, 2 if it is student
 void gotoxy(int x, int y);
 int changePassword_Staff(Vector<staff>& _staff, int index); // return 0 if change successfully, 1 if old password doesn't match password, 2 if new password doesn't match each other
