@@ -27,12 +27,7 @@ int main() {
 	int res = 0;
 	int indexOfUser = 0;
 	while (res != 1 && res != 2) {
-		gotoxy(55, 1);
 		cout << "LOGIN";
-		// APPEARANCE OF LOGIN SYSTEM
-		res = login(_staff, _student, indexOfUser);
-
-		gotoxy(47, 5);
 		if (res == 0) {
 			cout << "Wrong ID or password!";
 			system("pause");
@@ -51,20 +46,21 @@ int main() {
 			allActions.push_back("Enroll in a course.");
 			allActions.push_back("View list of enrolled courses.");
 			allActions.push_back("Remove a course from the enrolled list.");
-			allActions.push_back("Exit.");
+			allActions.push_back("Log out.");
 			int choice;
 			bool exit = false;
 			do {
 				cout << "ENTER to go into tasks. UP ARROW, DOWN ARROW to move. BACKSPACE to exit.";
 				choice = actionList(allActions, {0, 1});
 				switch (choice) {
-					system("CLS");
+					system("cls");
 					case 0: {
 						enrollCourses(_student[indexOfUser], nSemester);
 						break;
 					}
 					case 1: {
 						viewEnrolledCourses(_student[indexOfUser], nSemester);
+						system("pause");
 						break;
 					}
 					case 2: {
@@ -89,19 +85,22 @@ int main() {
 			Vector<string> allActions; 
 			allActions.push_back("View list of your courses.");
 			allActions.push_back("View your scoreboard.");
+			allActions.push_back("Log out.");
 			int choice;
 			bool exit = false;
 			do {
 				cout << "ENTER to go into tasks. UP ARROW, DOWN ARROW to move. BACKSPACE to exit.";
 				choice = actionList(allActions, {0, 1});
 				switch (choice) {
-					system("CLS");
+					system("cls");
 					case 0: {
 						viewEnrolledCourses(_student[indexOfUser], nSemester);
+						system("pause");
 						break;
 					}
 					case 1: {
 						viewStudentScoreboard(_student[indexOfUser]);
+						system("pause");
 						break;
 					}
 					case 2:
