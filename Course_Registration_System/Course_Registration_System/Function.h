@@ -15,7 +15,7 @@ enum ACTION {UP, DOWN, RIGHT, LEFT, ENTER, BACK};
 
 // STRUCT
 struct staff {
-    int ID;
+    string ID;
     string name; // optional
     string password;
 };
@@ -62,7 +62,8 @@ struct module {
 };
 
 struct student {
-    int no, ID; // id to login also
+    int no;
+    string ID; // id to login also
     string password;
     string firstName, lastName;
     string className;
@@ -153,7 +154,10 @@ void loadSemesterInfo(semester& _semester);
 void loadCourseInfo(semester& _semester, course& _course);
 void saveCourseInfo(semester& _semester, course& _course);
 void saveSemesterInfo(semester& _semester);
-void loadLastSave(Vector <schoolYear> &listYear);
+void loadLastSave(Vector <schoolYear> &listYear, Vector<staff> &_staff);
+void loadStaff(Vector<staff> &_staff);
+void saveAccountInfo(schoolYear _year, classUni _class, Vector<staff> _staff);
+void viewUserInfo(int studentOrStaff, staff _staff, student _student);
 
 bool IsPathExist(const string &s);
 void allStaffFunction();
