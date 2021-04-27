@@ -14,19 +14,18 @@ course fakeCourse;
 void addStudentToClass(classUni& className) {
 	ifstream fin;
 
-	fs::path classPath =root/"Class"/className.name/(className.name + ".csv");
+	fs::path classPath = root/"Class"/className.name/(className.name + ".csv");
 	if(!fs::exists(classPath)) {
 		cout<<className.name + ".csv"<<" does not exist!";
 		return;
 	}
-
 
 	fin.open(classPath);
 	int i = 1;
 	while(fin.good()) {
 		student st;
 		st.no = i;
-		fin >> st.ID;
+		getline(fin, st.ID, ',');
 		if (i >= 2 && st.ID == className.listStudent[i - 2].ID) break;
 		fin.ignore(1, ',');
 		getline(fin, st.firstName, ',');
@@ -43,12 +42,34 @@ void addStudentToClass(classUni& className) {
 		fin.ignore(1, ',');
 
 		getline(fin,st.socialID, ',');
-		getline(fin, st.password, '\n');
 
         ++i;
 		className.listStudent.push_back(st);
 	}
 	fin.close();
+
+	fs::path passPath = root/"Class"/className.name/"password.csv";
+	if (fs::exists(passPath)) {
+		fin.open(passPath);
+
+		int i = 0;
+		while (fin.good() && i < className.listStudent.size()) {
+			getline(fin, className.listStudent[i].password, '\n');
+			i++;
+		}
+	}
+	else {
+		for (int i = 0; i < className.listStudent.size(); i++) {
+			string password = "";
+			for (int j = className.listStudent[i].ID.size() - 4; j < className.listStudent[i].ID.size(); j++)
+				password += className.listStudent[i].ID[j];
+			if (className.listStudent[i].DOB.day < 10) password += "0" + to_string(className.listStudent[i].DOB.day);
+			else password += to_string(className.listStudent[i].DOB.day);
+			if (className.listStudent[i].DOB.month < 10) password += "0" + to_string(className.listStudent[i].DOB.month);
+			else password += to_string(className.listStudent[i].DOB.month);
+			className.listStudent[i].password = password;
+		}
+	}
 }
 
 void displayStudent(const student& _student) {
@@ -402,10 +423,10 @@ void createCourseRegistration(semester& sem) {
 
 int login(Vector<staff> _staff, Vector<schoolYear> _year, int& userIndex, int& classIndex, int& yearIndex) {
 
-	int attempID;
+	string attempID;
 	string attempPass;
 
-	cout << "ID      : "; cin >> attempID; cin.ignore();
+	cout << "ID      : "; getline(cin, attempID);
 	cout << "Password: "; getline(cin, attempPass);
 	cout << "\n";
 
@@ -1141,7 +1162,10 @@ void addSemesterToYear(schoolYear &year) {
 }
 
 //https://www.bfilipek.com/2019/04/dir-iterate.html
-void loadLastSave(Vector <schoolYear> &listYear) {
+void loadLastSave(Vector <schoolYear> &listYear, Vector<staff> _staff) {
+	
+	loadStaff(_staff);
+
 	for (const auto& entry : fs::directory_iterator(root)) {
 		string folder = entry.path().filename().string();
 		if (entry.is_directory()) {
@@ -1254,8 +1278,9 @@ void chooseAcademicYear(Vector<schoolYear> &allYear) {
 void allStaffFunction() {
 	fakeCourse.name = "-1";
 	// exit (0);
+	Vector <staff> _staff;
 	Vector <schoolYear> allYear;
-	loadLastSave(allYear);
+	loadLastSave(allYear, _staff);
 
 	// cout << allYear[1].listSemester[1].listCourse.size() << '\n';
 	// exit (0);
@@ -1357,4 +1382,73 @@ void saveSemester(semester& _semester) {
 	}
 	
 	fout.close();
+}
+
+void loadStaff(Vector<staff> &_staff) {
+	ifstream fin;
+
+	fs::path staffPath = root / ("staff.csv");
+	if (!fs::exists(staffPath)) {
+		cout << "There isn't staff.csv file.\n";
+		system("pause");
+		return; 
+	}
+
+	fin.open(staffPath);
+	int i = 0;
+
+	while (fin.good()) {
+		staff tStaff;
+
+		getline(fin, tStaff.ID, ',');
+
+		if (i >= 1 && tStaff.ID == _staff[i - 1].ID) break;
+
+		getline(fin, tStaff.name, ',');
+		getline(fin, tStaff.password, '\n');
+
+		_staff.push_back(tStaff);
+		i++;
+	}
+}
+
+void saveAccountInfo(schoolYear _year ,classUni _class, Vector<staff> _staff) {
+	ofstream fout;
+
+	fs::path staffPath = root / "staff.csv";
+
+	fout.open(staffPath);
+
+	for (int i = 0; i < _staff.size(); i++) fout << _staff[i].ID << "," << _staff[i].name << "," << _staff[i].password << endl;
+
+	fout.close();
+
+	fs::path studentPath = root / _year.name / "Class" / _class.name / "password.csv";
+
+	fout.open(studentPath);
+
+	for (int i = 0; i < _class.listStudent.size(); i++) fout << _class.listStudent[i].password << endl;
+
+	fout.close();
+
+	studentPath = root / _year.name / "Class" / _class.name / (_class.name + ".csv");
+
+	fout.open(studentPath);
+}
+
+void viewUserInfo(int studentOrStaff, staff _staff, student _student) {
+	if (studentOrStaff = 1) {
+		cout << "-----------STAFF INFO-----------\n";
+		cout << "ID       : " << _staff.ID << "\n";
+		cout << "Full name: " << _staff.name;
+	}
+	else {
+		cout << "-----------STUDENT INFO-----------\n";
+		cout << "ID           : " << _student.ID << "\n";
+		cout << "Last name    : " << _student.lastName << "\n";
+		cout << "First name   : " << _student.firstName << "\n";
+		cout << "Gender       : " << _student.gender << "\n";
+		cout << "Date of birth: " << _student.DOB.day << "/" << _student.DOB.month << "/" << _student.DOB.year << "\n";
+		cout << "Social ID    : " << _student.socialID;
+	}
 }
