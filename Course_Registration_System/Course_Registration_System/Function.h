@@ -56,6 +56,7 @@ struct mark {
 };
 
 struct module {
+    string nameSem;
     string ID; // ID of course
     mark grade;
 };
@@ -116,10 +117,10 @@ void addCourseToSemester(semester& sem); //(task 8)
 void createCourseRegistration(semester& _semester);//(task 7)
 void updateCourseInfo(semester& _semester);//(task 10)
 void viewCourseScoreboard(semester& _semester);//(task 23)
-void exportStudentInCourseToCSV(course& _course, semester _semester);//(task 21)
-void importScoreboard(course& _course, schoolYear& _schoolYear, semester _semester);
-void updateStudentResult(student& stu);
-void viewClassScoreboard(schoolYear& _schoolYear, string className);
+void exportStudentInCourseToCSV(semester& _semester);//(task 21)
+void importScoreboard(schoolYear& _schoolYear, semester& _semester);
+void updateStudentResult(schoolYear& _schoolYear, semester& _semester);
+void viewClassScoreboard(schoolYear& _schoolYear, semester& _semester);
 
 //Class function
 void addStudentToClass(classUni& className);//(task 4)
@@ -149,8 +150,8 @@ int actionList(Vector<string> str, COORD position);
 Vector<course> getUnenrolledCourseList(semester _semester, student _student);
 
 void loadSemesterInfo(semester& _semester);
-void loadCourseInfo(semester _semester, course& _course);
-void saveCourseInfo(semester _semester, course& _course);
+void loadCourseInfo(semester& _semester, course& _course);
+void saveCourseInfo(semester& _semester, course& _course);
 void saveSemesterInfo(semester& _semester);
 void loadLastSave(Vector <schoolYear> &listYear);
 
@@ -161,8 +162,11 @@ void editSchoolYear(schoolYear &year);
 void addClassToYear(schoolYear &year);
 void addSemesterToYear(schoolYear &year);
 void saveSemester(semester& _semester);
-void editSemester(semester& _semester);
+void editSemester(schoolYear& _schoolYear, semester& _semester);
 void chooseSemester(schoolYear& _schoolYear);
+void exportScoreboard(semester& _semester, course& _course, bool empty = true);
+bool readScoreboard(schoolYear& _schoolYear, semester& _semester, course& _course);
+classUni& getClass(schoolYear& _schoolYear);
 // void fakeFunction();
 
 #endif // !_MYFUNCTION_H_

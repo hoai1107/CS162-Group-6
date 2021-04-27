@@ -10,6 +10,7 @@ namespace fs= std::filesystem;
 
 fs::path root= fs::current_path()/"data";
 course fakeCourse;
+classUni fakeClass;
 
 void addStudentToClass(classUni& className) {
 	ifstream fin;
@@ -312,11 +313,11 @@ void chooseSemester(schoolYear& _schoolYear) {
 
 		if (t == Sem.size()) return;
 
-		editSemester(_schoolYear.listSemester[t]);
+		editSemester(_schoolYear, _schoolYear.listSemester[t]);
 	}
 }
 
-void editSemester(semester& _semester) {
+void editSemester(schoolYear& _schoolYear, semester& _semester) {
 	system("cls");
 	Vector <string> listAction;
 	listAction.push_back("Create course registration session");
@@ -326,8 +327,10 @@ void editSemester(semester& _semester) {
 	listAction.push_back("Delete a course");
 	listAction.push_back("View course scoreboard");
 	listAction.push_back("Export list of students in course (.csv)");
+	listAction.push_back("Export empty course scoreboard (.csv)");
 	listAction.push_back("Import course scoreboard (.csv)");
-	// listAction.push_back("Update student result");
+	listAction.push_back("Update student result");
+	listAction.push_back("View class scoreboard");
 
 	while(true) {
 		system("cls");
@@ -365,10 +368,24 @@ void editSemester(semester& _semester) {
 				exportStudentInCourseToCSV(_semester);
 				break;
 
-			// case 7:
-			// 	importScoreboard(_semester);
-			// case 6:
-			// 	updateStudentResult(_semester);
+			case 7: {
+				auto& _course = getCourse(_semester);
+				if (_course.name == "-1") break;
+				exportScoreboard(_semester, _course, true);
+				break;
+			}
+			
+			case 8:
+				importScoreboard(_schoolYear, _semester);
+				break;
+
+			case 9:
+				updateStudentResult(_schoolYear, _semester);
+				break;
+
+			case 10:
+				viewClassScoreboard(_schoolYear, _semester);
+				break;
 
 			default:
 				break;
@@ -571,35 +588,52 @@ void viewCourseScoreboard(semester& _semester){
 	system("pause");
 }
 
-void updateStudentResult(semester& _semester) {
+void updateStudentResult(schoolYear& _schoolYear, semester& _semester) {
 	course& crs = getCourse(_semester);
 	if (crs.name == "-1") return;
 
+	system ("cls");
 	cout << "Student ID: ";
 	int id;
 	cin >> id;
-	// for (int i = 0; i < stu.enrolled.size(); i++) {
-	// 	if (stu.enrolled[i].ID == to_string(id)) {
-	// 		cout << "Enter the mark you want to update (1:midterm 2:final 3:other) : ";
-	// 		int choice;
-	// 		cin >> choice;
-	// 		cout << "Enter the new score: ";
-	// 		int score;
-	// 		cin >> score;
-	// 		switch (choice) {
-	// 		case 1:
-	// 			stu.enrolled[i].grade.midterm = score;
-	// 			return;
-	// 		case 2:
-	// 			stu.enrolled[i].grade.final = score;
-	// 			return;
-	// 		case 3:
-	// 			stu.enrolled[i].grade.other = score;
-	// 			return;
-	// 		}
-	// 	}
-	// }
-	cout << "The course you entered doesn't exist";
+	int pos = -1;
+	for (int i = 0; i < crs.listStudent.size(); i++)
+		if (crs.listStudent[i].ID == id) {
+			pos = i;
+			break;
+		}
+
+	if (pos == -1) {
+		cout << "He/She did not enroll this course!\n";
+		system("pause");
+		return;
+	}
+
+	auto& stu = crs.listStudent[pos];
+
+	system ("cls");
+	bool found = false;
+	for (int i = 0; i < stu.enrolled.size(); i++) {
+		if (stu.enrolled[i].ID == crs.ID) {
+			cout << "Midterm score: "; cin >> stu.enrolled[i].grade.midterm;
+			cout << "Final score: "; cin >> stu.enrolled[i].grade.final;
+			cout << "Other score: "; cin >> stu.enrolled[i].grade.other;
+			cout << "Total score: "; cin >> stu.enrolled[i].grade.total;
+			found = true;
+		}
+	}
+
+	if (!found) {
+		cout << "bug somewhere, course.student.enrolled doesnt contain this course!!!\n";
+		system("pause");
+		return;
+	}
+
+	exportScoreboard(_semester, crs, false);
+
+	readScoreboard(_schoolYear, _semester, crs);
+
+	// cout << "The course you entered doesn't exist";
 	return;
 }
 
@@ -651,6 +685,25 @@ course& getCourse(semester& _semester){
 	}
 }
 
+classUni& getClass(schoolYear& _schoolYear) {
+	Vector<string> lClass;
+	for(int i=0;i<_schoolYear.newClass.size();++i){
+		lClass.push_back(_schoolYear.newClass[i].name);
+	}
+	system("cls");
+	if (lClass.size() == 0) {
+		cout << "None new class in this school year!\n";
+		system("pause");
+		return fakeClass;
+	}
+	while (true) {
+		system("cls");
+		cout << "Choose your course. BACKSPACE to stop\n";
+		int t = actionList(lClass, {0, 1});
+		if (t == lClass.size()) return fakeClass;
+		return _schoolYear.newClass[t];
+	}
+}
 lesson getLesson(semester& _semester,string ID,int index){
 	for(int i=0;i<_semester.listCourse.size();++i){
 		if(ID == _semester.listCourse[i].ID){
@@ -788,9 +841,111 @@ void exportStudentInCourseToCSV(semester& _semester) {
 	}
 }
 
-void importScoreboard(course& _course, schoolYear& _schoolYear, semester _semester) {
-	ifstream fin;
+void exportScoreboard(semester& _semester, course& _course, bool empty) {
+	ofstream fout;
 
+	string folderName;
+	if (_semester.name == "1" || _semester.name == "fall" || _semester.name == "Fall") folderName = "Fall";
+	if (_semester.name == "2" || _semester.name == "summer" || _semester.name == "Summer") folderName = "Summer";
+	if (_semester.name == "3" || _semester.name == "autumn" || _semester.name == "Autumn") folderName = "Autumn";
+
+	const string name = "scoreboard.csv";
+	fs::path link = root / "Semester" / folderName /_course.ID / name;
+	fout.open(root / "Semester" / folderName /_course.ID / name);
+
+	if (fout.is_open()) {
+		fout << "No" << ','
+			<< "ID" << ','
+			<< "Fullname" << ','
+			<< "Class" << ','
+			<< "Midterm mark" << ','
+			<< "Final mark" << ','
+			<< "Other mark" << ','
+			<< "Total mark" << '\n';
+
+		for (int i = 0; i < _course.listStudent.size(); ++i) {
+			student _student = _course.listStudent[i];
+			if (empty)
+				fout << i + 1 << ','
+					<< _student.ID << ','
+					<< _student.firstName + _student.className << ','
+					<< _student.className << ','
+					<< ','
+					<< ','
+					<< ','
+					<< '\n';
+			else {
+				int posditme = -1;
+				for (int j = 0; j < _student.enrolled.size(); j++)
+					if (_student.enrolled[j].ID == _course.ID) {
+						posditme = j;
+						break;
+					}
+				if (posditme == -1) {
+					cout << "Bug chetcondime roi, course.student.enrolled ko co course nay!!!!!!!\n";
+					system ("pause");
+					return;
+				}
+				fout << i + 1 << ','
+					<< _student.ID << ','
+					<< _student.firstName + _student.className << ','
+					<< _student.className << ','
+					<< _student.enrolled[posditme].grade.midterm << ','
+					<< _student.enrolled[posditme].grade.final << ','
+					<< _student.enrolled[posditme].grade.other << ','
+					<< _student.enrolled[posditme].grade.total << '\n';
+			}
+
+		}
+		fout.close();
+		// system(link.string().c_str());
+		/// hehe ko bug dau hehehehehehehehheh
+		if (empty) {
+			ShellExecute(NULL,NULL, link.string().c_str(), NULL, NULL, SW_SHOW);
+			cout << "Export file successfully\n";
+			system("pause");
+		}
+	}
+	else {
+		cout << "Something wrong with the file!!";
+		fout.close();
+		system ("pause");
+	}
+}
+
+void importScoreboard(schoolYear& _schoolYear, semester& _semester) {
+	auto& _course = getCourse(_semester);
+	if (_course.name == "-1") return;
+
+	cout << "Enter or drag path of your .csv file: ";
+	string link; getline(cin, link);
+
+	string folderName;
+	if (_semester.name == "1" || _semester.name == "fall" || _semester.name == "Fall") folderName = "Fall";
+	if (_semester.name == "2" || _semester.name == "summer" || _semester.name == "Summer") folderName = "Summer";
+	if (_semester.name == "3" || _semester.name == "autumn" || _semester.name == "Autumn") folderName = "Autumn";
+	fs::path fakepath = root / "Semester" / folderName / _course.ID;
+	fs::path coursePath = root / "Semester" / folderName / _course.ID / "scoreboard.csv";
+
+	if (!fs::exists(coursePath)) {
+		system(("cd " + fakepath.string() + "&& type nul > scoreboard.csv").c_str());
+		// cout << "Can't import the scoreboard!!!";
+	}
+
+	system(("copy " + link + " " + coursePath.string() + " > nul").c_str());
+	bool isOk = readScoreboard(_schoolYear, _semester, _course);
+	if (isOk) {
+		cout << "Imported successfully.\n";
+		system("pause");
+	}
+	else {
+		cout << "Something wrong with file!\n";
+		system ("pause");
+	}
+	return;
+}
+
+bool readScoreboard(schoolYear& _schoolYear, semester& _semester, course& _course) {
 	string folderName;
 	if (_semester.name == "1" || _semester.name == "fall" || _semester.name == "Fall") folderName = "Fall";
 	if (_semester.name == "2" || _semester.name == "summer" || _semester.name == "Summer") folderName = "Summer";
@@ -798,18 +953,33 @@ void importScoreboard(course& _course, schoolYear& _schoolYear, semester _semest
 	fs::path coursePath = root / "Semester" / folderName / _course.ID / "scoreboard.csv";
 
 	if (!fs::exists(coursePath)) {
-		cout << "Can't import the scoreboard!!!";
-		return;
+		return false;
 	}
 
+	ifstream fin;
 	fin.open(coursePath);
+
+	if (fin.is_open()) {
+		fin.ignore(1000, '\n');
+		string s;
+		getline(fin, s);
+		int countCommas = 0;
+		for (char c : s) countCommas += (c == ',');
+		fin.close();
+		if (countCommas != 7) return false;
+	}
+	else {
+		fin.close();
+		return false;
+	}
 	
 
+	fin.open(coursePath);
 	if (fin.is_open()) {
 		//Ignore first line
 		fin.ignore(1000, '\n');
 
-		//Assume that the order of student in the file is the same as the file when it is exported
+		// Assume that the order of student in the file is the same as the file when it is exported
 		for (int i = 0; i < _course.listStudent.size(); ++i) {
 
 			//Just to store the old info to get to the mark
@@ -818,26 +988,17 @@ void importScoreboard(course& _course, schoolYear& _schoolYear, semester _semest
 			fin.ignore(1, ',');
 			fin >> temp.ID;
 			fin.ignore();
-			getline(fin, temp.firstName, ',');
-			getline(fin, temp.lastName, ',');
+			string nameStudent;
+			getline(fin, nameStudent, ',');
 			getline(fin, temp.className, ',');
-			fin >> temp.gender;
-			fin.ignore(1, ',');
-			fin >> temp.DOB.day;
-			fin.ignore(1, '/');
-			fin >> temp.DOB.month;
-			fin.ignore(1, '/');
-			fin >> temp.DOB.year;
-			fin.ignore(1, ',');
-			getline(fin, temp.socialID, ',');
-
 
 			//Get the score
 			module _module;
+			_module.nameSem = _semester.name;
 			_module.ID = _course.ID;
-			fin >> _module.grade.final;
-			fin.ignore(1, ',');
 			fin >> _module.grade.midterm;
+			fin.ignore(1, ',');
+			fin >> _module.grade.final;
 			fin.ignore(1, ',');
 			fin >> _module.grade.other;
 			fin.ignore(1, ',');
@@ -845,57 +1006,111 @@ void importScoreboard(course& _course, schoolYear& _schoolYear, semester _semest
 			fin.ignore();
 
 			//Store to the course
-			_course.listStudent[i].enrolled.push_back(_module);
+			auto& huhu = _course.listStudent[i].enrolled;
+			bool found = false;
+			for (int j = 0; j < huhu.size(); j++) if (huhu[j].ID == _module.ID && huhu[j].nameSem == _semester.name) {
+				huhu[j] = _module; found = true;
+			}
+			if (!found) huhu.push_back(_module);
+			
 
 			//Store to the class
-			for (int j = 0; j < _schoolYear.newClass.size(); ++j) {
+			for (int j = 0; j < _schoolYear.newClass.size(); j++)
 				if (_schoolYear.newClass[j].name == temp.className) {
 					for (int k = 0; k < _schoolYear.newClass[j].listStudent.size(); ++k) {
 						if (_schoolYear.newClass[j].listStudent[k].ID == temp.ID) {
+							auto& huhu = _schoolYear.newClass[j].listStudent[k];
+							for (int t = 0; t < huhu.enrolled.size(); t++) {
+								if (huhu.enrolled[t].ID == _module.ID && huhu.enrolled[t].nameSem == _semester.name) {
+									huhu.enrolled[t] = _module;
+								goto nextStudent;
+								}
+							}
 							_schoolYear.newClass[j].listStudent[k].enrolled.push_back(_module);
 							goto nextStudent;
 						}
 					}
 				}
-			}
-
 		nextStudent: continue;
 		}
+
 	}
 	else {
-		cout << "Something wrong!!";
+		fin.close();
+		// cout << "Something wrong!!";
+		// system("pause");
+		return false;
 	}
+	fin.close();
+	return true;
+	// cout << "Imported successfully.\n";
+	// system("pause");
 }
 
-void viewClassScoreboard(schoolYear& _schoolYear, string className) {
-	classUni _class;
-	for (int i = 0; i < _schoolYear.newClass.size(); ++i) {
-		if (_schoolYear.newClass[i].name == className) {
-			_class = _schoolYear.newClass[i];
-			break;
-		}
-	}
+void viewClassScoreboard(schoolYear& _schoolYear, semester& _semester) {
+	auto _class = getClass(_schoolYear);
+	if (_class.name == "-1") return;
 
 	cout << setw(5) << left << "No.";
 	cout << setw(15) << left << "Student ID";
 	cout << setw(20) << left << "Full Name";
+	cout << setw(15) << left << "GPA semester";
+	cout << setw(15) << left << "GPA overall" << '\n';
 
 	for (int i = 0; i < _class.listStudent.size(); ++i) {
 		student _student = _class.listStudent[i];
 
-		float sum = 0;
 		cout << setw(5) << left << i + 1;
 		cout << setw(15) << left << _student.ID;
 		cout << setw(20) << left << (_student.lastName + ' ' + _student.firstName);
 
+		float sumSem = 0, sumOverall = 0;
+		int cntSem = 0, cntOverall = 0;
+
 		for (int j = 0; j < _student.enrolled.size(); ++j) {
-			cout << setw(10) << left << _student.enrolled[j].grade.total << '(' << _student.enrolled[j].ID << ')';
-			sum += _student.enrolled[j].grade.total;
+			// cout << setw(10) << left << _student.enrolled[j].grade.total << '(' << _student.enrolled[j].ID << ')';
+			auto score = _student.enrolled[j].grade.total;
+			// auto name = _student.enrolled[j].ID;
+			auto sem = _student.enrolled[j].nameSem;
+			if (sem == _semester.name)
+				sumSem += score, cntSem++;
+			sumOverall += score, cntOverall++;
 		}
 
-		cout << "Avg GPA: " << fixed << setprecision(2);
-		cout << sum / _student.enrolled.size() << endl;
+		cout << setw(15) << sumSem / cntSem;
+		cout << setw(15) << sumOverall / cntOverall << endl;
 	}
+
+	for (int x = 0; x < _semester.listCourse.size(); x++) {
+		auto crs = _semester.listCourse[x];
+		cout << '\n' << crs.name << "\n\n";
+
+		cout << setw(5) << left << "No.";
+		cout << setw(15) << left << "Student ID";
+		cout << setw(20) << left << "Full Name";
+		cout << setw(15) << left << "Finalmark" << '\n';
+		// cout << setw(15) << left << "GPA overall" << '\n';
+
+		for (int i = 0, ttt = 0; i < _class.listStudent.size(); ++i) {
+			student _student = _class.listStudent[i];
+
+
+			for (int j = 0; j < _student.enrolled.size(); ++j) {
+				// cout << setw(10) << left << _student.enrolled[j].grade.total << '(' << _student.enrolled[j].ID << ')';
+				auto score = _student.enrolled[j].grade.total;
+				auto IDcrs = _student.enrolled[j].ID;
+				auto sem = _student.enrolled[j].nameSem;
+				if (sem == _semester.name && IDcrs == crs.ID) {
+					cout << setw(5) << left << ++ttt;
+					cout << setw(15) << left << _student.ID;
+					cout << setw(20) << left << (_student.lastName + ' ' + _student.firstName);
+					cout << setw(15) << left << score << '\n';
+					break;
+				}
+			}
+		}
+	}
+	system("pause");
 }
 
 void createScoreboardFile(course& _course, semester _semester) {
@@ -1018,7 +1233,7 @@ void loadSemesterInfo(Vector<semester>& _semester) {
 	}
 }
 
-void loadCourseInfo(semester _semester, course& _course) {
+void loadCourseInfo(semester& _semester, course& _course) {
 	ifstream fin;
 
 	string folderName;
@@ -1047,7 +1262,7 @@ void loadCourseInfo(semester _semester, course& _course) {
 	fin.close();
 }
 
-void saveCourseInfo(semester _semester, course& _course) {
+void saveCourseInfo(semester& _semester, course& _course) {
 	ofstream fout;
 	
 	string folderName;
@@ -1253,10 +1468,13 @@ void chooseAcademicYear(Vector<schoolYear> &allYear) {
 
 void allStaffFunction() {
 	fakeCourse.name = "-1";
+	fakeClass.name = "-1";
 	// exit (0);
 	Vector <schoolYear> allYear;
 	loadLastSave(allYear);
-
+	// cout << allYear[0].name << ' ' << allYear[0].listSemester[0].name << '\n';
+	// cout << allYear[0].listSemester[0].endDate.day << ' ' << allYear[0].listSemester[0].endDate.month << ' ' << allYear[0].listSemester[0].endDate.year << '\n';
+	// exit (0);
 	// cout << allYear[1].listSemester[1].listCourse.size() << '\n';
 	// exit (0);
 	// for (int i = 0; i < allYear[1].listSemester.size(); i++) {
