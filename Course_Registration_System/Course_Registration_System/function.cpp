@@ -1377,7 +1377,7 @@ void addSemesterToYear(schoolYear &year) {
 }
 
 //https://www.bfilipek.com/2019/04/dir-iterate.html
-void loadLastSave(Vector <schoolYear> &listYear, Vector<staff> _staff) {
+void loadLastSave(Vector <schoolYear> &listYear, Vector<staff>& _staff) {
 	
 	loadStaff(_staff);
 
