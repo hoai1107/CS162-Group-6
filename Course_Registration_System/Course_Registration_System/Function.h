@@ -167,7 +167,7 @@ void addClassToYear(schoolYear &year);
 void addSemesterToYear(schoolYear &year);
 void saveSemester(semester& _semester);
 void editSemester(schoolYear& _schoolYear, semester& _semester);
-void chooseSemester(schoolYear& _schoolYear);
+int chooseSemester(schoolYear& _schoolYear);
 void exportScoreboard(semester& _semester, course& _course, bool empty = true);
 bool readScoreboard(schoolYear& _schoolYear, semester& _semester, course& _course);
 classUni& getClass(schoolYear& _schoolYear);

@@ -313,7 +313,7 @@ void enrollCourses(student& _student, semester _semester) {
     }
 }
 
-void chooseSemester(schoolYear& _schoolYear) {
+int chooseSemester(schoolYear& _schoolYear) {
 	system("cls");
 	if (_schoolYear.listSemester.size() == 0) {
 		cout << "None semester in this year!\n";
@@ -327,15 +327,11 @@ void chooseSemester(schoolYear& _schoolYear) {
 	}
 	// exit (0);
 
-	while (true) {
 		system("cls");
 		cout << "Choose the semester. BACKSPACE to stop\n";
 		int t = actionList(Sem, {0, 1});
 
-		if (t == Sem.size()) return;
-
-		editSemester(_schoolYear, _schoolYear.listSemester[t]);
-	}
+		return t;
 }
 
 void editSemester(schoolYear& _schoolYear, semester& _semester) {
@@ -571,18 +567,21 @@ void updateCourseInfo(semester& _semester){
 	saveCourseInfo(_semester, _course);
 }
 
-void viewStudentScoreboard(student stu){
+void viewStudentScoreboard(schoolYear year, student stu){
+	int t = chooseSemester(year);
 	cout << left << setw(10) << "ID" 
 				 << setw(10) << "Midterm" 
 				 << setw(10) << "Final" 
 				 << setw(10) << "Other" 
 				 << setw(10) << "Total" << endl;
 	for(int i=0; i<stu.enrolled.size(); i++){
-		cout << left << setw(10) << stu.enrolled[i].ID 
-					 << setw(10) << stu.enrolled[i].grade.midterm 
-		 			 << setw(10) << stu.enrolled[i].grade.final 
-					 << setw(10) << stu.enrolled[i].grade.other 
-					 << setw(10) << stu.enrolled[i].grade.total << endl;
+		if (stu.enrolled[i].nameSem == year.listSemester[t].name) {
+			cout << left << setw(10) << stu.enrolled[i].ID 
+					<< setw(10) << stu.enrolled[i].grade.midterm 
+		 			<< setw(10) << stu.enrolled[i].grade.final 
+					<< setw(10) << stu.enrolled[i].grade.other 
+					<< setw(10) << stu.enrolled[i].grade.total << endl;
+			}
 	}
 }
 
@@ -1453,7 +1452,8 @@ void editSchoolYear(schoolYear &year) {
 			break;
 		
 		case 2:
-			chooseSemester(year);
+			int t = chooseSemester(year);
+			if (t != year.listSemester.size()) editSemester(year, year.listSemester[t]); 
 			break;
 
 		default:
