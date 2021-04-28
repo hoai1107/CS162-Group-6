@@ -150,8 +150,8 @@ ACTION key(int z);
 int actionList(Vector<string> str, COORD position);
 Vector<course> getUnenrolledCourseList(semester _semester, student _student);
 
-void loadSemesterInfo(semester& _semester);
-void loadCourseInfo(semester& _semester, course& _course);
+void loadSemesterInfo(schoolYear& _schoolYear, semester& _semester);
+void loadCourseInfo(schoolYear& _schoolYear, semester& _semester, course& _course);
 void saveCourseInfo(semester& _semester, course& _course);
 void saveSemesterInfo(semester& _semester);
 void loadLastSave(Vector <schoolYear> &listYear, Vector<staff> &_staff);
@@ -170,6 +170,7 @@ void editSemester(schoolYear& _schoolYear, semester& _semester);
 int chooseSemester(schoolYear& _schoolYear);
 void exportScoreboard(semester& _semester, course& _course, bool empty = true);
 bool readScoreboard(schoolYear& _schoolYear, semester& _semester, course& _course);
+void initiateCourseList(schoolYear& _schoolYear, semester& _semester, course& _course);
 classUni& getClass(schoolYear& _schoolYear);
 // void fakeFunction();
 

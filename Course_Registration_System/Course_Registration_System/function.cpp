@@ -317,7 +317,7 @@ int chooseSemester(schoolYear& _schoolYear) {
 	system("cls");
 	if (_schoolYear.listSemester.size() == 0) {
 		cout << "None semester in this year!\n";
-		return;
+		return -1;
 	}
 	Vector <string> Sem;
 	// cout << "Oh no\n";
@@ -569,6 +569,7 @@ void updateCourseInfo(semester& _semester){
 
 void viewStudentScoreboard(schoolYear year, student stu){
 	int t = chooseSemester(year);
+	if (t == -1) return;
 	cout << left << setw(10) << "ID" 
 				 << setw(10) << "Midterm" 
 				 << setw(10) << "Final" 
@@ -1192,7 +1193,7 @@ Vector<course> getUnenrolledCourseList(semester _semester, student _student) {
     return res;
 }
 
-void loadSemesterInfo(Vector<semester>& _semester) {
+void loadSemesterInfo(schoolYear& _schoolYear, Vector<semester>& _semester) {
 	
 	ifstream fin;
 	
@@ -1243,7 +1244,8 @@ void loadSemesterInfo(Vector<semester>& _semester) {
 			course _course;
 			while (getline(fin, _course.ID)) {
 				if (_course.ID.size() == 0) continue;
-				loadCourseInfo(sTemp ,_course);
+				loadCourseInfo(_schoolYear, sTemp ,_course);
+				initiateCourseList(_schoolYear, sTemp ,_course);
 				sTemp.listCourse.push_back(_course);
 			}
 
@@ -1253,7 +1255,7 @@ void loadSemesterInfo(Vector<semester>& _semester) {
 	}
 }
 
-void loadCourseInfo(semester& _semester, course& _course) {
+void loadCourseInfo(schoolYear& _schoolYear, semester& _semester, course& _course) {
 	ifstream fin;
 
 	string folderName;
@@ -1277,6 +1279,139 @@ void loadCourseInfo(semester& _semester, course& _course) {
 		getline(fin, _lesson.day, ',');
 		getline(fin, _lesson.time);
 		_course.listLesson.push_back(_lesson);
+	}
+
+	fin.close();
+
+	const string name = _course.ID + "_list" + ".csv";
+	fin.open(root / "Semester" / folderName / _course.ID / name);
+	if (fin.is_open()) {
+		//Ignore first line
+		fin.ignore(1000, '\n');
+
+		// Assume that the order of student in the file is the same as the file when it is exported
+		for (int i = 0; i < _course.listStudent.size(); ++i) {
+
+			//Just to store the old info to get to the mark
+			student temp;
+			fin >> temp.no;
+			fin.ignore(1, ',');
+			fin >> temp.ID;
+			fin.ignore();
+			string nameStudent;
+			getline(fin, nameStudent, ',');
+			getline(fin, temp.className, ',');
+
+			//Get the score
+			module _module;
+			_module.nameSem = _semester.name;
+			_module.ID = _course.ID;
+		
+			//Store to the course
+			auto& huhu = _course.listStudent[i].enrolled;
+			bool found = false;
+			for (int j = 0; j < huhu.size(); j++) if (huhu[j].ID == _module.ID && huhu[j].nameSem == _semester.name) {
+				huhu[j] = _module; found = true;
+			}
+			if (!found) huhu.push_back(_module);
+			
+
+			//Store to the class
+			for (int j = 0; j < _schoolYear.newClass.size(); j++)
+				if (_schoolYear.newClass[j].name == temp.className) {
+					for (int k = 0; k < _schoolYear.newClass[j].listStudent.size(); ++k) {
+						if (_schoolYear.newClass[j].listStudent[k].ID == temp.ID) {
+							auto& huhu = _schoolYear.newClass[j].listStudent[k];
+							for (int t = 0; t < huhu.enrolled.size(); t++) {
+								if (huhu.enrolled[t].ID == _module.ID && huhu.enrolled[t].nameSem == _semester.name) {
+									huhu.enrolled[t] = _module;
+								goto nextStudent;
+								}
+							}
+							_schoolYear.newClass[j].listStudent[k].enrolled.push_back(_module);
+							goto nextStudent;
+						}
+					}
+				}
+			nextStudent: continue;
+		}
+
+	}
+
+	fin.close();
+}
+
+void initiateCourseList(schoolYear& _schoolYear, semester& _semester, course& _course) {
+	ifstream fin;
+
+	string folderName;
+	if (_semester.name == "1" || _semester.name == "fall" || _semester.name == "Fall") folderName = "Fall";
+	if (_semester.name == "2" || _semester.name == "summer" || _semester.name == "Summer") folderName = "Summer";
+	if (_semester.name == "3" || _semester.name == "autumn" || _semester.name == "Autumn") folderName = "Autumn";
+
+	const string name = _course.ID + "_list" + ".csv";
+	fin.open(root / "Semester" / folderName / _course.ID / name);
+	if (fin.is_open()) {
+		//Ignore first line
+		fin.ignore(1000, '\n');
+
+		// while (getline(fin, ))
+		int i = 0;
+		// Assume that the order of student in the file is the same as the file when it is exported
+		while (true) {
+		// for (int i = 0; i < _course.listStudent.size(); ++i) {
+
+			//Just to store the old info to get to the mark
+			student temp;
+			if (!fin >> temp.no) break;
+			fin.ignore(1, ',');
+			getline(fin, temp.ID, ',');
+			string nameStudent;
+			getline(fin, nameStudent, ',');
+			getline(fin, temp.className);
+			if (fin.eof()) break;
+
+
+			// cerr << temp.no << ' ' << temp.ID << ' ' << nameStudent << ' ' << temp.className << '\n';
+			// if (i == 4) break;
+			//Get the score
+			module _module;
+			_module.nameSem = _semester.name;
+			_module.ID = _course.ID;
+
+			_course.listStudent.push_back(temp);
+			//Store to the course
+			auto& huhu = _course.listStudent[i].enrolled;
+			bool found = false;
+			for (int j = 0; j < huhu.size(); j++) if (huhu[j].ID == _module.ID && huhu[j].nameSem == _semester.name) {
+				huhu[j] = _module; found = true;
+			}
+			if (!found) huhu.push_back(_module);
+			
+
+			//Store to the class
+			for (int j = 0; j < _schoolYear.newClass.size(); j++)
+				if (_schoolYear.newClass[j].name == temp.className) {
+					for (int k = 0; k < _schoolYear.newClass[j].listStudent.size(); ++k) {
+						if (_schoolYear.newClass[j].listStudent[k].ID == temp.ID) {
+							auto& huhu = _schoolYear.newClass[j].listStudent[k];
+							for (int t = 0; t < huhu.enrolled.size(); t++) {
+								if (huhu.enrolled[t].ID == _module.ID && huhu.enrolled[t].nameSem == _semester.name) {
+									huhu.enrolled[t] = _module;
+								goto nextStudent;
+								}
+							}
+							_schoolYear.newClass[j].listStudent[k].enrolled.push_back(_module);
+							goto nextStudent;
+						}
+					}
+				}
+			nextStudent: {
+				i++;
+				continue;
+			}
+		}
+
 	}
 
 	fin.close();
@@ -1370,7 +1505,7 @@ void addSemesterToYear(schoolYear &year) {
 	if (!fs::exists(root/"Semester"));
 	else {
 		Vector <semester> _semester;
-		loadSemesterInfo(_semester);
+		loadSemesterInfo(year, _semester);
 		year.listSemester = _semester;
 	}
 }
@@ -1451,10 +1586,12 @@ void editSchoolYear(schoolYear &year) {
 			createSemester(year);
 			break;
 		
-		case 2:
+		case 2: {
 			int t = chooseSemester(year);
+			if (t == -1) break;
 			if (t != year.listSemester.size()) editSemester(year, year.listSemester[t]); 
 			break;
+		}
 
 		default:
 			break;
@@ -1497,6 +1634,9 @@ void allStaffFunction() {
 	Vector <staff> _staff;
 	Vector <schoolYear> allYear;
 	loadLastSave(allYear, _staff);
+
+	// cout << allYear[1].listSemester[1].listCourse[0].listStudent[0].ID << '\n';
+	// exit (0);
 
 	// cout << allYear[1].listSemester[1].listCourse.size() << '\n';
 	// exit (0);
