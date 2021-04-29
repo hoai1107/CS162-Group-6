@@ -124,6 +124,18 @@ void removeCourseFromList(student& _student, semester _semester) {
 
         if (t == actions.size()) return;
 
+		for (int i = 0; i < _semester.listCourse.size(); i++) {
+			if (_semester.listCourse[i].ID == _student.enrolled[t].ID) {
+				for (int j = 0; j < _semester.listCourse[i].listStudent.size(); j++) 
+					if (_semester.listCourse[i].listStudent[j].ID == _student.ID) {
+						_semester.listCourse[i].listStudent.erase(j);
+						break;
+					}
+				exportScoreboard(_semester, _semester.listCourse[i], false);
+				break;
+			}
+		}
+
         _student.enrolled.erase(t);
 
         system("CLS");
@@ -269,9 +281,8 @@ void enrollCourses(student& _student, semester _semester) {
 
         module temp;
         temp.ID = unenrolledCourse[t].ID;
+		temp.nameSem = _semester.name;
         bool canEnroll = true;
-
-        if (_student.enrolled.size() == 0) _student.enrolled.push_back(temp);
 
         for (int i = 0; i < _student.enrolled.size(); ++i) {
             for (int j = 0; j <= 1; ++j) {
@@ -748,6 +759,7 @@ void addStudentToCourse(student _student, string _courseID, semester& _semester)
 	for(int i=0;i<_semester.listCourse.size();++i){
 		if(_courseID == _semester.listCourse[i].ID){
 			_semester.listCourse[i].listStudent.push_back(_student);
+			exportScoreboard(_semester, _semester.listCourse[i], false);
 			return;
 		}
 	}
@@ -889,7 +901,7 @@ void exportScoreboard(semester& _semester, course& _course, bool empty) {
 			if (empty)
 				fout << i + 1 << ','
 					<< _student.ID << ','
-					<< _student.firstName + _student.className << ','
+					<< _student.lastName + " " + _student.firstName << ','
 					<< _student.className << ','
 					<< ','
 					<< ','
