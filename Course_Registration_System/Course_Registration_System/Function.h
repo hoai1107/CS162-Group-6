@@ -52,7 +52,7 @@ struct lesson {
 };
 
 struct mark {
-    double midterm, final, other, total;
+    double midterm = 0, final = 0, other = 0, total = 0;
 };
 
 struct module {
@@ -65,9 +65,9 @@ struct student {
     int no;
     string ID; // id to login also
     string password;
-    string firstName, lastName;
+    string firstName, lastName, fullName;
     string className;
-    int gender; // 0: male, 1: female
+    string gender;
     date DOB;
     string socialID;
     Vector <module> enrolled;

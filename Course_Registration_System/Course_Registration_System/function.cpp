@@ -22,13 +22,18 @@ void addStudentToClass(classUni& className) {
 	}
 
 	fin.open(classPath);
+	fin.ignore(1000, '\n');
+	// cout << fin.get(1000, '\n') << '\n';
+	// string tmp; getline(fin, tmp);
+	// cout << tmp  << '\n';
 	int i = 1;
 	while(fin.good()) {
 		student st;
 		st.no = i;
 		getline(fin, st.ID, ',');
 		if (i >= 2 && st.ID == className.listStudent[i - 2].ID) break;
-		fin.ignore(1, ',');
+		// cout << st.ID << '\n';
+		// fin.ignore(1, ',');
 		getline(fin, st.firstName, ',');
 		getline(fin, st.lastName, ',');
 
@@ -48,6 +53,7 @@ void addStudentToClass(classUni& className) {
 		className.listStudent.push_back(st);
 	}
 	fin.close();
+	// exit(0);
 
 	fs::path passPath = root/"Class"/className.name/"password.csv";
 	if (fs::exists(passPath)) {
@@ -124,6 +130,18 @@ void removeCourseFromList(student& _student, semester _semester) {
 
         if (t == actions.size()) return;
 
+		for (int i = 0; i < _semester.listCourse.size(); i++) {
+			if (_semester.listCourse[i].ID == _student.enrolled[t].ID) {
+				for (int j = 0; j < _semester.listCourse[i].listStudent.size(); j++) 
+					if (_semester.listCourse[i].listStudent[j].ID == _student.ID) {
+						_semester.listCourse[i].listStudent.erase(j);
+						break;
+					}
+				exportScoreboard(_semester, _semester.listCourse[i], false);
+				break;
+			}
+		}
+
         _student.enrolled.erase(t);
 
         system("CLS");
@@ -172,15 +190,15 @@ void viewStudentsInCourse(course crs) {
 				 << setw(15) << "Social ID" << endl;
 	for (int i = 0; i < crs.listStudent.size(); i++) {
 		string gnd;
-		if (crs.listStudent[i].gender == 0)
-			gnd = "male";
-		else gnd = "female";
+		// if (crs.listStudent[i].gender == 0)
+		// 	gnd = "male";
+		// else gnd = "female";
 		cout << left << setw(5) << crs.listStudent[i].no 
 			 	 	 << setw(10) << crs.listStudent[i].ID 
 					 << setw(20) << crs.listStudent[i].lastName
 					 << setw(15) << crs.listStudent[i].firstName 
 					 << setw(15) << crs.listStudent[i].className 
-					 << setw(10) << gnd
+					 << setw(10) << crs.listStudent[i].gender
 					 << setw(20) << crs.listStudent[i].DOB.day << '/' << crs.listStudent[i].DOB.month << '/' << crs.listStudent[i].DOB.year 
 					 << setw(15) << "Social ID" << endl;
 	}
@@ -269,9 +287,8 @@ void enrollCourses(student& _student, semester _semester) {
 
         module temp;
         temp.ID = unenrolledCourse[t].ID;
+		temp.nameSem = _semester.name;
         bool canEnroll = true;
-
-        if (_student.enrolled.size() == 0) _student.enrolled.push_back(temp);
 
         for (int i = 0; i < _student.enrolled.size(); ++i) {
             for (int j = 0; j <= 1; ++j) {
@@ -590,15 +607,17 @@ void viewCourseScoreboard(semester& _semester){
 	course crs = getCourse(_semester);
 	if (crs.name == "-1") return;
 	system("cls");
-	cout << left << setw(40) << "Name" 
+	cout << left << setw(10) << "ID"
+				 << setw(20) << "Name" 
 				 << setw(15) << "Midterm" 
 				 << setw(15) << "Final" 
 				 << setw(15) << "Other" 
 				 << setw(15) << "Total" << endl;
 	for(int i=0; i < crs.listStudent.size(); i++){
-		for(int j=0; i < crs.listStudent[i].enrolled.size(); j++){
+		for(int j=0; j < crs.listStudent[i].enrolled.size(); j++){
 			if(crs.listStudent[i].enrolled[j].ID == crs.ID){
-				cout << left << setw(40) << crs.listStudent[i].lastName << ' ' << crs.listStudent[i].firstName 
+				cout << left << setw(10) << crs.listStudent[i].ID
+							 << setw(20) << crs.listStudent[i].fullName 
 							 << setw(15) << crs.listStudent[i].enrolled[j].grade.midterm
 							 << setw(15) << crs.listStudent[i].enrolled[j].grade.final
 							 << setw(15) << crs.listStudent[i].enrolled[j].grade.other
@@ -748,6 +767,7 @@ void addStudentToCourse(student _student, string _courseID, semester& _semester)
 	for(int i=0;i<_semester.listCourse.size();++i){
 		if(_courseID == _semester.listCourse[i].ID){
 			_semester.listCourse[i].listStudent.push_back(_student);
+			exportScoreboard(_semester, _semester.listCourse[i], false);
 			return;
 		}
 	}
@@ -889,7 +909,7 @@ void exportScoreboard(semester& _semester, course& _course, bool empty) {
 			if (empty)
 				fout << i + 1 << ','
 					<< _student.ID << ','
-					<< _student.firstName + _student.className << ','
+					<< _student.lastName + " " + _student.firstName << ','
 					<< _student.className << ','
 					<< ','
 					<< ','
@@ -996,6 +1016,7 @@ bool readScoreboard(schoolYear& _schoolYear, semester& _semester, course& _cours
 	
 
 	fin.open(coursePath);
+	cout << _course.name<< '\n';
 	if (fin.is_open()) {
 		//Ignore first line
 		fin.ignore(1000, '\n');
@@ -1007,11 +1028,10 @@ bool readScoreboard(schoolYear& _schoolYear, semester& _semester, course& _cours
 			student temp;
 			fin >> temp.no;
 			fin.ignore(1, ',');
-			fin >> temp.ID;
-			fin.ignore();
-			string nameStudent;
-			getline(fin, nameStudent, ',');
+			getline(fin, temp.ID, ',');
+			getline(fin, temp.fullName, ',');
 			getline(fin, temp.className, ',');
+			cout << temp.ID << ' ' << temp.fullName << ' ';
 
 			//Get the score
 			module _module;
@@ -1025,6 +1045,7 @@ bool readScoreboard(schoolYear& _schoolYear, semester& _semester, course& _cours
 			fin.ignore(1, ',');
 			fin >> _module.grade.total;
 			fin.ignore();
+			cout << _module.grade.total << '\n';
 
 			//Store to the course
 			auto& huhu = _course.listStudent[i].enrolled;
@@ -1097,9 +1118,10 @@ void viewClassScoreboard(schoolYear& _schoolYear, semester& _semester) {
 				sumSem += score, cntSem++;
 			sumOverall += score, cntOverall++;
 		}
-
-		cout << setw(15) << sumSem / cntSem;
-		cout << setw(15) << sumOverall / cntOverall << endl;
+		if (cntSem == 0) cout << setw(15) << 0 << '\n';
+		else cout << setw(15) << sumSem / cntSem;
+		if (cntOverall == 0) cout << setw(15) << 0 << '\n';
+		else cout << setw(15) << sumOverall / cntOverall << endl;
 	}
 
 	for (int x = 0; x < _semester.listCourse.size(); x++) {
@@ -1246,6 +1268,7 @@ void loadSemesterInfo(schoolYear& _schoolYear, Vector<semester>& _semester) {
 				if (_course.ID.size() == 0) continue;
 				loadCourseInfo(_schoolYear, sTemp ,_course);
 				initiateCourseList(_schoolYear, sTemp ,_course);
+				readScoreboard(_schoolYear, sTemp, _course);
 				sTemp.listCourse.push_back(_course);
 			}
 
@@ -1298,8 +1321,7 @@ void loadCourseInfo(schoolYear& _schoolYear, semester& _semester, course& _cours
 			fin.ignore(1, ',');
 			fin >> temp.ID;
 			fin.ignore();
-			string nameStudent;
-			getline(fin, nameStudent, ',');
+			getline(fin, temp.fullName, ',');
 			getline(fin, temp.className, ',');
 
 			//Get the score
@@ -1366,8 +1388,7 @@ void initiateCourseList(schoolYear& _schoolYear, semester& _semester, course& _c
 			if (!fin >> temp.no) break;
 			fin.ignore(1, ',');
 			getline(fin, temp.ID, ',');
-			string nameStudent;
-			getline(fin, nameStudent, ',');
+			getline(fin, temp.fullName, ',');
 			getline(fin, temp.className);
 			if (fin.eof()) break;
 
@@ -1634,8 +1655,8 @@ void allStaffFunction() {
 	Vector <staff> _staff;
 	Vector <schoolYear> allYear;
 	loadLastSave(allYear, _staff);
-
-	// cout << allYear[1].listSemester[1].listCourse[0].listStudent[0].ID << '\n';
+	// exit(0);
+	// cout << allYear[1].newClass[0].listStudent[0].firstName << '\n';
 	// exit (0);
 
 	// cout << allYear[1].listSemester[1].listCourse.size() << '\n';
