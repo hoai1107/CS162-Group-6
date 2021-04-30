@@ -168,7 +168,7 @@ void addSemesterToYear(schoolYear &year);
 void saveSemester(semester& _semester);
 void editSemester(schoolYear& _schoolYear, semester& _semester);
 int chooseSemester(schoolYear& _schoolYear);
-void exportScoreboard(semester& _semester, course _course, bool empty = true);
+void exportScoreboard(semester& _semester, course& _course, bool empty = true);
 bool readScoreboard(schoolYear& _schoolYear, semester& _semester, course& _course);
 void initiateCourseList(schoolYear& _schoolYear, semester& _semester, course& _course);
 classUni& getClass(schoolYear& _schoolYear);
