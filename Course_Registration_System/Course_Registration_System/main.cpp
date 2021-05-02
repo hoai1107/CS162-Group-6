@@ -19,8 +19,9 @@ int main() {
 
 	int yearIndex, classIndex, userIndex;
 
-	int res = 3;
-	while (res != 1 && res != 2) {
+	int res;
+	while (true) {
+		system("CLS");
 		cout << "-------------------LOGIN------------------" << endl;
 		res = login(_staff, year, userIndex, classIndex, yearIndex);
 
