@@ -156,7 +156,7 @@ void saveCourseInfo(semester& _semester, course& _course);
 void saveSemesterInfo(Vector<semester>& _semester);
 void loadLastSave(Vector <schoolYear> &listYear, Vector<staff> &_staff);
 void loadStaff(Vector<staff> &_staff);
-void saveAccountInfo(schoolYear _year, classUni _class, Vector<staff> _staff);
+void saveAccountInfo(Vector<schoolYear> _year, Vector<staff> _staff);
 void viewUserInfo(int studentOrStaff, staff _staff, student _student);
 
 bool IsPathExist(const string &s);
