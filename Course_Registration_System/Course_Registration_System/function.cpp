@@ -4,6 +4,7 @@
 #include<filesystem>
 #include<sys/stat.h>
 #include<iostream>
+#include <sstream>
 
 using namespace std;
 namespace fs= std::filesystem;
@@ -75,7 +76,7 @@ void addStudentToClass(classUni& className) {
 	fin.close();
 	// exit(0);
 
-	fs::path passPath = root/"Class"/className.name/"password.csv";
+	fs::path passPath = root / "Class" / className.name / "password.csv";
 	if (fs::exists(passPath)) {
 		fin.open(passPath);
 
@@ -147,7 +148,7 @@ void removeCourseFromList(student& _student, semester _semester) {
 
         Vector<string> actions;
         for (int i = 0; i < _student.enrolled.size(); i++) actions.push_back("Remove.");
-        int t = actionList(actions, { 105, 2 });
+        int t = actionList(actions, { 105, 3 });
 
         if (t == actions.size()) return;
 
@@ -197,7 +198,6 @@ void viewCourses(Vector<course> &courseList) {
             << setw(40) << courseList[i].teacher
             << setw(10) << courseList[i].numCredits << endl;
     }
-	system("pause");
 }	
 
 void viewStudentsInCourse(course crs) {
@@ -321,6 +321,7 @@ void enrollCourses(student& _student, semester& _semester) {
                     cout << "This course is conflicted with existing courses. Please choose another course." << endl;
                     canEnroll = false;
 					system("pause");
+					break;
                 }
 			}
         }
@@ -405,6 +406,7 @@ void editSemester(schoolYear& _schoolYear, semester& _semester) {
 
 			case 2:
 				viewCourses(_semester.listCourse);
+				system("pause");
 				break;
 			
 			case 3:
@@ -980,7 +982,7 @@ void exportScoreboard(semester& _semester, course& _course, bool empty) {
 		}
 	}
 	else {
-		cout << "Something wrong with the file!!";
+		cout << "Something wrong with the file!!\n";
 		fout.close();
 		system ("pause");
 	}
@@ -1505,6 +1507,10 @@ void loadLastSave(Vector <schoolYear> &listYear, Vector<staff>& _staff) {
 
 			root = tmpRoot;
 		}
+	}
+
+	for (int i = 0; i < listYear.size(); i++) {
+		for (int j = 0; j < listYear[i].newClass.size(); j++) saveAccountInfo(listYear[i], listYear[i].newClass[j], _staff);
 	}
 }
 
