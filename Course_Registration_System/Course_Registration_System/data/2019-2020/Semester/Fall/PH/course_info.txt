@@ -1,5 +1,5 @@
-Math
-Anh
-2
+Physics
+A
+3
 MON,7:30
 Tue,9:30
