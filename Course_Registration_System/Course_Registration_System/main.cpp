@@ -180,6 +180,8 @@ int main() {
 				} while (!exit);
 			}
 		}
+
+		//saveStudentInCourse(year);
 		saveAccountInfo(year, _staff);
 	}
 

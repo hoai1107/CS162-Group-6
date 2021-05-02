@@ -69,6 +69,8 @@ void addStudentToClass(classUni& className) {
 				}
 			}
 
+			st.fullName = st.lastName + " " + st.firstName;
+			st.className=className.name;
 			className.listStudent.push_back(st);
 			++i;
 		}
@@ -788,7 +790,7 @@ void addStudentToCourse(student _student, string _courseID, semester& _semester)
 	for(int i=0;i<_semester.listCourse.size();++i){
 		if(_courseID == _semester.listCourse[i].ID){
 			_semester.listCourse[i].listStudent.push_back(_student);
-			exportScoreboard(_semester, _semester.listCourse[i], false);
+			//exportScoreboard(_semester, _semester.listCourse[i], false);
 			return;
 		}
 	}
@@ -878,7 +880,7 @@ void exportStudentInCourseToCSV(semester& _semester) {
 		fout << "No" << ','
 			<< "ID" << ','
 			<< "Fullname" << ','
-			<< "Class";
+			<< "Class" << endl;
 
 		for (int i = 0; i < _course.listStudent.size(); ++i) {
 			student _student = _course.listStudent[i];
@@ -1745,3 +1747,35 @@ void viewUserInfo(int studentOrStaff, staff _staff, student _student) {
 		cout << "Social ID    : " << _student.socialID << endl;
 	}
 }
+
+/*void saveStudentInCourse(Vector<schoolYear>& _year) {
+	for (int i = 0; i < _year.size(); ++i) {
+		for (int j = 0; j < _year[i].listSemester.size(); ++j) {
+			semester _semester = _year[i].listSemester[j];
+			for (int k = 0; k < _semester.listCourse.size(); ++k) {
+				course _course = _semester.listCourse[k];
+				ofstream fout;
+				fout.open(fs::current_path() / "data" / _year[i].name / "Semester" / _semester.name / _course.ID / (_course.ID + "_list.csv"));
+
+				if (fout.is_open()) {
+					fout << "No" << ','
+						<< "ID" << ','
+						<< "Fullname" << ','
+						<< "Class" << endl;
+
+					for (int t = 0; t < _course.listStudent.size(); ++t) {
+						student _student = _course.listStudent[t];
+						fout << t + 1 << ','
+							<< _student.ID << ','
+							<< _student.fullName << ','
+							<< _student.className;
+
+						fout << endl;
+					}
+				}
+
+				fout.close();
+			}
+		}
+	}
+}*/

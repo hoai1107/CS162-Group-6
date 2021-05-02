@@ -172,6 +172,8 @@ void exportScoreboard(semester& _semester, course& _course, bool empty = true);
 bool readScoreboard(schoolYear& _schoolYear, semester& _semester, course& _course);
 void initiateCourseList(schoolYear& _schoolYear, semester& _semester, course& _course);
 classUni& getClass(schoolYear& _schoolYear);
+
+void saveStudentInCourse(Vector<schoolYear>& _year);
 // void fakeFunction();
 
 #endif // !_MYFUNCTION_H_
