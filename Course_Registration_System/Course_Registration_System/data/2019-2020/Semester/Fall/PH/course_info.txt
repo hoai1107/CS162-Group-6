@@ -2,4 +2,4 @@ Physics
 A
 3
 MON,7:30
-Sat,15:30
+Tue,9:30

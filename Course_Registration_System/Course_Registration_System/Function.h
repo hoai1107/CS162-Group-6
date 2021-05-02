@@ -52,7 +52,7 @@ struct lesson {
 };
 
 struct mark {
-    double midterm, final, other, total;
+    double midterm = 0, final = 0, other = 0, total = 0;
 };
 
 struct module {
@@ -65,9 +65,9 @@ struct student {
     int no;
     string ID; // id to login also
     string password;
-    string firstName, lastName;
+    string firstName, lastName, fullName;
     string className;
-    int gender; // 0: male, 1: female
+    string gender;
     date DOB;
     string socialID;
     Vector <module> enrolled;
@@ -132,7 +132,7 @@ void displayClass(classUni _class);//(task 18)
 void viewEnrolledCourses(student _student, semester _semester);//(task 14)
 void removeCourseFromList(student& _student, semester _semester); //(task 15) return false in case there's no such course with that ID in list
 void enrollCourses(student& _student, semester& _semester);
-void viewStudentScoreboard(student stu);
+void viewStudentScoreboard(schoolYear year, student stu);
 
 //Additional function
 course& getCourse(semester& _semester);
@@ -150,17 +150,17 @@ ACTION key(int z);
 int actionList(Vector<string> str, COORD position);
 Vector<course> getUnenrolledCourseList(semester _semester, student _student);
 
-void loadSemesterInfo(schoolYear& _schoolYear, semester& _semester);
+void loadSemesterInfo(schoolYear& _schoolYear, Vector<semester>& _semester);
 void loadCourseInfo(schoolYear& _schoolYear, semester& _semester, course& _course);
 void saveCourseInfo(semester& _semester, course& _course);
-void saveSemesterInfo(semester& _semester);
+void saveSemesterInfo(Vector<semester>& _semester);
 void loadLastSave(Vector <schoolYear> &listYear, Vector<staff> &_staff);
 void loadStaff(Vector<staff> &_staff);
 void saveAccountInfo(schoolYear _year, classUni _class, Vector<staff> _staff);
 void viewUserInfo(int studentOrStaff, staff _staff, student _student);
 
 bool IsPathExist(const string &s);
-void allStaffFunction();
+void allStaffFunction(Vector <staff>& _staff, Vector <schoolYear>& allYear);
 void chooseAcademicYear(Vector<schoolYear> &allYear);
 void editSchoolYear(schoolYear &year);
 void addClassToYear(schoolYear &year);
