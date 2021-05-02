@@ -288,13 +288,10 @@ void addCourseToSemester(semester& sem){
 		lesson sess;
 		cout << "	Day for the session (MON / TUE / WED / THU / FRI / SAT): ";
 		cin >> sess.day;
-		cout << sess.day << '\n';
 		cout << "	Time for the session (7:30 / 9:30 / 13:30 / 15:30): ";
 		cin >> sess.time;
-		cout << sess.time << '\n';
 		crs.listLesson.push_back(sess);
 	}
-	cout << crs.listLesson.size() << '\n';
 	sem.listCourse.push_back(crs);
 	saveSemester(sem);
 	cout << "Course is added successfully!\n";
@@ -711,7 +708,17 @@ int changePassword_Staff(Vector<staff>& _staff, int index) {
 	cout << "Confirm new password: "; getline(cin, cNPass);
 	if (nPass != cNPass) return 2;
 	_staff[index].password = cNPass;
+	// writeStaffCSV(_staff);
 	return 0;
+}
+
+void writeStaffCSV(Vector <staff>& _staff) {
+	ofstream fout;
+	fs::path staffPath = root / "staff.csv";
+	fout.open(staffPath);
+	for (int i = 0; i < _staff.size(); i++) 
+		fout << _staff[i].ID << "," << _staff[i].name << "," << _staff[i].password << endl;
+	fout.close();
 }
 
 int changePassword_Student(Vector<student>& _student, int index) {
@@ -1143,7 +1150,7 @@ void viewClassScoreboard(schoolYear& _schoolYear, semester& _semester) {
 				sumSem += score, cntSem++;
 			sumOverall += score, cntOverall++;
 		}
-		if (cntSem == 0) cout << setw(15) << 0 << '\n';
+		if (cntSem == 0) cout << setw(15) << 0;
 		else cout << setw(15) << sumSem / cntSem;
 		if (cntOverall == 0) cout << setw(15) << 0 << '\n';
 		else cout << setw(15) << sumOverall / cntOverall << endl;
@@ -1584,7 +1591,7 @@ void chooseAcademicYear(Vector<schoolYear> &allYear) {
     }	
 }
 
-void allStaffFunction(Vector <staff>& _staff, Vector <schoolYear>& allYear) {
+void allStaffFunction(Vector <staff>& _staff, Vector <schoolYear>& allYear, int indexStaff) {
 	fakeCourse.name = "-1";
 	fakeClass.name = "-1";
 
@@ -1593,10 +1600,13 @@ void allStaffFunction(Vector <staff>& _staff, Vector <schoolYear>& allYear) {
     Vector < string > listOperation;
     listOperation.push_back("Create a new academic year");
 	listOperation.push_back("Edit an academic year");
+	listOperation.push_back("User info");
+	listOperation.push_back("Change password");
+	listOperation.push_back("Log out");
 
     while (true) {
         cout << "Choose the function you want to perform. BACKSPACE to stop\n";
-
+		bool exit = false;
         int t = actionList(listOperation, {0, 1});
         switch (t) {
             case 0:
@@ -1607,9 +1617,50 @@ void allStaffFunction(Vector <staff>& _staff, Vector <schoolYear>& allYear) {
 				chooseAcademicYear(allYear);
 				break;
 
-            default:
-                return;
+			case 2: {
+				student tmp;
+				viewUserInfo(1, _staff[indexStaff], tmp);
+				system("pause");
+				break;
+			}
+
+			case 3: {
+				int t = changePassword_Staff(_staff, indexStaff);
+				while (t != 0) {
+					system("CLS");
+					if (t == 1) {
+						cout << "Old password is wrong!\n";
+					}
+					else {
+						cout << "Two passwords don't match!\n";
+					}
+					system("pause");
+					system("CLS");
+					t = changePassword_Staff(_staff, indexStaff);
+				}
+				writeStaffCSV(_staff);
+				system("cls");
+				cout << "Change successfully!\n";
+				// saveAccountInfo(year[yearIndex], year[yearIndex].newClass[classIndex], _staff);
+				system("pause");
+
+				break;
+			}
+
+			case 4: {
+				system ("cls");
+				cout << "Do you really want to exit?";
+				Vector<string> confirm;
+				confirm.push_back("YES");
+				confirm.push_back("NO");
+				int t = actionList(confirm, { 0, 1 });
+				if (t == 0) exit = true;
+				else exit = false;
+				break;
+			}
         }
+
+		if (exit) return;
 
 
         system("CLS");
@@ -1707,6 +1758,8 @@ void loadStaff(Vector<staff> &_staff) {
 		_staff.push_back(tStaff);
 		i++;
 	}
+
+	fin.close();
 }
 
 void saveAccountInfo(Vector<schoolYear> _year , Vector<staff> _staff) {

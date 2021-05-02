@@ -26,7 +26,7 @@ int main() {
 		res = login(_staff, year, userIndex, classIndex, yearIndex);
 
 		if (res == 0) {
-			cout << "Wrong ID or password!";
+			cout << "Wrong ID or password!\n";
 			system("pause");
 			system("CLS");
 			continue;
@@ -35,7 +35,7 @@ int main() {
 		system("CLS");
 
 		if (res == 1) {
-			allStaffFunction(_staff, year);
+			allStaffFunction(_staff, year, userIndex);
 		}
 
 		else {

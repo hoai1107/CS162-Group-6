@@ -160,7 +160,7 @@ void saveAccountInfo(Vector<schoolYear> _year, Vector<staff> _staff);
 void viewUserInfo(int studentOrStaff, staff _staff, student _student);
 
 bool IsPathExist(const string &s);
-void allStaffFunction(Vector <staff>& _staff, Vector <schoolYear>& allYear);
+void allStaffFunction(Vector <staff>& _staff, Vector <schoolYear>& allYear, int indexStaff);
 void chooseAcademicYear(Vector<schoolYear> &allYear);
 void editSchoolYear(schoolYear &year);
 void addClassToYear(schoolYear &year);
@@ -172,6 +172,7 @@ void exportScoreboard(semester& _semester, course& _course, bool empty = true);
 bool readScoreboard(schoolYear& _schoolYear, semester& _semester, course& _course);
 void initiateCourseList(schoolYear& _schoolYear, semester& _semester, course& _course);
 classUni& getClass(schoolYear& _schoolYear);
+void writeStaffCSV(Vector <staff>& _staff);
 
 void saveStudentInCourse(Vector<schoolYear>& _year);
 // void fakeFunction();
