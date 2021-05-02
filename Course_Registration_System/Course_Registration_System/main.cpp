@@ -96,7 +96,7 @@ int main() {
 						}
 						system("cls");
 						cout << "Change successfully!\n";
-						saveAccountInfo(year[yearIndex], year[yearIndex].newClass[classIndex], _staff);
+						//saveAccountInfo(year[yearIndex], year[yearIndex].newClass[classIndex], _staff);
 						system("pause");
 
 						break;
@@ -161,7 +161,7 @@ int main() {
 						}
 						system("cls");
 						cout << "Change successfully!\n";
-						saveAccountInfo(year[yearIndex], year[yearIndex].newClass[classIndex], _staff);
+						//saveAccountInfo(year[yearIndex], year[yearIndex].newClass[classIndex], _staff);
 						system("pause");
 						break;
 					}
@@ -180,6 +180,7 @@ int main() {
 				} while (!exit);
 			}
 		}
+		saveAccountInfo(year, _staff);
 	}
 
 	return 0;

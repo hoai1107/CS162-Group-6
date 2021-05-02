@@ -74,7 +74,7 @@ void addStudentToClass(classUni& className) {
 		}
 	}
 	fin.close();
-	// exit(0);
+	
 
 	fs::path passPath = root / "Class" / className.name / "password.csv";
 	if (fs::exists(passPath)) {
@@ -210,10 +210,7 @@ void viewStudentsInCourse(course crs) {
 				 << setw(20) << "Date of birth" 
 				 << setw(15) << "Social ID" << endl;
 	for (int i = 0; i < crs.listStudent.size(); i++) {
-		string gnd;
-		// if (crs.listStudent[i].gender == 0)
-		// 	gnd = "male";
-		// else gnd = "female";
+		
 		cout << left << setw(5) << crs.listStudent[i].no 
 			 	 	 << setw(10) << crs.listStudent[i].ID 
 					 << setw(20) << crs.listStudent[i].lastName
@@ -249,19 +246,32 @@ void createNewClasses(schoolYear& _schoolYear){
 	cout << "Enter name of the class: ";
 	getline(cin,nClass.name);
 	cout << "Enter or drag path of your .csv file: ";
-	string link; getline(cin, link);
-	fs::path path = root/"Class"/nClass.name;
+	string link;
+	getline(cin, link);
+
+	/*fs::path path = root/"Class"/nClass.name;
 	system(("mkdir " + path.string()).c_str());
 	system(("cd " + path.string() + "&& type nul > " + nClass.name + ".csv").c_str());
 	path = path/(nClass.name + ".csv");
-	system(("copy " + link + " " + path.string() + " > nul").c_str());
+	system(("copy " + link + " " + path.string() + " > nul").c_str());*/
+
+	const string filename = nClass.name + ".csv";
+	fs::path source = link;
+	fs::path dest = root / "Class" / nClass.name;
+
+	fs::create_directories(dest);
+	dest /= filename;
+
+	fs::rename(source, dest);
+
+
 	addStudentToClass(nClass);
 	_schoolYear.newClass.push_back(nClass);
 	cout << "Class has been added successfully.\n";
 	system("pause");
 }
 
-void addCourseToSemester(semester& sem){ // chi add info, chua add student
+void addCourseToSemester(semester& sem){ 
 	course crs;
 	cout << "Course ID: ";
 	cin >> crs.ID; cin.get();
@@ -359,12 +369,9 @@ int chooseSemester(schoolYear& _schoolYear) {
 		return -1;
 	}
 	Vector <string> Sem;
-	// cout << "Oh no\n";
 	for (int i = 0; i < _schoolYear.listSemester.size(); i++) {
 		Sem.push_back(_schoolYear.listSemester[i].name);
-		// cout << Sem[Sem.size()-1]  << '\n';
 	}
-	// exit (0);
 
 		system("cls");
 		cout << "Choose the semester. BACKSPACE to stop\n";
@@ -521,33 +528,25 @@ void updateCourseInfo(semester& _semester){
 	update.push_back("Sessions");
 
 	fs::path link = root / "Semester" / _semester.name;
-	// cout << link << '\n';
-	// exit (0);
-	// cin.ignore();
 	while(true){
 		system ("cls");
 		cout<<"Please choose the section you want to update for the course. BACKSPACE to stop"<<endl;
 		int t = actionList(update, {0, 1});
 		if (t == update.size()) break;
-		// cin.ignore(1, '\n');
 		switch(t){
 			case 0: 
 			{
 				cout<<"Enter the new ID: ";
-				// cin.ignore();
-				// cout << int(cin.get()) << '\n';
 				string tmp = _course.ID;
 				getline(cin, _course.ID);
 				fs::rename(link / tmp, link / _course.ID);
 				cout << "Updated successfully!\n";
 				system("pause");
-				// system ("pause");
 				break;
 			}
 			case 1:	
 			{
 				cout<<"Enter the new course name: ";
-				// cin.ignore();
 				getline(cin,_course.name);
 				cout << "Updated successfully!\n";
 				system("pause");
@@ -556,7 +555,6 @@ void updateCourseInfo(semester& _semester){
 			case 2: 
 			{
 				cout<<"Enter the new teacher name: ";
-				// cin.ignore();
 				getline(cin,_course.teacher);
 				cout << "Updated successfully!\n";
 				system("pause");
@@ -592,7 +590,7 @@ void updateCourseInfo(semester& _semester){
 
 				if(tolower(check)=='y'){
 					temp = 3 - temp;
-					// cin.ignore();
+					
 					cout<<"Enter the new day: ";
 					getline(cin,_course.listLesson[temp-1].day);
 					cout<<"Enter the new time: ";
@@ -696,7 +694,7 @@ void updateStudentResult(schoolYear& _schoolYear, semester& _semester) {
 
 	readScoreboard(_schoolYear, _semester, crs);
 
-	// cout << "The course you entered doesn't exist";
+	
 	return;
 }
 
@@ -826,7 +824,7 @@ int actionList(Vector<string> str, COORD position) {
         cout << i + 1 << ". " << str[i];
     }
     while (true) {
-        // if (status == n - 1) SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 15);
+       
         int z = _getch(); int action = key(z);
         switch (action) {
         case UP: {
@@ -892,8 +890,6 @@ void exportStudentInCourseToCSV(semester& _semester) {
 			fout << endl;
 		}
 		fout.close();
-		// system(link.string().c_str());
-		/// hehe ko bug dau hehehehehehehehheh
 
 		string temp = link.string();
 		const char* c = temp.c_str();
@@ -968,8 +964,7 @@ void exportScoreboard(semester& _semester, course& _course, bool empty) {
 
 		}
 		fout.close();
-		// system(link.string().c_str());
-		/// hehe ko bug dau hehehehehehehehheh
+		
 		if (empty) {
 			string temp = link.string();
 			const char* c = temp.c_str();
@@ -1004,7 +999,6 @@ void importScoreboard(schoolYear& _schoolYear, semester& _semester) {
 
 	if (!fs::exists(coursePath)) {
 		system(("cd " + fakepath.string() + "&& type nul > scoreboard.csv").c_str());
-		// cout << "Can't import the scoreboard!!!";
 	}
 
 	system(("copy " + link + " " + coursePath.string() + " > nul").c_str());
@@ -1113,14 +1107,11 @@ bool readScoreboard(schoolYear& _schoolYear, semester& _semester, course& _cours
 	}
 	else {
 		fin.close();
-		// cout << "Something wrong!!";
-		// system("pause");
 		return false;
 	}
 	fin.close();
 	return true;
-	// cout << "Imported successfully.\n";
-	// system("pause");
+	
 }
 
 void viewClassScoreboard(schoolYear& _schoolYear, semester& _semester) {
@@ -1144,9 +1135,7 @@ void viewClassScoreboard(schoolYear& _schoolYear, semester& _semester) {
 		int cntSem = 0, cntOverall = 0;
 
 		for (int j = 0; j < _student.enrolled.size(); ++j) {
-			// cout << setw(10) << left << _student.enrolled[j].grade.total << '(' << _student.enrolled[j].ID << ')';
 			auto score = _student.enrolled[j].grade.total;
-			// auto name = _student.enrolled[j].ID;
 			auto sem = _student.enrolled[j].nameSem;
 			if (sem == _semester.name)
 				sumSem += score, cntSem++;
@@ -1166,14 +1155,12 @@ void viewClassScoreboard(schoolYear& _schoolYear, semester& _semester) {
 		cout << setw(15) << left << "Student ID";
 		cout << setw(20) << left << "Full Name";
 		cout << setw(15) << left << "Finalmark" << '\n';
-		// cout << setw(15) << left << "GPA overall" << '\n';
 
 		for (int i = 0, ttt = 0; i < _class.listStudent.size(); ++i) {
 			student _student = _class.listStudent[i];
 
 
 			for (int j = 0; j < _student.enrolled.size(); ++j) {
-				// cout << setw(10) << left << _student.enrolled[j].grade.total << '(' << _student.enrolled[j].ID << ')';
 				auto score = _student.enrolled[j].grade.total;
 				auto IDcrs = _student.enrolled[j].ID;
 				auto sem = _student.enrolled[j].nameSem;
@@ -1428,7 +1415,7 @@ void saveSemesterInfo(Vector<semester>& _semester) {
 
 		fout.open(root / "Semester" / _semester[i].name / "semester.txt");
 		
-		// if (fout.is_open()) {
+		
 			fout << _semester[i].name << endl;
 			fout << _semester[i].academicYear << endl;
 
@@ -1441,7 +1428,7 @@ void saveSemesterInfo(Vector<semester>& _semester) {
 				fout << endl << _semester[i].listCourse[i].ID;
 				saveCourseInfo(_semester[i] ,_semester[i].listCourse[i]);
 			}
-		// }
+		
 		
 		fout.close();
 	}
@@ -1507,10 +1494,6 @@ void loadLastSave(Vector <schoolYear> &listYear, Vector<staff>& _staff) {
 
 			root = tmpRoot;
 		}
-	}
-
-	for (int i = 0; i < listYear.size(); i++) {
-		for (int j = 0; j < listYear[i].newClass.size(); j++) saveAccountInfo(listYear[i], listYear[i].newClass[j], _staff);
 	}
 }
 
@@ -1602,18 +1585,6 @@ void chooseAcademicYear(Vector<schoolYear> &allYear) {
 void allStaffFunction(Vector <staff>& _staff, Vector <schoolYear>& allYear) {
 	fakeCourse.name = "-1";
 	fakeClass.name = "-1";
-	// exit (0);
-	//loadLastSave(allYear, _staff);
-	// exit(0);
-	// cout << allYear[1].newClass[0].listStudent[0].firstName << '\n';
-	// exit (0);
-
-	// cout << allYear[1].listSemester[1].listCourse.size() << '\n';
-	// exit (0);
-	// for (int i = 0; i < allYear[1].listSemester.size(); i++) {
-	// 	cout << allYear[1].listSemester[i].name << '\n';
-	// }
-	// exit (0);
 
 	system("cls");
 
@@ -1656,8 +1627,7 @@ void createSemester(schoolYear& _schoolYear) {
 			return;
 		}
 
-	// cout << "Enter the academic year of the semester: ";
-	// getline(cin, _semester.academicYear);
+	
 	_semester.academicYear = _schoolYear.name;
 	cout << "Enter start date (DD/MM/YYYY): ";
 	cin >> _semester.startDate.day; cin.get();
@@ -1683,10 +1653,10 @@ void createSemester(schoolYear& _schoolYear) {
 
 void saveSemester(semester& _semester) {
 	fs :: path link = root/"Semester"/_semester.name;
-	// cout << "bug!\n";
+
 	if (!fs::exists(link))
 		system(("mkdir " + link.string()).c_str());
-	// cout << "bug!\n";
+	
 
 	ofstream fout;
 	fout.open(root / "Semester" / _semester.name / "semester.txt");
@@ -1701,7 +1671,6 @@ void saveSemester(semester& _semester) {
 		fout << _semester.regClose.day << '/' << _semester.regClose.month << '/' << _semester.regClose.year << endl;
 
 		for (int i = 0; i < _semester.listCourse.size(); ++i) {
-			// cout << _semester.listCourse[i].ID << '\n';
 			fout << _semester.listCourse[i].ID << '\n';
 			saveCourseInfo(_semester ,_semester.listCourse[i]);
 		}
@@ -1738,28 +1707,26 @@ void loadStaff(Vector<staff> &_staff) {
 	}
 }
 
-void saveAccountInfo(schoolYear _year ,classUni _class, Vector<staff> _staff) {
+void saveAccountInfo(Vector<schoolYear> _year , Vector<staff> _staff) {
 	ofstream fout;
 
 	fs::path staffPath = root / "staff.csv";
-
 	fout.open(staffPath);
-
-	for (int i = 0; i < _staff.size(); i++) fout << _staff[i].ID << "," << _staff[i].name << "," << _staff[i].password << endl;
-
+	for (int i = 0; i < _staff.size(); i++) 
+		fout << _staff[i].ID << "," << _staff[i].name << "," << _staff[i].password << endl;
 	fout.close();
 
-	fs::path studentPath = root / _year.name / "Class" / _class.name / "password.csv";
-
-	fout.open(studentPath);
-
-	for (int i = 0; i < _class.listStudent.size(); i++) fout << _class.listStudent[i].password << endl;
-
-	fout.close();
-
-	studentPath = root / _year.name / "Class" / _class.name / (_class.name + ".csv");
-
-	fout.open(studentPath);
+	for (int k = 0; k < _year.size(); ++k) {
+		for (int j = 0; j < _year[k].newClass.size(); ++j) {
+			classUni _class = _year[k].newClass[j];
+			fs::path studentPath = root / _year[k].name / "Class" / _class.name / "password.csv";
+			fout.open(studentPath);
+			fout << _class.listStudent[0].password;
+			for (int i = 1; i < _class.listStudent.size(); i++)
+				fout << endl << _class.listStudent[i].password;
+			fout.close();
+		}
+	}
 }
 
 void viewUserInfo(int studentOrStaff, staff _staff, student _student) {
