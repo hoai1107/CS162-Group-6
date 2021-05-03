@@ -131,7 +131,7 @@ void viewEnrolledCourses(student _student, semester _semester) {
     for (int i = 0; i < _student.enrolled.size(); ++i) {
         for (int j = 0; j < _semester.listCourse.size(); ++j)
             if (_student.enrolled[i].ID == _semester.listCourse[j].ID) {
-                res.push_back(_semester.listCourse[i]);
+                res.push_back(_semester.listCourse[j]);
                 break;
             }
     }
@@ -321,6 +321,7 @@ void enrollCourses(student& _student, semester& _semester, string yearName) {
         bool canEnroll = true;
 
         for (int i = 0; i < _student.enrolled.size(); ++i) {
+			if (_student.enrolled[i].nameSem != _semester.name) continue;
             for (int j = 0; j <= 1; ++j) {
                 //0 for first session and 1 for the other session
                 lesson time1 = getLesson(_semester, temp.ID, j);
@@ -328,6 +329,8 @@ void enrollCourses(student& _student, semester& _semester, string yearName) {
                 if (time1 == time2) {
 					system("CLS");
                     cout << "This course is conflicted with existing courses. Please choose another course." << endl;
+					cout << time1.day << ' ' << time1.time << '\n';
+					cout << time2.day << ' ' << time2.time << '\n';
                     canEnroll = false;
 					system("pause");
 					break;
@@ -1324,10 +1327,17 @@ void loadSemesterInfo(schoolYear& _schoolYear, Vector<semester>& _semester) {
 			fin >> sTemp.regClose.year;
 			fin.ignore();
 
-			course _course;
-			while (getline(fin, _course.ID)) {
-				if (_course.ID.size() == 0) continue;
+			// course _course;
+
+			// cout << '\n' << sTemp.name << '\n';
+			string tmp;
+			while (getline(fin, tmp)) {
+				if (tmp.size() == 0) continue;
+				course _course;
+				_course.ID = tmp;
+				// cout << _course.ID << '\n';
 				loadCourseInfo(_schoolYear, sTemp ,_course);
+				// cout << _course.name << ' ' << _course.listLesson[0].day << ' ' << _course.listLesson[1].day << '\n';
 				initiateCourseList(_schoolYear, sTemp ,_course);
 				readScoreboard(_schoolYear, sTemp, _course);
 				sTemp.listCourse.push_back(_course);
@@ -1350,17 +1360,23 @@ void loadCourseInfo(schoolYear& _schoolYear, semester& _semester, course& _cours
 	fin.open(root / "Semester" / folderName / _course.ID / ("course_info.txt"));
 
 	if (fin.is_open()) {
+		if (!_course.listLesson.size() == 0)
+			cout << "BUGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG\n";
+
 		getline(fin, _course.name);
 		getline(fin, _course.teacher);
-
+		// cout << _course.name << '\n';
 		fin >> _course.numCredits; fin.ignore();
 
 		lesson _lesson;
 		getline(fin, _lesson.day, ',');
+		// cout << _lesson.day << '\n';
 		getline(fin, _lesson.time);
 		_course.listLesson.push_back(_lesson);
+		// cout << _course.listLesson[0].
 
 		getline(fin, _lesson.day, ',');
+		// cout << _lesson.day << '\n';
 		getline(fin, _lesson.time);
 		_course.listLesson.push_back(_lesson);
 	}
@@ -1552,6 +1568,12 @@ void loadLastSave(Vector <schoolYear> &listYear, Vector<staff>& _staff) {
 			root = tmpRoot;
 		}
 	}
+	// cout << listYear[1].listSemester[2].name << '\n';
+	// cout << listYear[1].listSemester[2].listCourse[0].listLesson[0].day << '\n';
+	// cout << listYear[1].listSemester[2].listCourse[0].listLesson[1].day << '\n';
+	// cout << listYear[1].listSemester[2].listCourse[1].listLesson[0].day << '\n';
+	// cout << listYear[1].listSemester[2].listCourse[1].listLesson[1].day << '\n';
+	// system ("pause");
 }
 
 void createNewYear(Vector<schoolYear> &allYear) {
