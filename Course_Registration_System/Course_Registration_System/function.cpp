@@ -27,7 +27,7 @@ void addStudentToClass(classUni& className) {
 	string tmp;
 	getline(fin, tmp);
 	
-	int i = 1;
+	int temp = 1;
 	while (!fin.eof()) {
 		string line;
 		student st;
@@ -39,7 +39,7 @@ void addStudentToClass(classUni& className) {
 				data.push_back(field);
 			}
 
-			st.no = i;
+			st.no = temp;
 			for (int i = 0; i < data.size(); ++i) {
 				switch (i) {
 				case 0: st.ID = data[i]; break;
@@ -72,7 +72,7 @@ void addStudentToClass(classUni& className) {
 			st.fullName = st.lastName + " " + st.firstName;
 			st.className=className.name;
 			className.listStudent.push_back(st);
-			++i;
+			++temp;
 		}
 	}
 	fin.close();
@@ -796,11 +796,9 @@ bool checkFullSlot(semester _semester,string ID){
 void addStudentToCourse(student _student, string _courseID, semester& _semester, string yearName){
 	for(int i=0;i<_semester.listCourse.size();++i){
 		if(_courseID == _semester.listCourse[i].ID){
-			cout << root << endl;
 			_semester.listCourse[i].listStudent.push_back(_student);
 
 			ofstream fout;
-
 			string folderName;
 			if (_semester.name == "1" || _semester.name == "fall" || _semester.name == "Fall") folderName = "Fall";
 			if (_semester.name == "2" || _semester.name == "summer" || _semester.name == "Summer") folderName = "Summer";
@@ -826,10 +824,11 @@ void addStudentToCourse(student _student, string _courseID, semester& _semester,
 
 					fout << endl;
 				}
-				fout.close();
 				//exportScoreboard(_semester, _semester.listCourse[i], false);
-				return;
 			}
+
+			fout.close();
+			return;
 		}
 	}
 }
@@ -972,15 +971,16 @@ void exportScoreboard(semester& _semester, course& _course, bool empty) {
 		for (int i = 0; i < _course.listStudent.size(); ++i) {
 			student _student = _course.listStudent[i];
 			if (empty)
+			{
 				fout << i + 1 << ','
 					<< _student.ID << ','
-					<< _student.lastName + " " + _student.firstName << ','
+					<< _student.fullName << ','
 					<< _student.className << ','
 					<< ','
 					<< ','
 					<< ','
 					<< '\n';
-			else {
+			} else {
 				int posditme = -1;
 				for (int j = 0; j < _student.enrolled.size(); j++)
 					if (_student.enrolled[j].ID == _course.ID) {
@@ -1404,6 +1404,23 @@ void initiateCourseList(schoolYear& _schoolYear, semester& _semester, course& _c
 				}
 
 				_course.listStudent.push_back(st);
+
+				for (int i = 0; i < _schoolYear.newClass.size(); ++i) {
+					if (st.className == _schoolYear.newClass[i].name) {
+						for (int j = 0; j < _schoolYear.newClass[i].listStudent.size(); ++j) {
+							if(_schoolYear.newClass[i].listStudent[j].ID == st.ID){
+								module temp;
+								temp.ID = _course.ID;
+								temp.nameSem = _semester.name;
+								_schoolYear.newClass[i].listStudent[j].enrolled.push_back(temp);
+								goto nextStudent;
+							}
+						}
+					}
+				}
+
+			nextStudent:continue;
+
 			}
 		}
 

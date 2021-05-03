@@ -17,7 +17,7 @@ int main() {
 	today.month = newtime.tm_mon + 1;
 	today.year = newtime.tm_year + 1900;
 
-	int yearIndex, classIndex, userIndex;
+	int yearIndex, classIndex, userIndex, semesterIndex;
 
 	int res;
 	while (true) {
@@ -41,6 +41,7 @@ int main() {
 		else {
 			for (int i = 0; i < year[yearIndex].listSemester.size(); i++)
 				if (year[yearIndex].listSemester[i].startDate <= today && today <= year[yearIndex].listSemester[i].endDate) {
+					semesterIndex = i;
 					nSemester = year[yearIndex].listSemester[i];
 					break;
 				}
@@ -63,16 +64,16 @@ int main() {
 					switch (choice) {
 						system("CLS");
 					case 0: {
-						enrollCourses(year[yearIndex].newClass[classIndex].listStudent[userIndex], nSemester, year[yearIndex].name);
+						enrollCourses(year[yearIndex].newClass[classIndex].listStudent[userIndex], year[yearIndex].listSemester[semesterIndex], year[yearIndex].name);
 						break;
 					}
 					case 1: {
-						viewEnrolledCourses(year[yearIndex].newClass[classIndex].listStudent[userIndex], nSemester);
+						viewEnrolledCourses(year[yearIndex].newClass[classIndex].listStudent[userIndex], year[yearIndex].listSemester[semesterIndex]);
 						system("pause");
 						break;
 					}
 					case 2: {
-						removeCourseFromList(year[yearIndex].newClass[classIndex].listStudent[userIndex], nSemester);
+						removeCourseFromList(year[yearIndex].newClass[classIndex].listStudent[userIndex], year[yearIndex].listSemester[semesterIndex]);
 						break;
 					}
 					case 3: {
@@ -131,7 +132,7 @@ int main() {
 					switch (choice) {
 						system("CLS");
 					case 0: {
-						viewEnrolledCourses(year[yearIndex].newClass[classIndex].listStudent[userIndex], nSemester);
+						viewEnrolledCourses(year[yearIndex].newClass[classIndex].listStudent[userIndex], year[yearIndex].listSemester[semesterIndex]);
 						system("pause");
 						break;
 					}
