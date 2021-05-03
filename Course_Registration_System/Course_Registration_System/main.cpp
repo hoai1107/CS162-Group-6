@@ -63,7 +63,7 @@ int main() {
 					switch (choice) {
 						system("CLS");
 					case 0: {
-						enrollCourses(year[yearIndex].newClass[classIndex].listStudent[userIndex], nSemester);
+						enrollCourses(year[yearIndex].newClass[classIndex].listStudent[userIndex], nSemester, year[yearIndex].name);
 						break;
 					}
 					case 1: {

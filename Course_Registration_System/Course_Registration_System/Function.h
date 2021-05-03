@@ -131,14 +131,14 @@ void displayClass(classUni _class);//(task 18)
 //Student function
 void viewEnrolledCourses(student _student, semester _semester);//(task 14)
 void removeCourseFromList(student& _student, semester _semester); //(task 15) return false in case there's no such course with that ID in list
-void enrollCourses(student& _student, semester& _semester);
+void enrollCourses(student& _student, semester& _semester, string yearName);
 void viewStudentScoreboard(schoolYear year, student stu);
 
 //Additional function
 course& getCourse(semester& _semester);
 lesson getLesson(semester& _semester,string ID,int index);//get the time of the course with ID
 bool checkFullSlot(semester _semester,string ID);//check if the course is full yet
-void addStudentToCourse(student _student, string _courseID, semester& _semester);
+void addStudentToCourse(student _student, string _courseID, semester& _semester, string yearName);
 void createScoreboardFile(course& _course, semester _semester);
 int login(Vector<staff> _staff, Vector<schoolYear> _year, int& userIndex, int& classIndex, int& yearIndex); // Return 0 if it doesn't match any IDs and pass
                                                                        // 1 if it is staff, 2 if it is student
@@ -174,7 +174,8 @@ void initiateCourseList(schoolYear& _schoolYear, semester& _semester, course& _c
 classUni& getClass(schoolYear& _schoolYear);
 void writeStaffCSV(Vector <staff>& _staff);
 
-void saveStudentInCourse(Vector<schoolYear>& _year);
+
+
 // void fakeFunction();
 
 #endif // !_MYFUNCTION_H_

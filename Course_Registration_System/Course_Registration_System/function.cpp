@@ -298,7 +298,7 @@ void addCourseToSemester(semester& sem){
 	system("pause");
 }
 
-void enrollCourses(student& _student, semester& _semester) {
+void enrollCourses(student& _student, semester& _semester, string yearName) {
 	while (_student.enrolled.size() <= 5) {
         Vector<course> unenrolledCourse = getUnenrolledCourseList(_semester, _student);
 		if (unenrolledCourse.size() == 0) {
@@ -347,7 +347,7 @@ void enrollCourses(student& _student, semester& _semester) {
             cout << "Enroll successfully!" << endl;
 			system("pause");
             _student.enrolled.push_back(temp);
-            addStudentToCourse(_student, temp.ID, _semester);
+			addStudentToCourse(_student, temp.ID, _semester, yearName);
         }
 
         if (_student.enrolled.size() == 5) {
@@ -793,12 +793,43 @@ bool checkFullSlot(semester _semester,string ID){
 	return false;
 }
 
-void addStudentToCourse(student _student, string _courseID, semester& _semester){
+void addStudentToCourse(student _student, string _courseID, semester& _semester, string yearName){
 	for(int i=0;i<_semester.listCourse.size();++i){
 		if(_courseID == _semester.listCourse[i].ID){
+			cout << root << endl;
 			_semester.listCourse[i].listStudent.push_back(_student);
-			//exportScoreboard(_semester, _semester.listCourse[i], false);
-			return;
+
+			ofstream fout;
+
+			string folderName;
+			if (_semester.name == "1" || _semester.name == "fall" || _semester.name == "Fall") folderName = "Fall";
+			if (_semester.name == "2" || _semester.name == "summer" || _semester.name == "Summer") folderName = "Summer";
+			if (_semester.name == "3" || _semester.name == "autumn" || _semester.name == "Autumn") folderName = "Autumn";
+
+			const string name = _courseID + "_list" + ".csv";
+
+			fs::path link = root/ yearName / "Semester" / folderName / _courseID / name;
+			fout.open(link);
+
+			if (fout.is_open()) {
+				fout << "No" << ','
+					<< "ID" << ','
+					<< "Fullname" << ','
+					<< "Class" << endl;
+
+				for (int j = 0; j < _semester.listCourse[i].listStudent.size(); ++j) {
+					student _student = _semester.listCourse[i].listStudent[j];
+					fout << j + 1 << ','
+						<< _student.ID << ','
+						<< _student.fullName << ','
+						<< _student.className;
+
+					fout << endl;
+				}
+				fout.close();
+				//exportScoreboard(_semester, _semester.listCourse[i], false);
+				return;
+			}
 		}
 	}
 }
@@ -1368,7 +1399,7 @@ void initiateCourseList(schoolYear& _schoolYear, semester& _semester, course& _c
 					case 0:st.no = stoi(data[i]); break;
 					case 1:st.ID = data[i]; break;
 					case 2:st.fullName = data[i]; break;
-					case 3:st.className = stoi(data[i]); break;
+					case 3:st.className = data[i]; break;
 					}
 				}
 
@@ -1801,34 +1832,3 @@ void viewUserInfo(int studentOrStaff, staff _staff, student _student) {
 	}
 }
 
-/*void saveStudentInCourse(Vector<schoolYear>& _year) {
-	for (int i = 0; i < _year.size(); ++i) {
-		for (int j = 0; j < _year[i].listSemester.size(); ++j) {
-			semester _semester = _year[i].listSemester[j];
-			for (int k = 0; k < _semester.listCourse.size(); ++k) {
-				course _course = _semester.listCourse[k];
-				ofstream fout;
-				fout.open(fs::current_path() / "data" / _year[i].name / "Semester" / _semester.name / _course.ID / (_course.ID + "_list.csv"));
-
-				if (fout.is_open()) {
-					fout << "No" << ','
-						<< "ID" << ','
-						<< "Fullname" << ','
-						<< "Class" << endl;
-
-					for (int t = 0; t < _course.listStudent.size(); ++t) {
-						student _student = _course.listStudent[t];
-						fout << t + 1 << ','
-							<< _student.ID << ','
-							<< _student.fullName << ','
-							<< _student.className;
-
-						fout << endl;
-					}
-				}
-
-				fout.close();
-			}
-		}
-	}
-}*/
