@@ -87,6 +87,17 @@ void addStudentToClass(classUni& className) {
 			getline(fin, className.listStudent[i].password, '\n');
 			i++;
 		}
+		
+		while (i < className.listStudent.size()) {
+			string password = "";
+			for (int j = className.listStudent[i].ID.size() - 4; j < className.listStudent[i].ID.size(); j++)
+				password += className.listStudent[i].ID[j];
+			if (className.listStudent[i].DOB.day < 10) password += "0" + to_string(className.listStudent[i].DOB.day);
+			else password += to_string(className.listStudent[i].DOB.day);
+			if (className.listStudent[i].DOB.month < 10) password += "0" + to_string(className.listStudent[i].DOB.month);
+			else password += to_string(className.listStudent[i].DOB.month);
+			className.listStudent[i].password = password;
+		}
 	}
 	else {
 		for (int i = 0; i < className.listStudent.size(); i++) {
