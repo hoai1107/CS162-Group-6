@@ -139,6 +139,7 @@ int main() {
 						for (int i = 0; i < year.size(); i++) {
 							viewListOfClass(year[i]);
 						}
+						system("pause");
 						break;
 					}
 					case 1: {
@@ -159,12 +160,14 @@ int main() {
 								}
 							}
 						}
+						system("pause");
 						break;
 					}
 					case 2: {
 						system("CLs");
 						course _course = getCourse(nSemester);
 						viewListStudentsInACourse(_course);
+						system("pause");
 						break;
 					}
 					case 3: {
