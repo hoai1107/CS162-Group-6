@@ -73,7 +73,7 @@ int main() {
 						break;
 					}
 					case 2: {
-						removeCourseFromList(year[yearIndex].newClass[classIndex].listStudent[userIndex], year[yearIndex].listSemester[semesterIndex]);
+						removeCourseFromList(year[yearIndex].newClass[classIndex].listStudent[userIndex], year[yearIndex].listSemester[semesterIndex], year[yearIndex].name);
 						break;
 					}
 					case 3: {

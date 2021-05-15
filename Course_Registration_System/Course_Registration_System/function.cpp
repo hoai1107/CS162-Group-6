@@ -149,49 +149,79 @@ void viewEnrolledCourses(student _student, semester _semester) {
     viewCourses(res);
 }
 
-void removeCourseFromList(student& _student, semester _semester) {
-    if (_student.enrolled.size() == 0) {
-        cout << "You haven't enrolled in a subject yet." << endl;
-        system("pause");
-        return;
-    }
-    while (true) {
-        cout << "Choose the course you want to remove. BACKSPACE to stop." << endl;
-        viewEnrolledCourses(_student, _semester);
+void removeCourseFromList(student& _student, semester& _semester, string yearName) {
+	if (_student.enrolled.size() == 0) {
+		cout << "You haven't enrolled in a subject yet." << endl;
+		system("pause");
+		return;
+	}
+	while (true) {
+		cout << "Choose the course you want to remove. BACKSPACE to stop." << endl;
+		viewEnrolledCourses(_student, _semester);
 
-        Vector<string> actions;
-        for (int i = 0; i < _student.enrolled.size(); i++) actions.push_back("Remove.");
-        int t = actionList(actions, { 105, 3 });
+		Vector<string> actions;
+		for (int i = 0; i < _student.enrolled.size(); i++) actions.push_back("Remove.");
+		int t = actionList(actions, { 105, 3 });
 
-        if (t == actions.size()) return;
+		if (t == actions.size()) return;
 
 		for (int i = 0; i < _semester.listCourse.size(); i++) {
 			if (_semester.listCourse[i].ID == _student.enrolled[t].ID) {
-				for (int j = 0; j < _semester.listCourse[i].listStudent.size(); j++) 
+				for (int j = 0; j < _semester.listCourse[i].listStudent.size(); j++) {
 					if (_semester.listCourse[i].listStudent[j].ID == _student.ID) {
 						_semester.listCourse[i].listStudent.erase(j);
 						break;
 					}
-				exportScoreboard(_semester, _semester.listCourse[i], false);
-				break;
+				}
+
+				//exportStudentInCourseToCSV(_semester);
+				ofstream fout;
+
+				string folderName;
+				if (_semester.name == "1" || _semester.name == "fall" || _semester.name == "Fall") folderName = "Fall";
+				if (_semester.name == "2" || _semester.name == "summer" || _semester.name == "Summer") folderName = "Summer";
+				if (_semester.name == "3" || _semester.name == "autumn" || _semester.name == "Autumn") folderName = "Autumn";
+
+				const string name = _student.enrolled[t].ID + "_list" + ".csv";
+				fs::path link = root / yearName / "Semester" / folderName / _student.enrolled[t].ID / name;
+				fout.open(link);
+
+				if (fout.is_open()) {
+					fout << "No" << ','
+						<< "ID" << ','
+						<< "Fullname" << ','
+						<< "Class" << endl;
+
+					for (int j = 0; j < _semester.listCourse[i].listStudent.size(); ++j) {
+						student _student = _semester.listCourse[i].listStudent[j];
+						fout << j + 1 << ','
+							<< _student.ID << ','
+							<< _student.fullName << ','
+							<< _student.className;
+
+						fout << endl;
+					}
+					fout.close();
+					break;
+				}
 			}
 		}
 
-        _student.enrolled.erase(t);
+		_student.enrolled.erase(t);
 
-        system("CLS");
+		system("CLS");
 
-        cout << "Remove successfully!" << endl;
-        system("pause");
-        if (_student.enrolled.size() == 0) {
-            system("CLS");
-            cout << "You have removed all courses." << endl;
-            system("pause");
-            return;
-        }
+		cout << "Remove successfully!" << endl;
+		system("pause");
+		if (_student.enrolled.size() == 0) {
+			system("CLS");
+			cout << "You have removed all courses." << endl;
+			system("pause");
+			return;
+		}
 
-        system("CLS");
-    }
+		system("CLS");
+	}
 }
 
 void viewListOfClass(schoolYear _schoolYear) {
@@ -937,7 +967,7 @@ void exportStudentInCourseToCSV(semester& _semester) {
 			student _student = _course.listStudent[i];
 			fout << i + 1 << ','
 				<< _student.ID << ','
-				<< _student.firstName + _student.className << ','
+				<< _student.fullName << ','
 				<< _student.className;
 
 			fout << endl;
