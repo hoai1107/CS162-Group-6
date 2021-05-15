@@ -130,7 +130,7 @@ void displayClass(classUni _class);//(task 18)
 
 //Student function
 void viewEnrolledCourses(student _student, semester _semester);//(task 14)
-void removeCourseFromList(student& _student, semester _semester); //(task 15) return false in case there's no such course with that ID in list
+void removeCourseFromList(student& _student, semester& _semester, string yearName);//(task 15) return false in case there's no such course with that ID in list
 void enrollCourses(student& _student, semester& _semester, string yearName);
 void viewStudentScoreboard(schoolYear year, student stu);
 void viewListStudentsInACourse(course _course);
