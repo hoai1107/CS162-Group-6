@@ -1882,3 +1882,14 @@ void viewUserInfo(int studentOrStaff, staff _staff, student _student) {
 	}
 }
 
+void viewListStudentsInACourse(course _course) {
+	cout << setw(10) << left << "No";
+	cout << setw(20) << left << "Student ID";
+	cout << setw(40) << left << "Full Name";
+	cout << setw(20) << left << "Date of Birth";
+	cout << setw(20) << left << "Social ID" << endl;
+
+	for (int i = 0; i < _course.listStudent.size(); ++i) {
+		displayStudent(_course.listStudent[i]);
+	}
+}

@@ -118,6 +118,9 @@ int main() {
 			}
 			else {
 				Vector<string> allActions;
+				allActions.push_back("View list of classes.");
+				allActions.push_back("View list of students in a class.");
+				allActions.push_back("View list of students in a course.");
 				allActions.push_back("View list of your courses.");
 				allActions.push_back("View your scoreboard.");
 				allActions.push_back("User info.");
@@ -132,21 +135,54 @@ int main() {
 					switch (choice) {
 						system("CLS");
 					case 0: {
+						system("CLS");
+						for (int i = 0; i < year.size(); i++) {
+							viewListOfClass(year[i]);
+						}
+						break;
+					}
+					case 1: {
+						Vector<string> allClasses;
+						for (int i = 0; i < year.size(); i++) {
+							for (int j = 0; j < year[i].newClass.size(); j++) {
+								allClasses.push_back(year[i].newClass[j].name);
+							}
+						}
+						system("CLS");
+						cout << "Choose class you want to see list of students.\n";
+						int ans = actionList(allClasses, {0, 1});
+						for (int i = 0; i < year.size(); i++) {
+							for (int j = 0; j < year[i].newClass.size(); j++) {
+								if (year[i].newClass[j].name == allClasses[ans]) {
+									displayClass(year[i].newClass[j]);
+									break;
+								}
+							}
+						}
+						break;
+					}
+					case 2: {
+						system("CLs");
+						course _course = getCourse(nSemester);
+						viewListStudentsInACourse(_course);
+						break;
+					}
+					case 3: {
 						viewEnrolledCourses(year[yearIndex].newClass[classIndex].listStudent[userIndex], year[yearIndex].listSemester[semesterIndex]);
 						system("pause");
 						break;
 					}
-					case 1: {
+					case 4: {
 						viewStudentScoreboard(year[yearIndex],year[yearIndex].newClass[classIndex].listStudent[userIndex]);
 						system("pause");
 						break;
 					}
-					case 2: {
+					case 5: {
 						viewUserInfo(2, _staff[0], year[yearIndex].newClass[classIndex].listStudent[userIndex]);
 						system("pause");
 						break;
 					}
-					case 3: {
+					case 6: {
 						int t = changePassword_Student(year[yearIndex].newClass[classIndex].listStudent, userIndex);
 						while (t != 0) {
 							system("CLS");
@@ -166,8 +202,8 @@ int main() {
 						system("pause");
 						break;
 					}
-					case 4:
-					case 5: {
+					case 7:
+					case 8: {
 						cout << "Do you really want to exit?";
 						Vector<string> confirm;
 						confirm.push_back("YES");
