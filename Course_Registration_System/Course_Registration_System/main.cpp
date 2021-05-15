@@ -152,6 +152,7 @@ int main() {
 						system("CLS");
 						cout << "Choose class you want to see list of students.\n";
 						int ans = actionList(allClasses, {0, 1});
+						system("CLS");
 						for (int i = 0; i < year.size(); i++) {
 							for (int j = 0; j < year[i].newClass.size(); j++) {
 								if (year[i].newClass[j].name == allClasses[ans]) {
@@ -166,6 +167,7 @@ int main() {
 					case 2: {
 						system("CLs");
 						course _course = getCourse(nSemester);
+						system("CLS");
 						viewListStudentsInACourse(_course);
 						system("pause");
 						break;
